@@ -202,7 +202,7 @@ class CancelLocationCallData
                          S6aProxyAsyncResponderHandler& handler)
       : AsyncGRPCRequest(cq, service), handler_(handler) {
     service_.RequestCancelLocation(&ctx_, &request_, &responder_, cq_, cq_,
-                                   (void*)this);
+                                   reinterpret_cast<void*>(this));
   }
 
  protected:
@@ -226,7 +226,7 @@ class ResetCallData : public AsyncGRPCRequest<S6aGatewayService::AsyncService,
                 S6aGatewayService::AsyncService& service,
                 S6aProxyAsyncResponderHandler& handler)
       : AsyncGRPCRequest(cq, service), handler_(handler) {
-    service_.RequestReset(&ctx_, &request_, &responder_, cq_, cq_, (void*)this);
+    service_.RequestReset(&ctx_, &request_, &responder_, cq_, cq_, reinterpret_cast<void*>(this));
   }
 
  protected:

@@ -61,7 +61,7 @@ class RedisMap : public ObjectMap<ObjectType> {
       return res;
     }
     std::string value;
-    auto new_version = version + (uint64_t)1u;
+    auto new_version = version + uint64_t{1u};
     if (!serializer_(object, value, new_version)) {
       MLOG(MERROR) << "Unable to serialize value for key " << key;
       return SERIALIZE_FAIL;
@@ -159,7 +159,7 @@ class RedisMap : public ObjectMap<ObjectType> {
     auto redis_state = RedisState();
     auto res = this->get_redis_state(key, redis_state);
     if (res == KEY_NOT_FOUND) {
-      version = (uint64_t)0u;
+      version = uint64_t{0u};
       return SUCCESS;
     } else if (res != SUCCESS) {
       return res;

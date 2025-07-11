@@ -53,7 +53,7 @@ int log_event(const Event& event) {
     }
     std::cout << "[ERROR] Failed to log event: " << event.event_type()
               << "; Status: " << status.error_message() << std::endl;
-    return int(status.error_code());
+    return static_cast<int>(status.error_code());
   });
   return 0;
 }

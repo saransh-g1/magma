@@ -204,9 +204,9 @@ MATCHER_P3(CheckDeleteOneBearerReq, imsi, link_bearer_id, eps_bearer_id, "") {
   auto request = static_cast<const DeleteBearerRequest>(arg);
 
   return request.sid().id() == imsi &&
-         request.link_bearer_id() == uint32_t(link_bearer_id) &&
+         request.link_bearer_id() == static_cast<uint32_t>(link_bearer_id) &&
          request.eps_bearer_ids_size() == 1 &&
-         request.eps_bearer_ids(0) == uint32_t(eps_bearer_id);
+         request.eps_bearer_ids(0) == static_cast<uint32_t>(eps_bearer_id);
 }
 
 MATCHER_P(CheckSubset, ids, "") {

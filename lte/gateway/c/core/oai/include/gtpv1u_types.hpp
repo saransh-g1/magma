@@ -29,7 +29,7 @@ extern "C" {
 #define GTPV1U_UDP_PORT (2152)
 #define MAX_BEARERS_PER_UE (11)
 
-#define BUFFER_TO_uint32_t(buf, x)                                   \
+#define BUFFER_TO_static_cast<uint32_t>(buf, x)                                   \
   do {                                                               \
     x = ((uint32_t)((buf)[0])) | ((uint32_t)((buf)[1]) << 8) |       \
         ((uint32_t)((buf)[2]) << 16) | ((uint32_t)((buf)[3]) << 24); \

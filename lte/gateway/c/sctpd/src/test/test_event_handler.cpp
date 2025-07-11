@@ -47,9 +47,9 @@ class MockSctpdUplinkClient final : public SctpdUplinkClient {
     ON_CALL(*this, closeAssoc(_, _)).WillByDefault(Return(0));
   }
 
-  MOCK_METHOD2(sendUl, int(const SendUlReq&, SendUlRes*));
-  MOCK_METHOD2(newAssoc, int(const NewAssocReq&, NewAssocRes*));
-  MOCK_METHOD2(closeAssoc, int(const CloseAssocReq&, CloseAssocRes*));
+  MOCK_METHOD2(sendUl, static_cast<int>(const SendUlReq&, SendUlRes*));
+  MOCK_METHOD2(newAssoc, static_cast<int>(const NewAssocReq&, NewAssocRes*));
+  MOCK_METHOD2(closeAssoc, static_cast<int>(const CloseAssocReq&, CloseAssocRes*));
 };
 
 class EventHandlerTest : public ::testing::Test {
