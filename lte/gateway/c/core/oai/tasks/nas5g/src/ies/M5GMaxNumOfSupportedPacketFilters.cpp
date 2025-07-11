@@ -28,10 +28,10 @@ int M5GMaxNumOfSupportedPacketFilters::EncodeMaxNumOfSupportedPacketFilters(
     *(buffer + encoded) = maxNumOfSuppPktFilters->iei;
     encoded++;
     *(buffer + encoded) =
-        (uint8_t)(maxNumOfSuppPktFilters->maxNumOfSuppPktFilters & 0xFF);
+        static_cast<uint8_t>(maxNumOfSuppPktFilters->maxNumOfSuppPktFilters & 0xFF);
     encoded++;
     *(buffer + encoded) =
-        (uint8_t)((maxNumOfSuppPktFilters->maxNumOfSuppPktFilters & 0xE0));
+        static_cast<uint8_t>((maxNumOfSuppPktFilters->maxNumOfSuppPktFilters & 0xE0));
     encoded++;
   }
 

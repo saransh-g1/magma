@@ -34,24 +34,24 @@ TEST(test_marshal_unmarshal, test_session_credit) {
   SessionCreditUpdateCriteria uc{};
 
   // Set some fields here to non default values. Credit is used.
-  credit.add_used_credit((uint64_t)39u, (uint64_t)40u, &uc);
+  credit.add_used_credit( static_cast<uint64_t>(39u),  static_cast<uint64_t>(40u), &uc);
 
   // Sanity check of credit usage. Test result after marshal/unmarshal should
   // match.
-  EXPECT_EQ(credit.get_credit(USED_TX), (uint64_t)39u);
-  EXPECT_EQ(credit.get_credit(USED_RX), (uint64_t)40u);
+  EXPECT_EQ(credit.get_credit(USED_TX),  static_cast<uint64_t>(39u));
+  EXPECT_EQ(credit.get_credit(USED_RX),  static_cast<uint64_t>(40u));
 
   // Check that the update criteria also includes the changes
-  EXPECT_EQ(uc.bucket_deltas[USED_TX], (uint64_t)39u);
-  EXPECT_EQ(uc.bucket_deltas[USED_RX], (uint64_t)40u);
+  EXPECT_EQ(uc.bucket_deltas[USED_TX],  static_cast<uint64_t>(39u));
+  EXPECT_EQ(uc.bucket_deltas[USED_RX],  static_cast<uint64_t>(40u));
 
   // Check that after marshaling/unmarshaling that the fields are still the
   // same.
   auto marshaled = credit.marshal();
   SessionCredit credit_2(marshaled);
 
-  EXPECT_EQ(credit_2.get_credit(USED_TX), (uint64_t)39u);
-  EXPECT_EQ(credit_2.get_credit(USED_RX), (uint64_t)40u);
+  EXPECT_EQ(credit_2.get_credit(USED_TX),  static_cast<uint64_t>(39u));
+  EXPECT_EQ(credit_2.get_credit(USED_RX),  static_cast<uint64_t>(40u));
 }
 
 TEST(test_track_credit, test_session_credit) {

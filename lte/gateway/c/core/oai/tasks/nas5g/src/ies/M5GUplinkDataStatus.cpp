@@ -29,10 +29,10 @@ int M5GUplinkDataStatus::EncodeUplinkDataStatus(
     encoded++;
     *(buffer + encoded) = uplinkDataStatus->len;
     encoded++;
-    *(buffer + encoded) = (uint8_t)(uplinkDataStatus->uplinkDataStatus & 0xFF);
+    *(buffer + encoded) = static_cast<uint8_t>(uplinkDataStatus->uplinkDataStatus & 0xFF);
     encoded++;
     *(buffer + encoded) =
-        (uint8_t)(((uplinkDataStatus->uplinkDataStatus >> 8) & 0xFF));
+        static_cast<uint8_t>(((uplinkDataStatus->uplinkDataStatus >> 8) & 0xFF));
     encoded++;
   }
 

@@ -42,7 +42,7 @@ int AuthenticationResponseParameterMsg::
   response_parameter->length = *(buffer + decoded);
   decoded++;
   response_parameter->response_parameter[0] = 0;
-  for (int i = 0; i < (int)(response_parameter->length); i++) {
+  for (int i = 0; i < static_cast<int>(response_parameter->length); i++) {
     response_parameter->response_parameter[i] = *(buffer + decoded);
     decoded++;
   }
@@ -68,7 +68,7 @@ int AuthenticationResponseParameterMsg::
     return 0;
   }
 
-  lenPtr = (uint16_t*)(buffer + encoded);
+  lenPtr = reinterpret_cast<uint16_t*>(buffer + encoded);
   encoded++;
   std::copy(response_parameter->response_parameter.begin(),
             response_parameter->response_parameter.end(), buffer + encoded);

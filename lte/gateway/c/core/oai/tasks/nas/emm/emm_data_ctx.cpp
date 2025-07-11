@@ -62,7 +62,7 @@ extern "C" {
 
 //------------------------------------------------------------------------------
 mme_ue_s1ap_id_t emm_ctx_get_new_ue_id(const emm_context_t* const ctxt) {
-  return (mme_ue_s1ap_id_t)((uint)((uintptr_t)ctxt) >> 4);
+  return (mme_ue_s1ap_id_t)(uint{(uintptr_t{ctxt})} >> 4);
 }
 
 //------------------------------------------------------------------------------
@@ -291,7 +291,7 @@ void emm_ctx_set_valid_lvr_tai(emm_context_t* const ctxt, tai_t* lvr_tai) {
 void emm_ctx_clear_auth_vectors(emm_context_t* const ctxt) {
   emm_ctx_clear_attribute_present(ctxt, EMM_CTXT_MEMBER_AUTH_VECTORS);
   for (int i = 0; i < MAX_EPS_AUTH_VECTORS; i++) {
-    memset((void*)&ctxt->_vector[i], 0, sizeof(ctxt->_vector[i]));
+    memset(reinterpret_cast<void*>(&ctxt->_vector[i]), 0, sizeof(ctxt->_vector[i]));
     emm_ctx_clear_attribute_present(ctxt, EMM_CTXT_MEMBER_AUTH_VECTOR0 + i);
   }
   emm_ctx_clear_security_vector_index(ctxt);
@@ -304,7 +304,7 @@ void emm_ctx_clear_auth_vectors(emm_context_t* const ctxt) {
 /* Clear AUTH vector  */
 inline void emm_ctx_clear_auth_vector(emm_context_t* const ctxt, ksi_t eksi) {
   AssertFatal(eksi < MAX_EPS_AUTH_VECTORS, "Out of bounds eksi %d", eksi);
-  memset((void*)&ctxt->_vector[eksi % MAX_EPS_AUTH_VECTORS], 0,
+  memset(reinterpret_cast<void*>(&ctxt->_vector[eksi % MAX_EPS_AUTH_VECTORS]), 0,
          sizeof(ctxt->_vector[eksi % MAX_EPS_AUTH_VECTORS]));
   emm_ctx_clear_attribute_present(ctxt, EMM_CTXT_MEMBER_AUTH_VECTOR0 + eksi);
   int remaining_vectors = 0;
@@ -620,7 +620,7 @@ void free_emm_ctx_memory(emm_context_t* const ctxt,
     return;
   }
   if (ctxt->t3422_arg) {
-    free_wrapper((void**)&ctxt->t3422_arg);
+    free_wrapper(reinterpret_cast<void**>(&ctxt->t3422_arg));
   }
   nas_delete_all_emm_procedures(ctxt);
   free_esm_context_content(&ctxt->esm_ctx);

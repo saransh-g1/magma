@@ -51,7 +51,7 @@ int RequestType::EncodeRequestType(RequestType* reqest_type, uint8_t iei,
   // CHECKING IEI
   if (iei > 0) {
     *buffer = (reqest_type->iei & 0x0f) << 4;
-    CHECK_IEI_ENCODER((uint8_t)iei, (uint8_t)((reqest_type->iei & 0x0f) << 4));
+    CHECK_IEI_ENCODER((uint8_t)iei, static_cast<uint8_t>((reqest_type->iei & 0x0f) << 4));
   }
 
   *buffer = 0x00 | (*buffer & 0xf0) | (reqest_type->type_val & 0x07);

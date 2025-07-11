@@ -903,7 +903,7 @@ int amf_decrypt_msin_info_answer(itti_amf_decrypted_msin_info_ans_t* aia) {
 
   for (int i = 0; i < (MSIN_BCD_DIGITS_MAX / 2); i++) {
     uint8_t swapped =
-        (uint8_t)(((aia->msin[i] & 0x0F) << 4) | ((aia->msin[i] & 0xF0) >> 4));
+        static_cast<uint8_t>(((aia->msin[i] & 0x0F) << 4) | ((aia->msin[i] & 0xF0) >> 4));
 
     uint8_t high_nibble = (swapped >> 4) & 0x0F;
     uint8_t low_nibble = swapped & 0x0F;

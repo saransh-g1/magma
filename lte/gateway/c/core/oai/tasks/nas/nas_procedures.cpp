@@ -155,7 +155,7 @@ nas_emm_auth_proc_t* get_nas_common_procedure_authentication(
 //------------------------------------------------------------------------------
 nas_auth_info_proc_t* get_nas_cn_procedure_auth_info(
     const struct emm_context_s* const ctxt) {
-  return (nas_auth_info_proc_t*)get_nas_cn_procedure(ctxt, CN_PROC_AUTH_INFO);
+  return (nas_auth_info_proc_t*)get_nas_cn_procedure(ctxt, CN_PROC_AUTH_INFO));
 }
 
 //------------------------------------------------------------------------------

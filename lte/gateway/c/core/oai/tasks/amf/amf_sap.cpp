@@ -106,7 +106,7 @@ void amf_as_data_t::amf_as_set_security_data(amf_as_security_data_t* data,
         LOG_NAS_AMF,
         "5GCN security context exists is new %u KSI %u SQN %u count %u\n",
         is_new, context->eksi, context->ul_count.seq_num,
-        *(uint32_t*)(&context->ul_count));
+        *reinterpret_cast<uint32_t*>(&context->ul_count));
     data->is_new = is_new;
     data->ksi = context->eksi;
     data->sqn = context->dl_count.seq_num;

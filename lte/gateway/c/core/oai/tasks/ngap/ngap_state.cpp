@@ -67,7 +67,7 @@ m5g_ue_description_t* ngap_state_get_ue_gnbid(sctp_assoc_id_t sctp_assoc_id,
   m5g_ue_description_t* ue = nullptr;
 
   hash_table_ts_t* state_ue_ht = get_ngap_ue_state();
-  uint64_t comp_ngap_id = (uint64_t)gnb_ue_ngap_id << 32 | sctp_assoc_id;
+  uint64_t comp_ngap_id = static_cast<uint64_t>(gnb_ue_ngap_id) << 32 | sctp_assoc_id;
   hashtable_ts_get(state_ue_ht, (const hash_key_t)comp_ngap_id, (void**)&ue);
 
   OAILOG_FUNC_RETURN(LOG_NGAP, ue);
@@ -99,7 +99,7 @@ m5g_ue_description_t* ngap_state_get_ue_imsi(imsi64_t imsi64) {
 
 uint64_t ngap_get_comp_ngap_id(sctp_assoc_id_t sctp_assoc_id,
                                gnb_ue_ngap_id_t gnb_ue_ngap_id) {
-  return (uint64_t)gnb_ue_ngap_id << 32 | sctp_assoc_id;
+  return static_cast<uint64_t>(gnb_ue_ngap_id) << 32 | sctp_assoc_id;;
 }
 
 void put_ngap_imsi_map() {

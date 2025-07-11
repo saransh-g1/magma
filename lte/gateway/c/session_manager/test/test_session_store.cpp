@@ -335,7 +335,7 @@ TEST_F(SessionStoreTest, test_read_and_write) {
   session->receive_monitor(monitor_update, &uc);
 
   // Add some used credit
-  session->add_to_monitor(monitoring_key, uint64_t(111), uint64_t(333), &uc);
+  session->add_to_monitor(monitoring_key, uint64_t{111}, uint64_t{333}, &uc);
   EXPECT_EQ(session->get_monitor(monitoring_key, USED_TX), 111);
   EXPECT_EQ(session->get_monitor(monitoring_key, USED_RX), 333);
 

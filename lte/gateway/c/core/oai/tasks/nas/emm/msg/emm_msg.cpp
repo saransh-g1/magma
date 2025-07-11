@@ -500,7 +500,7 @@ int emm_msg_decode_header(emm_msg_header_t* header, const uint8_t* buffer,
   /*
    * Decode the security header type and the protocol discriminator
    */
-  DECODE_U8(buffer + size, *(uint8_t*)(header), size);
+  DECODE_U8(buffer + size, *reinterpret_cast<uint8_t*>(header), size);
   /*
    * Decode the message type
    */
@@ -561,7 +561,7 @@ int emm_msg_encode_header(const emm_msg_header_t* header, uint8_t* buffer,
   /*
    * Encode the security header type and the protocol discriminator
    */
-  ENCODE_U8(buffer + size, *(uint8_t*)(header), size);
+  ENCODE_U8(buffer + size, *reinterpret_cast<uint8_t*>(header), size);
   /*
    * Encode the message type
    */

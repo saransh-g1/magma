@@ -63,7 +63,7 @@ int EventTracker::init_conntrack_event_loop() {
       perror("mnl_socket_recvfrom");
       exit(EXIT_FAILURE);
     }
-    ret = mnl_cb_run(buf, ret, 0, 0, data_cb, (void*)this);
+    ret = mnl_cb_run(buf, ret, 0, 0, data_cb, reinterpret_cast<void*>(this));
     if (ret == -1) {
       perror("mnl_cb_run");
       exit(EXIT_FAILURE);

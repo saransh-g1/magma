@@ -54,7 +54,7 @@ int PDUSessionTypeMsg::EncodePDUSessionTypeMsg(
   if (iei > 0) {
     *buffer = (pdu_session_type->iei & 0x0f) << 4;
     CHECK_IEI_ENCODER((uint8_t)iei,
-                      (uint8_t)((pdu_session_type->iei & 0x0f) << 4));
+                      static_cast<uint8_t>((pdu_session_type->iei & 0x0f) << 4));
   }
 
   *buffer = 0x00 | (*buffer & 0xf0) | (pdu_session_type->type_val & 0x07);

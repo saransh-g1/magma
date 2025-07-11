@@ -474,7 +474,7 @@ int M5GSMobileIdentityMsg::EncodeM5GSMobileIdentityMsg(
   } else
     return 0;
 
-  lenPtr = (uint16_t*)(buffer + encoded);
+  lenPtr = reinterpret_cast<uint16_t*>(buffer + encoded);
   encoded += 2;
   m5gs_mobile_identity->toi =
       m5gs_mobile_identity->mobile_identity.guti.type_of_identity;

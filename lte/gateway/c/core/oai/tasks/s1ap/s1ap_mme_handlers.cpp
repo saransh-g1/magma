@@ -4518,7 +4518,7 @@ status_code_e s1ap_handle_paging_request(
   ie->id = S1ap_ProtocolIE_ID_id_UEIdentityIndexValue;
   ie->criticality = S1ap_Criticality_ignore;
   ie->value.present = S1ap_PagingIEs__value_PR_UEIdentityIndexValue;
-  UE_ID_INDEX_TO_BIT_STRING((uint16_t)(imsi64 % 1024),
+  UE_ID_INDEX_TO_BIT_STRING(static_cast<uint16_t>(imsi64 % 1024),
                             &ie->value.choice.UEIdentityIndexValue);
   ASN_SEQUENCE_ADD(&out->protocolIEs.list, ie);
 

@@ -29,10 +29,10 @@ int M5GPDUSessionStatus::EncodePDUSessionStatus(
     encoded++;
     *(buffer + encoded) = pduSessionStatus->len;
     encoded++;
-    *(buffer + encoded) = (uint8_t)(pduSessionStatus->pduSessionStatus & 0xFF);
+    *(buffer + encoded) = static_cast<uint8_t>(pduSessionStatus->pduSessionStatus & 0xFF);
     encoded++;
     *(buffer + encoded) =
-        (uint8_t)(((pduSessionStatus->pduSessionStatus >> 8) & 0xFF));
+        static_cast<uint8_t>(((pduSessionStatus->pduSessionStatus >> 8) & 0xFF));
     encoded++;
   }
 

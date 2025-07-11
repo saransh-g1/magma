@@ -184,10 +184,10 @@ status_code_e pgw_process_pco_request_ipcp(
         uint8_t idp[6] = {0};
         idp[0] = IPCP_OPTION_PRIMARY_DNS_SERVER_IP_ADDRESS;
         idp[1] = 6;
-        idp[2] = (uint8_t)(ipcp_out_dns_prim_ipv4_addr & 0x000000FF);
-        idp[3] = (uint8_t)((ipcp_out_dns_prim_ipv4_addr >> 8) & 0x000000FF);
-        idp[4] = (uint8_t)((ipcp_out_dns_prim_ipv4_addr >> 16) & 0x000000FF);
-        idp[5] = (uint8_t)((ipcp_out_dns_prim_ipv4_addr >> 24) & 0x000000FF);
+        idp[2] = static_cast<uint8_t>(ipcp_out_dns_prim_ipv4_addr & 0x000000FF);
+        idp[3] = static_cast<uint8_t>((ipcp_out_dns_prim_ipv4_addr >> 8) & 0x000000FF);
+        idp[4] = static_cast<uint8_t>((ipcp_out_dns_prim_ipv4_addr >> 16) & 0x000000FF);
+        idp[5] = static_cast<uint8_t>((ipcp_out_dns_prim_ipv4_addr >> 24) & 0x000000FF);
         ipcp_out_length += 6;
         bcatblk(poc_id_resp.contents, idp, 6);
       } break;
@@ -242,10 +242,10 @@ status_code_e pgw_process_pco_request_ipcp(
         uint8_t ids[6] = {0};
         ids[0] = IPCP_OPTION_SECONDARY_DNS_SERVER_IP_ADDRESS;
         ids[1] = 6;
-        ids[2] = (uint8_t)(ipcp_out_dns_sec_ipv4_addr & 0x000000FF);
-        ids[3] = (uint8_t)((ipcp_out_dns_sec_ipv4_addr >> 8) & 0x000000FF);
-        ids[4] = (uint8_t)((ipcp_out_dns_sec_ipv4_addr >> 16) & 0x000000FF);
-        ids[5] = (uint8_t)((ipcp_out_dns_sec_ipv4_addr >> 24) & 0x000000FF);
+        ids[2] = static_cast<uint8_t>(ipcp_out_dns_sec_ipv4_addr & 0x000000FF);
+        ids[3] = static_cast<uint8_t>((ipcp_out_dns_sec_ipv4_addr >> 8) & 0x000000FF);
+        ids[4] = static_cast<uint8_t>((ipcp_out_dns_sec_ipv4_addr >> 16) & 0x000000FF);
+        ids[5] = static_cast<uint8_t>((ipcp_out_dns_sec_ipv4_addr >> 24) & 0x000000FF);
         ipcp_out_length += 6;
         bcatblk(poc_id_resp.contents, ids, 6);
       } break;
@@ -262,8 +262,8 @@ status_code_e pgw_process_pco_request_ipcp(
   poc_id_resp.length = ipcp_out_length;  // fill value after parsing req
   poc_id_resp.contents->data[0] = ipcp_out_code;
   poc_id_resp.contents->data[1] = ipcp_req_identifier;
-  poc_id_resp.contents->data[2] = (uint8_t)(ipcp_out_length >> 8);
-  poc_id_resp.contents->data[3] = (uint8_t)(ipcp_out_length & 0x00FF);
+  poc_id_resp.contents->data[2] = static_cast<uint8_t>(ipcp_out_length >> 8);
+  poc_id_resp.contents->data[3] = static_cast<uint8_t>(ipcp_out_length & 0x00FF);
 
   return pgw_pco_push_protocol_or_container_id(pco_resp, &poc_id_resp);
 }
@@ -280,10 +280,10 @@ status_code_e pgw_process_pco_dns_server_request(
                "PCO: Protocol identifier IPCP option DNS Server Request\n");
   poc_id_resp.id = PCO_CI_DNS_SERVER_IPV4_ADDRESS;
   poc_id_resp.length = 4;
-  dns_array[0] = (uint8_t)(ipcp_out_dns_prim_ipv4_addr & 0x000000FF);
-  dns_array[1] = (uint8_t)((ipcp_out_dns_prim_ipv4_addr >> 8) & 0x000000FF);
-  dns_array[2] = (uint8_t)((ipcp_out_dns_prim_ipv4_addr >> 16) & 0x000000FF);
-  dns_array[3] = (uint8_t)((ipcp_out_dns_prim_ipv4_addr >> 24) & 0x000000FF);
+  dns_array[0] = static_cast<uint8_t>(ipcp_out_dns_prim_ipv4_addr & 0x000000FF);
+  dns_array[1] = static_cast<uint8_t>((ipcp_out_dns_prim_ipv4_addr >> 8) & 0x000000FF);
+  dns_array[2] = static_cast<uint8_t>((ipcp_out_dns_prim_ipv4_addr >> 16) & 0x000000FF);
+  dns_array[3] = static_cast<uint8_t>((ipcp_out_dns_prim_ipv4_addr >> 24) & 0x000000FF);
   poc_id_resp.contents = blk2bstr(dns_array, sizeof(dns_array));
 
   return pgw_pco_push_protocol_or_container_id(pco_resp, &poc_id_resp);
@@ -298,8 +298,8 @@ status_code_e pgw_process_pco_link_mtu_request(
                "PCO: Protocol identifier IPCP option Link MTU Request\n");
   poc_id_resp.id = PCO_CI_IPV4_LINK_MTU;
   poc_id_resp.length = 2;
-  mtu_array[0] = (uint8_t)(spgw_config.pgw_config.ue_mtu >> 8);
-  mtu_array[1] = (uint8_t)(spgw_config.pgw_config.ue_mtu & 0xFF);
+  mtu_array[0] = static_cast<uint8_t>(spgw_config.pgw_config.ue_mtu >> 8);
+  mtu_array[1] = static_cast<uint8_t>(spgw_config.pgw_config.ue_mtu & 0xFF);
   poc_id_resp.contents = blk2bstr(mtu_array, sizeof(mtu_array));
 
   return pgw_pco_push_protocol_or_container_id(pco_resp, &poc_id_resp);
@@ -323,10 +323,10 @@ status_code_e pgw_process_pco_pcscf_ipv4_address_req(
                "PCO: Protocol identifier PCO_CI_P_CSCF_IPV4_ADDRESS \n");
   poc_id_resp.id = PCO_CI_P_CSCF_IPV4_ADDRESS;
   poc_id_resp.length = 4;
-  pcscf_ipv4_array[0] = (uint8_t)(pcscf_ipv4_addr & 0x000000FF);
-  pcscf_ipv4_array[1] = (uint8_t)((pcscf_ipv4_addr >> 8) & 0x000000FF);
-  pcscf_ipv4_array[2] = (uint8_t)((pcscf_ipv4_addr >> 16) & 0x000000FF);
-  pcscf_ipv4_array[3] = (uint8_t)((pcscf_ipv4_addr >> 24) & 0x000000FF);
+  pcscf_ipv4_array[0] = static_cast<uint8_t>(pcscf_ipv4_addr & 0x000000FF);
+  pcscf_ipv4_array[1] = static_cast<uint8_t>((pcscf_ipv4_addr >> 8) & 0x000000FF);
+  pcscf_ipv4_array[2] = static_cast<uint8_t>((pcscf_ipv4_addr >> 16) & 0x000000FF);
+  pcscf_ipv4_array[3] = static_cast<uint8_t>((pcscf_ipv4_addr >> 24) & 0x000000FF);
   poc_id_resp.contents = blk2bstr(pcscf_ipv4_array, sizeof(pcscf_ipv4_array));
 
   return pgw_pco_push_protocol_or_container_id(pco_resp, &poc_id_resp);

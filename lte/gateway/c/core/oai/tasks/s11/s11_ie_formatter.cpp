@@ -1596,10 +1596,10 @@ status_code_e gtpv2c_uli_ie_set(nw_gtpv2c_msg_handle_t* msg, const Uli_t* uli) {
     current[0] = (uli->s.cgi.mcc[1] << 4) | (uli->s.cgi.mcc[0]);
     current[1] = (uli->s.cgi.mnc[2] << 4) | (uli->s.cgi.mcc[2]);
     current[2] = (uli->s.cgi.mnc[1] << 4) | (uli->s.cgi.mnc[0]);
-    current[3] = (uint8_t)((uli->s.cgi.lac & 0xFF00) >> 8);
-    current[4] = (uint8_t)(uli->s.cgi.lac & 0x00FF);
-    current[5] = (uint8_t)((uli->s.cgi.ci & 0xFF00) >> 8);
-    current[6] = (uint8_t)(uli->s.cgi.ci & 0x00FF);
+    current[3] = static_cast<uint8_t>((uli->s.cgi.lac & 0xFF00) >> 8);
+    current[4] = static_cast<uint8_t>(uli->s.cgi.lac & 0x00FF);
+    current[5] = static_cast<uint8_t>((uli->s.cgi.ci & 0xFF00) >> 8);
+    current[6] = static_cast<uint8_t>(uli->s.cgi.ci & 0x00FF);
     current = &current[7];
     length += 7;
   }
@@ -1616,11 +1616,11 @@ status_code_e gtpv2c_uli_ie_set(nw_gtpv2c_msg_handle_t* msg, const Uli_t* uli) {
     current[2] =
         (uli->s.ecgi.plmn.mnc_digit2 << 4) | (uli->s.ecgi.plmn.mnc_digit1);
     current[3] =
-        (uint8_t)((uli->s.ecgi.cell_identity.enb_id & 0x000F0000) >> 16);
+        static_cast<uint8_t>((uli->s.ecgi.cell_identity.enb_id & 0x000F0000) >> 16);
     current[4] =
-        (uint8_t)((uli->s.ecgi.cell_identity.enb_id & 0x0000FF00) >> 8);
-    current[5] = (uint8_t)(uli->s.ecgi.cell_identity.enb_id & 0x000000FF);
-    current[6] = (uint8_t)(uli->s.ecgi.cell_identity.cell_id);
+        static_cast<uint8_t>((uli->s.ecgi.cell_identity.enb_id & 0x0000FF00) >> 8);
+    current[5] = static_cast<uint8_t>(uli->s.ecgi.cell_identity.enb_id & 0x000000FF);
+    current[6] = static_cast<uint8_t>(uli->s.ecgi.cell_identity.cell_id);
     current = &current[7];
     length += 7;
   }

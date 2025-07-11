@@ -1008,7 +1008,7 @@ status_code_e emm_recv_identity_response(
    * Execute the identification completion procedure
    */
   rc = emm_proc_identification_complete(ue_id, p_imsi, p_imei, p_imeisv,
-                                        (uint32_t*)(p_tmsi));
+                                        reinterpret_cast<uint32_t*>(p_tmsi));
   OAILOG_FUNC_RETURN(LOG_NAS_EMM, rc);
 }
 

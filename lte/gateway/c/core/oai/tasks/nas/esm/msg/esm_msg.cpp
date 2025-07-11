@@ -455,7 +455,7 @@ int esm_msg_decode_header(esm_msg_header_t* header, const uint8_t* buffer,
   /*
    * Decode the EPS bearer identity and the protocol discriminator
    */
-  DECODE_U8(buffer + size, *(uint8_t*)(header), size);
+  DECODE_U8(buffer + size, *reinterpret_cast<uint8_t*>(header), size);
   /*
    * Decode the procedure transaction identity
    */
@@ -520,7 +520,7 @@ static int esm_msg_encode_header(const esm_msg_header_t* header,
   /*
    * Encode the EPS bearer identity and the protocol discriminator
    */
-  ENCODE_U8(buffer + size, *(uint8_t*)(header), size);
+  ENCODE_U8(buffer + size, *reinterpret_cast<uint8_t*>(header), size);
   /*
    * Encode the procedure transaction identity
    */

@@ -55,7 +55,7 @@ int SSCModeMsg::EncodeSSCModeMsg(SSCModeMsg* ssc_mode, uint8_t iei,
   // CHECKING IEI
   if (iei > 0) {
     CHECK_IEI_ENCODER((uint8_t)iei,
-                      (uint8_t)(0x00 | (ssc_mode->iei & 0x0f) << 4));
+                      static_cast<uint8_t>(0x00 | (ssc_mode->iei & 0x0f) << 4));
     *buffer = (ssc_mode->iei & 0x0f) << 4;
     encoded++;
   }

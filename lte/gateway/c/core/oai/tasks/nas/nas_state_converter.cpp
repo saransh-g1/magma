@@ -111,17 +111,17 @@ void NasStateConverter::proto_to_partial_tai_list(
     } break;
     case TRACKING_AREA_IDENTITY_LIST_ONE_PLMN_NON_CONSECUTIVE_TACS: {
       state_partial_tai_list->u.tai_one_plmn_non_consecutive_tacs.plmn
-          .mcc_digit1 = (int)(partial_tai_list_proto.plmn()[0]) - ASCII_ZERO;
+          .mcc_digit1 = static_cast<int>(partial_tai_list_proto.plmn()[0]) - ASCII_ZERO;
       state_partial_tai_list->u.tai_one_plmn_non_consecutive_tacs.plmn
-          .mcc_digit2 = (int)(partial_tai_list_proto.plmn()[1]) - ASCII_ZERO;
+          .mcc_digit2 = static_cast<int>(partial_tai_list_proto.plmn()[1]) - ASCII_ZERO;
       state_partial_tai_list->u.tai_one_plmn_non_consecutive_tacs.plmn
-          .mcc_digit3 = (int)(partial_tai_list_proto.plmn()[2]) - ASCII_ZERO;
+          .mcc_digit3 = static_cast<int>(partial_tai_list_proto.plmn()[2]) - ASCII_ZERO;
       state_partial_tai_list->u.tai_one_plmn_non_consecutive_tacs.plmn
-          .mnc_digit1 = (int)(partial_tai_list_proto.plmn()[3]) - ASCII_ZERO;
+          .mnc_digit1 = static_cast<int>(partial_tai_list_proto.plmn()[3]) - ASCII_ZERO;
       state_partial_tai_list->u.tai_one_plmn_non_consecutive_tacs.plmn
-          .mnc_digit2 = (int)(partial_tai_list_proto.plmn()[4]) - ASCII_ZERO;
+          .mnc_digit2 = static_cast<int>(partial_tai_list_proto.plmn()[4]) - ASCII_ZERO;
       state_partial_tai_list->u.tai_one_plmn_non_consecutive_tacs.plmn
-          .mnc_digit3 = (int)(partial_tai_list_proto.plmn()[5]) - ASCII_ZERO;
+          .mnc_digit3 = static_cast<int>(partial_tai_list_proto.plmn()[5]) - ASCII_ZERO;
       for (int idx = 0; idx < TRACKING_AREA_IDENTITY_LIST_MAXIMUM_NUM_TAI;
            idx++) {
         state_partial_tai_list->u.tai_one_plmn_non_consecutive_tacs.tac[idx] =
@@ -168,12 +168,12 @@ void NasStateConverter::tai_to_proto(const tai_t* state_tai,
 
 void NasStateConverter::proto_to_tai(const oai::Tai& tai_proto,
                                      tai_t* state_tai) {
-  state_tai->plmn.mcc_digit1 = (int)(tai_proto.mcc_mnc()[0]) - ASCII_ZERO;
-  state_tai->plmn.mcc_digit2 = (int)(tai_proto.mcc_mnc()[1]) - ASCII_ZERO;
-  state_tai->plmn.mcc_digit3 = (int)(tai_proto.mcc_mnc()[2]) - ASCII_ZERO;
-  state_tai->plmn.mnc_digit1 = (int)(tai_proto.mcc_mnc()[3]) - ASCII_ZERO;
-  state_tai->plmn.mnc_digit2 = (int)(tai_proto.mcc_mnc()[4]) - ASCII_ZERO;
-  state_tai->plmn.mnc_digit3 = (int)(tai_proto.mcc_mnc()[5]) - ASCII_ZERO;
+  state_tai->plmn.mcc_digit1 = static_cast<int>(tai_proto.mcc_mnc()[0]) - ASCII_ZERO;
+  state_tai->plmn.mcc_digit2 = static_cast<int>(tai_proto.mcc_mnc()[1]) - ASCII_ZERO;
+  state_tai->plmn.mcc_digit3 = static_cast<int>(tai_proto.mcc_mnc()[2]) - ASCII_ZERO;
+  state_tai->plmn.mnc_digit1 = static_cast<int>(tai_proto.mcc_mnc()[3]) - ASCII_ZERO;
+  state_tai->plmn.mnc_digit2 = static_cast<int>(tai_proto.mcc_mnc()[4]) - ASCII_ZERO;
+  state_tai->plmn.mnc_digit3 = static_cast<int>(tai_proto.mcc_mnc()[5]) - ASCII_ZERO;
   state_tai->tac = tai_proto.tac();
   OAILOG_DEBUG(LOG_MME_APP, "State PLMN " PLMN_FMT "from proto",
                PLMN_ARG(&state_tai->plmn));

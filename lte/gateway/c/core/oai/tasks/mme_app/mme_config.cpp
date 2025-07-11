@@ -1571,35 +1571,35 @@ int mme_config_parse_string(const char* config_string,
       }
       if ((config_setting_lookup_int(setting, MME_CONFIG_STRING_NAS_T3422_TIMER,
                                      &aint))) {
-        config_pP->nas_config.t3422_msec = (uint32_t)(1000 * aint);
+        config_pP->nas_config.t3422_msec = static_cast<uint32_t>(1000 * aint);
       }
       if ((config_setting_lookup_int(setting, MME_CONFIG_STRING_NAS_T3450_TIMER,
                                      &aint))) {
-        config_pP->nas_config.t3450_msec = (uint32_t)(1000 * aint);
+        config_pP->nas_config.t3450_msec = static_cast<uint32_t>(1000 * aint);
       }
       if ((config_setting_lookup_int(setting, MME_CONFIG_STRING_NAS_T3460_TIMER,
                                      &aint))) {
-        config_pP->nas_config.t3460_msec = (uint32_t)(1000 * aint);
+        config_pP->nas_config.t3460_msec = static_cast<uint32_t>(1000 * aint);
       }
       if ((config_setting_lookup_int(setting, MME_CONFIG_STRING_NAS_T3470_TIMER,
                                      &aint))) {
-        config_pP->nas_config.t3470_msec = (uint32_t)(1000 * aint);
+        config_pP->nas_config.t3470_msec = static_cast<uint32_t>(1000 * aint);
       }
       if ((config_setting_lookup_int(setting, MME_CONFIG_STRING_NAS_T3485_TIMER,
                                      &aint))) {
-        config_pP->nas_config.t3485_msec = (uint32_t)(1000 * aint);
+        config_pP->nas_config.t3485_msec = static_cast<uint32_t>(1000 * aint);
       }
       if ((config_setting_lookup_int(setting, MME_CONFIG_STRING_NAS_T3486_TIMER,
                                      &aint))) {
-        config_pP->nas_config.t3486_msec = (uint32_t)(1000 * aint);
+        config_pP->nas_config.t3486_msec = static_cast<uint32_t>(1000 * aint);
       }
       if ((config_setting_lookup_int(setting, MME_CONFIG_STRING_NAS_T3489_TIMER,
                                      &aint))) {
-        config_pP->nas_config.t3489_msec = (uint32_t)(1000 * aint);
+        config_pP->nas_config.t3489_msec = static_cast<uint32_t>(1000 * aint);
       }
       if ((config_setting_lookup_int(setting, MME_CONFIG_STRING_NAS_T3495_TIMER,
                                      &aint))) {
-        config_pP->nas_config.t3495_msec = (uint32_t)(1000 * aint);
+        config_pP->nas_config.t3495_msec = static_cast<uint32_t>(1000 * aint);
       }
       if ((config_setting_lookup_string(setting,
                                         MME_CONFIG_STRING_NAS_FORCE_REJECT_TAU,
@@ -1704,23 +1704,23 @@ int mme_config_parse_string(const char* config_string,
     if (setting != NULL) {
       if ((config_setting_lookup_int(setting, MME_CONFIG_STRING_SGS_TS6_1_TIMER,
                                      &aint))) {
-        config_pP->sgs_config.ts6_1_msec = (uint8_t)(1000 * aint);
+        config_pP->sgs_config.ts6_1_msec = static_cast<uint8_t>(1000 * aint);
       }
       if ((config_setting_lookup_int(setting, MME_CONFIG_STRING_SGS_TS8_TIMER,
                                      &aint))) {
-        config_pP->sgs_config.ts8_msec = (uint8_t)(1000 * aint);
+        config_pP->sgs_config.ts8_msec = static_cast<uint8_t>(1000 * aint);
       }
       if ((config_setting_lookup_int(setting, MME_CONFIG_STRING_SGS_TS9_TIMER,
                                      &aint))) {
-        config_pP->sgs_config.ts9_msec = (uint8_t)(1000 * aint);
+        config_pP->sgs_config.ts9_msec = static_cast<uint8_t>(1000 * aint);
       }
       if ((config_setting_lookup_int(setting, MME_CONFIG_STRING_SGS_TS10_TIMER,
                                      &aint))) {
-        config_pP->sgs_config.ts10_msec = (uint8_t)(1000 * aint);
+        config_pP->sgs_config.ts10_msec = static_cast<uint8_t>(1000 * aint);
       }
       if ((config_setting_lookup_int(setting, MME_CONFIG_STRING_SGS_TS13_TIMER,
                                      &aint))) {
-        config_pP->sgs_config.ts13_msec = (uint8_t)(1000 * aint);
+        config_pP->sgs_config.ts13_msec = static_cast<uint8_t>(1000 * aint);
       }
     }
 #if (!EMBEDDED_SGW)

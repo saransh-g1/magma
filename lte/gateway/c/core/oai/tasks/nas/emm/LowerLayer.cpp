@@ -435,7 +435,7 @@ void emm_as_set_security_data(emm_as_security_data_t* data, const void* args,
         LOG_NAS_EMM,
         "EPS security context exists is new %u KSI %u SQN %u count %u\n",
         is_new, context->eksi, context->ul_count.seq_num,
-        *(uint32_t*)(&context->ul_count));
+        *reinterpret_cast<uint32_t*>(&context->ul_count));
     OAILOG_STREAM_HEX(OAILOG_LEVEL_DEBUG, LOG_NAS_EMM,
                       "knas_int:", (const char*)context->knas_int,
                       AUTH_KNAS_INT_SIZE);

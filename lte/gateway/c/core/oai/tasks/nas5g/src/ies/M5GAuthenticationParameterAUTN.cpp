@@ -51,7 +51,7 @@ int AuthenticationParameterAUTNMsg::EncodeAuthenticationParameterAUTNMsg(
     encoded++;
   }
 
-  lenPtr = (uint8_t*)(buffer + encoded);
+  lenPtr = reinterpret_cast<uint8_t*>(buffer + encoded);
   encoded++;
   memcpy(buffer + encoded, autn->AUTN, AUTN_MAX_LEN);
   encoded = encoded + AUTN_MAX_LEN;

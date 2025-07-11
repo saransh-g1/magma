@@ -122,3 +122,5 @@ compile_commands.json
 dp/cloud/helm/dp/charts/domain-proxy/certificates/**/*
 dp/tools/deployment/certificates/certs
 orc8r/cloud/helm/orc8r/charts/secrets
+
+venv/

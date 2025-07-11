@@ -549,7 +549,7 @@ void mme_ue_context_update_coll_keys(
         convert_guti_to_string(guti_p, &guti_str);
         h_rc = obj_hashtable_uint64_ts_insert(
             mme_ue_context_p->guti_ue_context_htbl, (const void* const)guti_str,
-            strlen(guti_str), (uint64_t)mme_ue_s1ap_id);
+            strlen(guti_str),  static_cast<uint64_t>(mme_ue_s1ap_id));
       } else {
         h_rc = HASH_TABLE_KEY_NOT_EXISTS;
       }

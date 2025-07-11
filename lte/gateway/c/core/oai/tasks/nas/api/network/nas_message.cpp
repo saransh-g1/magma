@@ -690,7 +690,7 @@ int nas_message_header_decode(const unsigned char* const buffer,
    * Decode the first octet of the header (security header type or EPS bearer
    * * * * identity, and protocol discriminator)
    */
-  DECODE_U8(buffer, *(uint8_t*)(header), size);
+  DECODE_U8(buffer, *reinterpret_cast<uint8_t*>(header), size);
 
   *is_sr = false;
   if (header->protocol_discriminator == EPS_MOBILITY_MANAGEMENT_MESSAGE) {
@@ -873,7 +873,7 @@ static int nas_message_header_encode(
    * Encode the first octet of the header (security header type or EPS bearer
    * * * * identity, and protocol discriminator)
    */
-  ENCODE_U8(buffer, *(uint8_t*)(header), size);
+  ENCODE_U8(buffer, *reinterpret_cast<uint8_t*>(header), size);
 
   if (header->protocol_discriminator == EPS_MOBILITY_MANAGEMENT_MESSAGE) {
     if (header->security_header_type != SECURITY_HEADER_TYPE_NOT_PROTECTED) {
@@ -1061,7 +1061,7 @@ static int nas_message_decrypt_a(
       len = sizeof(dest);
       memset(dest, 0, len);
       memcpy(dest, src, length);
-      DECODE_U8(dest, *(uint8_t*)(&header), size);
+      DECODE_U8(dest, *reinterpret_cast<uint8_t*>(&header), size);
       OAILOG_FUNC_RETURN(LOG_NAS, header.protocol_discriminator);
       // LOG_FUNC_RETURN (LOG_NAS, length);
       break;
@@ -1113,7 +1113,7 @@ static int nas_message_decrypt_a(
              * identity,
              * * * * and protocol discriminator)
              */
-            DECODE_U8(dest, *(uint8_t*)(&header), size);
+            DECODE_U8(dest, *reinterpret_cast<uint8_t*>(&header), size);
             OAILOG_FUNC_RETURN(LOG_NAS, header.protocol_discriminator);
           } break;
 
@@ -1159,7 +1159,7 @@ static int nas_message_decrypt_a(
              * identity,
              * * * * and protocol discriminator)
              */
-            DECODE_U8(dest, *(uint8_t*)(&header), size);
+            DECODE_U8(dest, *reinterpret_cast<uint8_t*>(&header), size);
             OAILOG_FUNC_RETURN(LOG_NAS, header.protocol_discriminator);
           } break;
 
@@ -1178,7 +1178,7 @@ static int nas_message_decrypt_a(
              * identity,
              * * * * and protocol discriminator)
              */
-            DECODE_U8(dest, *(uint8_t*)(&header), size);
+            DECODE_U8(dest, *reinterpret_cast<uint8_t*>(&header), size);
             OAILOG_FUNC_RETURN(LOG_NAS, header.protocol_discriminator);
             break;
 
@@ -1193,7 +1193,7 @@ static int nas_message_decrypt_a(
              * identity,
              * * * * and protocol discriminator)
              */
-            DECODE_U8(dest, *(uint8_t*)(&header), size);
+            DECODE_U8(dest, *reinterpret_cast<uint8_t*>(&header), size);
             OAILOG_FUNC_RETURN(LOG_NAS, header.protocol_discriminator);
             break;
         }

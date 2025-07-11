@@ -112,10 +112,10 @@ uint16_t sm_process_pco_dns_server_request(
 
   poc_id_resp.id = PCO_CI_DNS_SERVER_IPV4_ADDRESS;
   poc_id_resp.length = 4;
-  dns_array[0] = (uint8_t)(ipcp_out_dns_prim_ipv4_addr & 0x000000FF);
-  dns_array[1] = (uint8_t)((ipcp_out_dns_prim_ipv4_addr >> 8) & 0x000000FF);
-  dns_array[2] = (uint8_t)((ipcp_out_dns_prim_ipv4_addr >> 16) & 0x000000FF);
-  dns_array[3] = (uint8_t)((ipcp_out_dns_prim_ipv4_addr >> 24) & 0x000000FF);
+  dns_array[0] = static_cast<uint8_t>(ipcp_out_dns_prim_ipv4_addr & 0x000000FF);
+  dns_array[1] = static_cast<uint8_t>((ipcp_out_dns_prim_ipv4_addr >> 8) & 0x000000FF);
+  dns_array[2] = static_cast<uint8_t>((ipcp_out_dns_prim_ipv4_addr >> 16) & 0x000000FF);
+  dns_array[3] = static_cast<uint8_t>((ipcp_out_dns_prim_ipv4_addr >> 24) & 0x000000FF);
   poc_id_resp.contents = blk2bstr(dns_array, sizeof(dns_array));
 
   sm_pco_push_protocol_or_container_id(pco_resp, &poc_id_resp);
@@ -137,10 +137,10 @@ uint16_t sm_process_pco_p_cscf_address_request(
 
   poc_id_resp.id = PCO_CI_P_CSCF_IPV4_ADDRESS_REQUEST;
   poc_id_resp.length = 4;
-  pcscf_array[0] = (uint8_t)(pcscf_prim_ipv4_addr & 0x000000FF);
-  pcscf_array[1] = (uint8_t)((pcscf_prim_ipv4_addr >> 8) & 0x000000FF);
-  pcscf_array[2] = (uint8_t)((pcscf_prim_ipv4_addr >> 16) & 0x000000FF);
-  pcscf_array[3] = (uint8_t)((pcscf_prim_ipv4_addr >> 24) & 0x000000FF);
+  pcscf_array[0] = static_cast<uint8_t>(pcscf_prim_ipv4_addr & 0x000000FF);
+  pcscf_array[1] = static_cast<uint8_t>((pcscf_prim_ipv4_addr >> 8) & 0x000000FF);
+  pcscf_array[2] = static_cast<uint8_t>((pcscf_prim_ipv4_addr >> 16) & 0x000000FF);
+  pcscf_array[3] = static_cast<uint8_t>((pcscf_prim_ipv4_addr >> 24) & 0x000000FF);
   poc_id_resp.contents = blk2bstr(pcscf_array, sizeof(pcscf_array));
 
   sm_pco_push_protocol_or_container_id(pco_resp, &poc_id_resp);
@@ -208,10 +208,10 @@ uint16_t sm_process_pco_request_ipcp(
   /* Primary DNS Server IP Address */
   idp[0] = IPCP_OPTION_PRIMARY_DNS_SERVER_IP_ADDRESS;
   idp[1] = 6;
-  idp[2] = (uint8_t)(ipcp_out_dns_prim_ipv4_addr & 0x000000FF);
-  idp[3] = (uint8_t)((ipcp_out_dns_prim_ipv4_addr >> 8) & 0x000000FF);
-  idp[4] = (uint8_t)((ipcp_out_dns_prim_ipv4_addr >> 16) & 0x000000FF);
-  idp[5] = (uint8_t)((ipcp_out_dns_prim_ipv4_addr >> 24) & 0x000000FF);
+  idp[2] = static_cast<uint8_t>(ipcp_out_dns_prim_ipv4_addr & 0x000000FF);
+  idp[3] = static_cast<uint8_t>((ipcp_out_dns_prim_ipv4_addr >> 8) & 0x000000FF);
+  idp[4] = static_cast<uint8_t>((ipcp_out_dns_prim_ipv4_addr >> 16) & 0x000000FF);
+  idp[5] = static_cast<uint8_t>((ipcp_out_dns_prim_ipv4_addr >> 24) & 0x000000FF);
   ipcp_out_length += 6;
   bcatblk(poc_id_resp.contents, idp, 6);
   OAILOG_DEBUG(LOG_AMF_APP,
@@ -223,10 +223,10 @@ uint16_t sm_process_pco_request_ipcp(
   /* Secondary DNS Server IP Address */
   ids[0] = IPCP_OPTION_SECONDARY_DNS_SERVER_IP_ADDRESS;
   ids[1] = 6;
-  ids[2] = (uint8_t)(ipcp_out_dns_sec_ipv4_addr & 0x000000FF);
-  ids[3] = (uint8_t)((ipcp_out_dns_sec_ipv4_addr >> 8) & 0x000000FF);
-  ids[4] = (uint8_t)((ipcp_out_dns_sec_ipv4_addr >> 16) & 0x000000FF);
-  ids[5] = (uint8_t)((ipcp_out_dns_sec_ipv4_addr >> 24) & 0x000000FF);
+  ids[2] = static_cast<uint8_t>(ipcp_out_dns_sec_ipv4_addr & 0x000000FF);
+  ids[3] = static_cast<uint8_t>((ipcp_out_dns_sec_ipv4_addr >> 8) & 0x000000FF);
+  ids[4] = static_cast<uint8_t>((ipcp_out_dns_sec_ipv4_addr >> 16) & 0x000000FF);
+  ids[5] = static_cast<uint8_t>((ipcp_out_dns_sec_ipv4_addr >> 24) & 0x000000FF);
   ipcp_out_length += 6;
   bcatblk(poc_id_resp.contents, ids, 6);
   OAILOG_DEBUG(LOG_AMF_APP,
@@ -238,8 +238,8 @@ uint16_t sm_process_pco_request_ipcp(
   poc_id_resp.length = ipcp_out_length;  // fill value after parsing req
   poc_id_resp.contents->data[0] = IPCP_CODE_CONFIGURE_NACK;
   poc_id_resp.contents->data[1] = 0;
-  poc_id_resp.contents->data[2] = (uint8_t)(ipcp_out_length >> 8);
-  poc_id_resp.contents->data[3] = (uint8_t)(ipcp_out_length & 0x00FF);
+  poc_id_resp.contents->data[2] = static_cast<uint8_t>(ipcp_out_length >> 8);
+  poc_id_resp.contents->data[3] = static_cast<uint8_t>(ipcp_out_length & 0x00FF);
 
   sm_pco_push_protocol_or_container_id(pco_resp, &poc_id_resp);
 

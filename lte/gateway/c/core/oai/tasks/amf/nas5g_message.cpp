@@ -266,7 +266,7 @@ int nas5g_message_encode(unsigned char* buffer,
       /*
        * Set the message authentication code of the NAS message
        */
-      *(uint32_t*)(buffer + sizeof(uint16_t)) = htonl(mac);
+      *reinterpret_cast<uint32_t*>(buffer + sizeof(uint16_t)) = htonl(mac);
 
       if (amf_security_context) {
         /*
@@ -737,7 +737,7 @@ static int _nas5g_message_decrypt(
       memset(dest, 0, length);
       memcpy(dest, src, length);
 
-      DECODE_U8(dest, *(uint8_t*)(&header), size);
+      DECODE_U8(dest, *reinterpret_cast<uint8_t*>(&header), size);
       OAILOG_FUNC_RETURN(LOG_AMF_APP, header.extended_protocol_discriminator);
       break;
 
@@ -760,7 +760,7 @@ static int _nas5g_message_decrypt(
              * identity,
              * * * * and protocol discriminator)
              */
-            DECODE_U8(dest, *(uint8_t*)(&header), size);
+            DECODE_U8(dest, *reinterpret_cast<uint8_t*>(&header), size);
             OAILOG_FUNC_RETURN(LOG_AMF_APP,
                                header.extended_protocol_discriminator);
             break;
@@ -777,7 +777,7 @@ static int _nas5g_message_decrypt(
              * identity,
              * * * * and protocol discriminator)
              */
-            DECODE_U8(dest, *(uint8_t*)(&header), size);
+            DECODE_U8(dest, *reinterpret_cast<uint8_t*>(&header), size);
             OAILOG_FUNC_RETURN(LOG_AMF_APP,
                                header.extended_protocol_discriminator);
             break;
@@ -787,7 +787,7 @@ static int _nas5g_message_decrypt(
         memset(dest, 0, length);
         memcpy(dest, src, length);
 
-        DECODE_U8(dest, *(uint8_t*)(&header), size);
+        DECODE_U8(dest, *reinterpret_cast<uint8_t*>(&header), size);
         OAILOG_FUNC_RETURN(LOG_AMF_APP, header.extended_protocol_discriminator);
       }
 

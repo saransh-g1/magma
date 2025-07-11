@@ -120,7 +120,7 @@ std::string get_snowflake() {
 
 static sentry_value_t before_send(sentry_value_t event, void* hint,
                                   void* number_of_lines) {
-  int _number_of_lines = *((int*)(&number_of_lines));
+  int _number_of_lines = *(reinterpret_cast<int*>(&number_of_lines));
   std::string command = "journalctl -u magma@* -u sctpd -n " +
                         std::to_string(_number_of_lines) + " > " +
                         JOURNAL_LOG_PATH;
