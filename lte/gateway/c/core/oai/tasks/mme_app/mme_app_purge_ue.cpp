@@ -99,7 +99,7 @@ status_code_e mme_app_handle_s6a_purge_ue_ans(
                  "Invalid S6a Purge UE Answer ITTI message received\n");
     OAILOG_FUNC_RETURN(LOG_MME_APP, RETURNerror);
   }
-  IMSI_STRING_TO_IMSI64((char*)pua_pP->imsi, &imsi);
+  IMSI_STRING_TO_IMSI64(reinterpret_cast<char*>(pua_pP->imsi), &imsi);
   OAILOG_INFO(LOG_MME_APP, "Received PUA for imsi " IMSI_64_FMT "\n", imsi);
 
   if (pua_pP->result.present == S6A_RESULT_BASE) {

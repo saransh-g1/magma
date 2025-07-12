@@ -90,7 +90,7 @@ nw_rc_t gtpv2c_msisdn_ie_get(uint8_t ieType, uint16_t ieLength,
   msisdn->length = msisdn_length;
   OAILOG_DEBUG(LOG_S11, "\t- MSISDN length %d\n", msisdn->length);
   OAILOG_DEBUG(LOG_S11, "\t-        value  %*s\n", msisdn->length,
-               (char*)msisdn->digit);
+               reinterpret_cast<char*>(msisdn->digit));
   return NW_OK;
 }
 
@@ -1476,7 +1476,7 @@ nw_rc_t gtpv2c_apn_ie_get(uint8_t ieType, uint16_t ieLength, uint8_t ieInstance,
                           uint8_t* ieValue, void* arg) {
   uint8_t read = 1;
   uint8_t word_length;
-  char* apn = (char*)arg;
+  char* apn = reinterpret_cast<char*>(arg);
 
   DevAssert(apn);
   DevCheck(ieLength <= ACCESS_POINT_NAME_MAX_LENGTH, ieLength,
@@ -1533,7 +1533,7 @@ status_code_e gtpv2c_apn_ie_set(nw_gtpv2c_msg_handle_t* msg, const char* apn) {
   *last_size = word_length;
   rc = nwGtpv2cMsgAddIe(*msg, NW_GTPV2C_IE_APN, apn_length + 1, 0, value);
   DevAssert(NW_OK == rc);
-  free_wrapper((void**)&value);
+  free_wrapper(reinterpret_cast<void**>(&value));
   return RETURNok;
 }
 
@@ -1578,7 +1578,7 @@ status_code_e gtpv2c_apn_plmn_ie_set(nw_gtpv2c_msg_handle_t* msg,
   *last_size = apn_length + 19;
   rc = nwGtpv2cMsgAddIe(*msg, NW_GTPV2C_IE_APN, apn_length + 20, 0, value);
   DevAssert(NW_OK == rc);
-  free_wrapper((void**)&value);
+  free_wrapper(reinterpret_cast<void**>(&value));
   return RETURNok;
 }
 
@@ -1604,7 +1604,7 @@ status_code_e gtpv2c_uli_ie_set(nw_gtpv2c_msg_handle_t* msg, const Uli_t* uli) {
     length += 7;
   }
   if (ULI_TAI & uli->present) {
-    tai_to_bytes(&uli->s.tai, (char*)current);
+    tai_to_bytes(&uli->s.tai, reinterpret_cast<char*>(current));
     current = &current[5];
     length += 5;
   }

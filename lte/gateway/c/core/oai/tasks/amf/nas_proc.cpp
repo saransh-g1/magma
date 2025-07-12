@@ -92,7 +92,7 @@ static void nas5g_delete_auth_info_procedure(
     if ((*auth_info_proc)->cn_proc.base_proc.parent) {
       (*auth_info_proc)->cn_proc.base_proc.parent->child = NULL;
     }
-    free_wrapper((void**)auth_info_proc);
+    free_wrapper(reinterpret_cast<void**>(auth_info_proc));
   }
   OAILOG_FUNC_OUT(LOG_AMF_APP);
 }
@@ -288,12 +288,12 @@ void nas5g_delete_cn_procedure(struct amf_context_s* amf_context,
                 amf_context, (nas5g_auth_info_proc_t**)&cn_proc);
             break;
           case CN5G_PROC_NONE:
-            free_wrapper((void**)&cn_proc);
+            free_wrapper(reinterpret_cast<void**>(&cn_proc));
             break;
           default:;
         }
         LIST_REMOVE(p1, entries);
-        free_wrapper((void**)&p1);
+        free_wrapper(reinterpret_cast<void**>(&p1));
         OAILOG_FUNC_OUT(LOG_AMF_APP);
       }
       p1 = p2;
@@ -381,7 +381,7 @@ nas5g_auth_info_proc_t* nas5g_new_cn_auth_info_procedure(
     LIST_INSERT_HEAD(&amf_context->amf_procedures->cn_procs, wrapper, entries);
     OAILOG_FUNC_RETURN(LOG_AMF_APP, auth_info_proc);
   } else {
-    free_wrapper((void**)&auth_info_proc);
+    free_wrapper(reinterpret_cast<void**>(&auth_info_proc));
   }
   OAILOG_FUNC_RETURN(LOG_AMF_APP, NULL);
 }
@@ -452,7 +452,7 @@ nas_amf_ident_proc_t* nas5g_new_identification_procedure(
                      entries);
     OAILOG_FUNC_RETURN(LOG_AMF_APP, ident_proc);
   } else {
-    free_wrapper((void**)&ident_proc);
+    free_wrapper(reinterpret_cast<void**>(&ident_proc));
   }
   OAILOG_FUNC_RETURN(LOG_AMF_APP, ident_proc);
 }
@@ -751,7 +751,7 @@ status_code_e amf_nas_proc_authentication_info_answer(
   nas5g_auth_info_proc_t* auth_info_proc = NULL;
   OAILOG_FUNC_IN(LOG_AMF_APP);
 
-  IMSI_STRING_TO_IMSI64((char*)aia->imsi, &imsi64);
+  IMSI_STRING_TO_IMSI64(reinterpret_cast<char*>(aia->imsi, &imsi64));
 
   OAILOG_DEBUG(LOG_AMF_APP, "Handling imsi " IMSI_64_FMT "\n", imsi64);
 
@@ -980,7 +980,7 @@ status_code_e amf_handle_s6a_update_location_ans(
   ue_m5gmm_context_s* ue_mm_context = NULL;
   OAILOG_FUNC_IN(LOG_AMF_APP);
 
-  IMSI_STRING_TO_IMSI64((char*)ula_pP->imsi, &imsi64);
+  IMSI_STRING_TO_IMSI64(reinterpret_cast<char*>(ula_pP->imsi, &imsi64));
 
   ue_mm_context = lookup_ue_ctxt_by_imsi(imsi64);
 

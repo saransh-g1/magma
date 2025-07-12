@@ -260,7 +260,7 @@ status_code_e s11_mme_handle_create_session_response(
     DevAssert(NW_OK == rc);
     rc = nwGtpv2cMsgDelete(*stack_p, (pUlpApi->hMsg));
     DevAssert(NW_OK == rc);
-    if (&resp_p->paa) free_wrapper((void**)&resp_p->paa);
+    if (&resp_p->paa) free_wrapper(reinterpret_cast<void**>(&resp_p->paa));
     free(message_p);
     message_p = NULL;
     return RETURNerror;
@@ -279,7 +279,7 @@ status_code_e s11_mme_handle_create_session_response(
         LOG_S11,
         "Received a late overlapping request. Not forwarding message to "
         "MME_APP layer. \n");
-    if (&resp_p->paa) free_wrapper((void**)&resp_p->paa);
+    if (&resp_p->paa) free_wrapper(reinterpret_cast<void**>(&resp_p->paa));
     free(message_p);
     message_p = NULL;
     return RETURNok;
@@ -310,7 +310,7 @@ status_code_e s11_mme_delete_session_request(
   hashtable_rc_t hash_rc = hashtable_ts_get(
       s11_mme_teid_2_gtv2c_teid_handle,
       (hash_key_t)ulp_req.u_api_info.initialReqInfo.teidLocal,
-      (void**)(uintptr_t)&ulp_req.u_api_info.initialReqInfo.hTunnel);
+      reinterpret_cast<void**>((uintptr_t)&ulp_req.u_api_info.initialReqInfo.hTunnel));
 
   if (HASH_TABLE_OK != hash_rc) {
     OAILOG_WARNING(LOG_S11, "Could not get GTPv2-C hTunnel for local teid %X\n",
@@ -414,7 +414,7 @@ status_code_e s11_mme_handle_delete_session_response(
     ulp_req.apiType = NW_GTPV2C_ULP_DELETE_LOCAL_TUNNEL;
     hash_rc = hashtable_ts_get(
         s11_mme_teid_2_gtv2c_teid_handle, (hash_key_t)resp_p->teid,
-        (void**)(uintptr_t)&ulp_req.u_api_info.deleteLocalTunnelInfo.hTunnel);
+        reinterpret_cast<void**>((uintptr_t)&ulp_req.u_api_info.deleteLocalTunnelInfo.hTunnel));
     if (HASH_TABLE_OK != hash_rc) {
       OAILOG_ERROR(
           LOG_S11,

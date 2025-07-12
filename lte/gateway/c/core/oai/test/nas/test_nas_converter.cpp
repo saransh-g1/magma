@@ -95,10 +95,10 @@ TEST(NasStateConverterTest, TestEmmContextConversion) {
 
   EXPECT_EQ(emm_context._imsi64, final_state._imsi64);
 
-  EXPECT_STREQ((char*)emm_context.esm_ctx.esm_proc_data->pdn_addr->data,
-               (char*)final_state.esm_ctx.esm_proc_data->pdn_addr->data);
-  EXPECT_STREQ((char*)emm_context.esm_ctx.esm_proc_data->apn,
-               (char*)final_state.esm_ctx.esm_proc_data->apn);
+  EXPECT_STREQ(reinterpret_cast<char*>(emm_context.esm_ctx.esm_proc_data->pdn_addr->data),
+               reinterpret_cast<char*>(final_state.esm_ctx.esm_proc_data->pdn_addr->data));
+  EXPECT_STREQ(reinterpret_cast<char*>(emm_context.esm_ctx.esm_proc_data->apn),
+               reinterpret_cast<char*>(final_state.esm_ctx.esm_proc_data->apn));
 
   EXPECT_TRUE(final_state.new_attach_info->ies->is_initial);
   EXPECT_EQ(final_state.new_attach_info->ies->type, EMM_ATTACH_TYPE_EPS);
@@ -112,16 +112,16 @@ TEST(NasStateConverterTest, TestEmmContextConversion) {
   // TODO (ssanadhya): Add check for Identification procedure, once state
   // conversion is implemented for it
 
-  free_wrapper((void**)&emm_context.new_attach_info->ies);
-  free_wrapper((void**)&emm_context.new_attach_info);
+  free_wrapper(reinterpret_cast<void**>(&emm_context.new_attach_info->ies));
+  free_wrapper(reinterpret_cast<void**>(&emm_context.new_attach_info));
   clear_emm_ctxt(&emm_context);
   bdestroy_wrapper(&bstr);
 
   bdestroy_wrapper(&final_state.esm_ctx.esm_proc_data->pdn_addr);
   bdestroy_wrapper(&final_state.esm_ctx.esm_proc_data->apn);
-  free_wrapper((void**)&final_state.new_attach_info->ies);
-  free_wrapper((void**)&final_state.new_attach_info);
-  free_wrapper((void**)&final_state.esm_ctx.esm_proc_data);
+  free_wrapper(reinterpret_cast<void**>(&final_state.new_attach_info->ies));
+  free_wrapper(reinterpret_cast<void**>(&final_state.new_attach_info));
+  free_wrapper(reinterpret_cast<void**>(&final_state.esm_ctx.esm_proc_data));
   clear_emm_ctxt(&final_state);
 }
 

@@ -85,7 +85,7 @@ bearer_context_t* mme_app_create_bearer_context(
 //------------------------------------------------------------------------------
 void mme_app_free_bearer_context(bearer_context_t** const bearer_context) {
   free_esm_bearer_context(&(*bearer_context)->esm_ebr_context);
-  free_wrapper((void**)bearer_context);
+  free_wrapper(reinterpret_cast<void**>(bearer_context));
 }
 
 //------------------------------------------------------------------------------

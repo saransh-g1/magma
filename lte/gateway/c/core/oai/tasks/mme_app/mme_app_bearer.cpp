@@ -1009,7 +1009,7 @@ void mme_app_handle_delete_session_rsp(
     }
     // Free bearer context entry
     if (ue_context_p->bearer_contexts[bearer_idx]) {
-      free_wrapper((void**)&ue_context_p->bearer_contexts[bearer_idx]);
+      free_wrapper(reinterpret_cast<void**>(&ue_context_p->bearer_contexts[bearer_idx]));
     }
 
     if (ue_context_p->nb_delete_sessions == 0) {
@@ -1060,13 +1060,13 @@ void mme_app_handle_delete_session_rsp(
         // Free the contents of PDN session
         pdn_connectivity_delete(&ue_context_p->emm_context, pid);
         // Free PDN context
-        free_wrapper((void**)&ue_context_p->pdn_contexts[pid]);
+        free_wrapper(reinterpret_cast<void**>(&ue_context_p->pdn_contexts[pid]));
         // Free bearer context entry
         for (uint8_t bid = 0; bid < BEARERS_PER_UE; bid++) {
           if ((ue_context_p->bearer_contexts[bid]) &&
               (ue_context_p->bearer_contexts[bid]->ebi ==
                delete_sess_resp_pP->lbi)) {
-            free_wrapper((void**)&ue_context_p->bearer_contexts[bid]);
+            free_wrapper(reinterpret_cast<void**>(&ue_context_p->bearer_contexts[bid]));
             break;
           }
         }
@@ -2284,7 +2284,7 @@ status_code_e mme_app_paging_request_helper(ue_mm_context_t* ue_context_p,
 
   // @TODO Check
   IMSI64_TO_STRING(ue_context_p->emm_context._imsi64,
-                   (char*)paging_request->imsi,
+                   reinterpret_cast<char*>(paging_request->imsi),
                    ue_context_p->emm_context._imsi.length);
   paging_request->imsi_length = ue_context_p->emm_context._imsi.length;
   paging_request->mme_code = ue_context_p->emm_context._guti.gummei.mme_code;
@@ -2417,7 +2417,7 @@ imsi64_t mme_app_handle_initial_paging_request(
       }
     }
   }
-  free_wrapper((void**)&imsi_list);
+  free_wrapper(reinterpret_cast<void**>(&imsi_list));
   OAILOG_FUNC_RETURN(LOG_MME_APP, RETURNok);
 }
 
@@ -2545,7 +2545,7 @@ int mme_app_handle_paging_timer_expiry(zloop_t* loop, int timer_id,
           free_protocol_configuration_options(
               &ue_context_p->pending_ded_ber_req[idx]->pco);
         }
-        free_wrapper((void**)&ue_context_p->pending_ded_ber_req[idx]);
+        free_wrapper(reinterpret_cast<void**>(&ue_context_p->pending_ded_ber_req[idx]));
       }
     }
     // Check if this is triggered by HA task
@@ -2635,7 +2635,7 @@ status_code_e mme_app_send_s11_suspend_notification(
   suspend_notification_p->teid = pdn_connection->s_gw_teid_s11_s4;
 
   IMSI64_TO_STRING(ue_context_pP->emm_context._imsi64,
-                   (char*)suspend_notification_p->imsi.digit,
+                   reinterpret_cast<char*>(suspend_notification_p->imsi.digit),
                    ue_context_pP->emm_context._imsi.length);
   suspend_notification_p->imsi.length =
       (uint8_t)strlen((const char*)suspend_notification_p->imsi.digit);
@@ -4600,7 +4600,7 @@ void mme_app_handle_modify_bearer_rsp(
             ue_context_p, ue_context_p->pending_ded_ber_req[idx]->linked_ebi);
       }
       // Free the saved message
-      free_wrapper((void**)&ue_context_p->pending_ded_ber_req[idx]);
+      free_wrapper(reinterpret_cast<void**>(&ue_context_p->pending_ded_ber_req[idx]));
     }
   }
   OAILOG_FUNC_OUT(LOG_MME_APP);
@@ -4649,7 +4649,7 @@ void send_s11_modify_bearer_request(ue_mm_context_t* ue_context_p,
                                     MessageDef* message_p) {
   OAILOG_FUNC_IN(LOG_MME_APP);
   Imsi_t imsi = {0};
-  IMSI64_TO_STRING(ue_context_p->emm_context._imsi64, (char*)(&imsi.digit),
+  IMSI64_TO_STRING(ue_context_p->emm_context._imsi64, reinterpret_cast<char*>(&imsi.digit),
                    ue_context_p->emm_context._imsi.length);
 
   if (pdn_context_p->route_s11_messages_to_s8_task) {
@@ -4764,7 +4764,7 @@ void mme_app_handle_mme_init_local_deactivation(
       int bearer_idx = EBI_TO_INDEX(ebi);
       eps_bearer_release(&ue_context_p->emm_context, ebi, &pid, &bearer_idx);
       // Remove dedicated bearer context
-      free_wrapper((void**)&ue_context_p->bearer_contexts[bearer_idx]);
+      free_wrapper(reinterpret_cast<void**>(&ue_context_p->bearer_contexts[bearer_idx]));
 
       OAILOG_DEBUG_UE(
           LOG_MME_APP, ue_context_p->emm_context._imsi64,

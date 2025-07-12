@@ -142,7 +142,7 @@ int s6a_clr_cb(struct msg** msg_p, struct avp* paramavp_p,
       s6a_cancel_location_req_p->imsi_length = imsi_len;
       s6a_cancel_location_req_p->cancellation_type = SUBSCRIPTION_WITHDRAWL;
       s6a_cancel_location_req_p->msg_cla_p = msg_p;
-      IMSI_STRING_TO_IMSI64((char*)s6a_cancel_location_req_p->imsi,
+      IMSI_STRING_TO_IMSI64(reinterpret_cast<char*>(s6a_cancel_location_req_p->imsi),
                             &message_p->ittiMsgHeader.imsi);
       send_msg_to_task(&s6a_task_zmq_ctx, TASK_MME_APP, message_p);
       OAILOG_DEBUG(LOG_S6A,

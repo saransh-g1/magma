@@ -157,7 +157,7 @@ static status_code_e sgs_handle_paging_request_for_mt_sms(
         sgsap_paging_req_pP->service_indicator,
         (uint8_t)ue_context_p->granted_service,
         ue_context_p->emm_context._imsi64);
-    IMSI_STRING_TO_IMSI64((char*)sgsap_paging_req_pP->imsi, &imsi64);
+    IMSI_STRING_TO_IMSI64(reinterpret_cast<char*>(sgsap_paging_req_pP->imsi), &imsi64);
     mme_app_send_sgsap_paging_reject(
         ue_context_p, imsi64, sgsap_paging_req_pP->imsi_length,
         SGS_CAUSE_IMSI_IMPLICITLY_DETACHED_FOR_NONEPS_SERVICE);
@@ -220,7 +220,7 @@ static status_code_e sgs_handle_paging_request_for_mt_call(
     sgs_context->call_canceled = false;
   }
   sgsap_paging_req_pP = (itti_sgsap_paging_request_t*)sgs_context->sgsap_msg;
-  IMSI_STRING_TO_IMSI64((char*)sgsap_paging_req_pP->imsi, &imsi64);
+  IMSI_STRING_TO_IMSI64(reinterpret_cast<char*>(sgsap_paging_req_pP->imsi), &imsi64);
   if (ue_context_p->granted_service != GRANTED_SERVICE_CSFB_SMS) {
     OAILOG_ERROR(
         LOG_MME_APP,

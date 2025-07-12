@@ -1533,7 +1533,7 @@ TEST_F(AMFAppProcedureTest, TestRegistrationProcSUCIExt) {
   EXPECT_TRUE(rc == RETURNok);
 
   ue_m5gmm_context_s* context_encrypted_imsi =
-      amf_get_ue_context_from_imsi((char*)decrypted_imsi.c_str());
+      amf_get_ue_context_from_imsi(reinterpret_cast<char*>(decrypted_imsi.c_str()));
 
   // Check if UE Context is created with correct imsi
   bool res = false;

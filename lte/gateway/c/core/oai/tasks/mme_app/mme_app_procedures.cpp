@@ -67,7 +67,7 @@ void mme_app_delete_s11_procedures(ue_mm_context_t* const ue_context_p) {
       s11_proc1 = s11_proc2;
     }
     LIST_INIT(ue_context_p->s11_procedures);
-    free_wrapper((void**)&ue_context_p->s11_procedures);
+    free_wrapper(reinterpret_cast<void**>(&ue_context_p->s11_procedures));
   }
 }
 //------------------------------------------------------------------------------
@@ -124,7 +124,7 @@ static void mme_app_free_s11_procedure_create_bearer(
     mme_app_s11_proc_t** s11_proc) {
   // DO here specific releases (memory,etc)
   // nothing to do actually
-  free_wrapper((void**)s11_proc);
+  free_wrapper(reinterpret_cast<void**>(s11_proc));
 }
 
 //------------------------------------------------------------------------------

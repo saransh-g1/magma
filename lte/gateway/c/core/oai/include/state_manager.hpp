@@ -110,7 +110,7 @@ class StateManager {
     auto keys = redis_client->get_keys("IMSI*" + task_name + "*");
     for (const auto& key : keys) {
       ProtoUe ue_proto = ProtoUe();
-      auto* ue_context = (UeContextType*)(calloc(1, sizeof(UeContextType)));
+      auto* ue_context = reinterpret_cast<UeContextType*>(calloc(1, sizeof(UeContextType)));
       if (redis_client->read_proto(key.c_str(), ue_proto) != RETURNok) {
         return RETURNerror;
       }
@@ -121,7 +121,7 @@ class StateManager {
       StateConverter::proto_to_ue(ue_proto, ue_context);
 
       hashtable_ts_insert(state_ue_ht, get_imsi_from_key(key),
-                          (void*)ue_context);
+                          reinterpret_cast<void*>(ue_context));
       OAILOG_DEBUG(log_task, "Reading UE state from db for %s", key.c_str());
     }
     return RETURNok;

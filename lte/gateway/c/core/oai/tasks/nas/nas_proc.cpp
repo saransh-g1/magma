@@ -352,7 +352,7 @@ status_code_e nas_proc_authentication_info_answer(
   OAILOG_FUNC_IN(LOG_NAS_EMM);
 
   DevAssert(aia);
-  IMSI_STRING_TO_IMSI64((char*)aia->imsi, &imsi64);
+  IMSI_STRING_TO_IMSI64(reinterpret_cast<char*>(aia->imsi, &imsi64));
 
   OAILOG_DEBUG_UE(LOG_NAS_EMM, imsi64, "Handling imsi " IMSI_64_FMT "\n",
                   imsi64);

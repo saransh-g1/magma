@@ -176,7 +176,7 @@ void free_ngap_state(ngap_state_t* state_cache_p) {
     for (i = 0; i < keys->num_keys; i++) {
       assoc_id = (sctp_assoc_id_t)keys->keys[i];
       ht_rc = hashtable_ts_get(&state_cache_p->gnbs, (hash_key_t)assoc_id,
-                               (void**)&gnb);
+                               reinterpret_cast<void**>(&gnb));
       if (ht_rc != HASH_TABLE_OK) {
         OAILOG_ERROR(LOG_NGAP, "gNB entry not found in gNB NGP state");
       } else {
@@ -350,7 +350,7 @@ void NgapStateManager::clear_ngap_imsi_map() {
   }
   hashtable_uint64_ts_destroy(ngap_imsi_map_->amf_ue_id_imsi_htbl);
 
-  free_wrapper((void**)&ngap_imsi_map_);
+  free_wrapper(reinterpret_cast<void**>(&ngap_imsi_map_));
   OAILOG_FUNC_OUT(LOG_NGAP);
 }
 

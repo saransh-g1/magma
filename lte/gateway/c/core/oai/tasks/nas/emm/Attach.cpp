@@ -612,7 +612,7 @@ status_code_e emm_proc_attach_reject(mme_ue_s1ap_id_t ue_id,
   if (emm_ctx) {
     if (is_nas_specific_procedure_attach_running(emm_ctx)) {
       nas_emm_attach_proc_t* attach_proc =
-          (nas_emm_attach_proc_t*)(emm_ctx->emm_procedures->emm_specific_proc);
+          reinterpret_cast<nas_emm_attach_proc_t*>(emm_ctx->emm_procedures->emm_specific_proc);
       attach_proc->emm_cause = emm_cause;
 
       // TODO could be in callback of attach procedure triggered by
@@ -680,8 +680,8 @@ status_code_e emm_proc_attach_complete(
   if (ue_mm_context) {
     if (is_nas_specific_procedure_attach_running(&ue_mm_context->emm_context)) {
       attach_proc =
-          (nas_emm_attach_proc_t*)
-              ue_mm_context->emm_context.emm_procedures->emm_specific_proc;
+          reinterpret_cast<nas_emm_attach_proc_t*>(
+              ue_mm_context->emm_context.emm_procedures->emm_specific_proc);
 
       /* Process attach complete msg only if T3450 timer is running
        * If its not running it means that implicit detach is in progress
@@ -1723,8 +1723,8 @@ static status_code_e emm_send_attach_accept(emm_context_t* emm_context) {
     //----------------------------------------
     REQUIREMENT_3GPP_24_301(R10_5_5_1_2_4__14);
     emm_sap.u.emm_as.u.establish.eps_network_feature_support =
-        (eps_network_feature_support_t*)&_emm_data.conf
-            .eps_network_feature_support;
+        reinterpret_cast<eps_network_feature_support_t*>(&_emm_data.conf
+            .eps_network_feature_support);
 
     /*
      * Delete any preexisting UE radio capabilities, pursuant to
@@ -1826,7 +1826,7 @@ static void encode_csfb_parameters_attach_accept_retx(emm_context_t* emm_ctx,
     } else if ((emm_ctx->csfbparams.sgs_loc_updt_status == FAILURE) ||
                is_mme_ue_context_network_access_mode_packet_only(
                    ue_mm_context_p)) {
-      data_p->emm_cause = (uint32_t*)&emm_ctx->emm_cause;
+      data_p->emm_cause = reinterpret_cast<uint32_t*>(&emm_ctx->emm_cause);
     }
     if (emm_ctx->csfbparams.additional_updt_res == SMS_ONLY) {
       data_p->additional_update_result =
@@ -1890,8 +1890,8 @@ static int emm_attach_accept_retx(emm_context_t* emm_context) {
                  "message\n",
                  ue_id);
     emm_sap.u.emm_as.u.establish.eps_network_feature_support =
-        (eps_network_feature_support_t*)&_emm_data.conf
-            .eps_network_feature_support;
+        reinterpret_cast<eps_network_feature_support_t*>(&_emm_data.conf
+            .eps_network_feature_support);
     emm_sap.u.emm_as.u.data.new_guti = &emm_context->_guti;
 
     /*
@@ -2276,42 +2276,42 @@ static bool emm_attach_ies_have_changed(mme_ue_s1ap_id_t ue_id,
 //------------------------------------------------------------------------------
 void free_emm_attach_request_ies(emm_attach_request_ies_t** const ies) {
   if ((*ies)->guti) {
-    free_wrapper((void**)&(*ies)->guti);
+    free_wrapper(reinterpret_cast<void**>(&(*ies)->guti));
   }
   if ((*ies)->imsi) {
-    free_wrapper((void**)&(*ies)->imsi);
+    free_wrapper(reinterpret_cast<void**>(&(*ies)->imsi));
   }
   if ((*ies)->imei) {
-    free_wrapper((void**)&(*ies)->imei);
+    free_wrapper(reinterpret_cast<void**>(&(*ies)->imei));
   }
   if ((*ies)->last_visited_registered_tai) {
-    free_wrapper((void**)&(*ies)->last_visited_registered_tai);
+    free_wrapper(reinterpret_cast<void**>(&(*ies)->last_visited_registered_tai));
   }
   if ((*ies)->originating_tai) {
-    free_wrapper((void**)&(*ies)->originating_tai);
+    free_wrapper(reinterpret_cast<void**>(&(*ies)->originating_tai));
   }
   if ((*ies)->originating_ecgi) {
-    free_wrapper((void**)&(*ies)->originating_ecgi);
+    free_wrapper(reinterpret_cast<void**>(&(*ies)->originating_ecgi));
   }
   if ((*ies)->ms_network_capability) {
-    free_wrapper((void**)&(*ies)->ms_network_capability);
+    free_wrapper(reinterpret_cast<void**>(&(*ies)->ms_network_capability));
   }
   if ((*ies)->esm_msg) {
     bdestroy_wrapper(&(*ies)->esm_msg);
   }
   if ((*ies)->drx_parameter) {
-    free_wrapper((void**)&(*ies)->drx_parameter);
+    free_wrapper(reinterpret_cast<void**>(&(*ies)->drx_parameter));
   }
   if ((*ies)->mob_st_clsMark2) {
-    free_wrapper((void**)&(*ies)->mob_st_clsMark2);
+    free_wrapper(reinterpret_cast<void**>(&(*ies)->mob_st_clsMark2));
   }
   if ((*ies)->voicedomainpreferenceandueusagesetting) {
-    free_wrapper((void**)&(*ies)->voicedomainpreferenceandueusagesetting);
+    free_wrapper(reinterpret_cast<void**>(&(*ies)->voicedomainpreferenceandueusagesetting));
   }
   if ((*ies)->ueadditionalsecuritycapability) {
-    free_wrapper((void**)&(*ies)->ueadditionalsecuritycapability);
+    free_wrapper(reinterpret_cast<void**>(&(*ies)->ueadditionalsecuritycapability));
   }
-  free_wrapper((void**)ies);
+  free_wrapper(reinterpret_cast<void**>(ies));
 }
 
 /*
@@ -2410,7 +2410,7 @@ void proc_new_attach_req(mme_ue_context_t* const mme_ue_context_p,
   new_attach_info_t attach_info = {0};
   memcpy(&attach_info, ue_context_p->emm_context.new_attach_info,
          sizeof(new_attach_info_t));
-  free_wrapper((void**)&ue_context_p->emm_context.new_attach_info);
+  free_wrapper(reinterpret_cast<void**>(&ue_context_p->emm_context.new_attach_info));
   /* The new Attach Request is received in s1ap initial ue message,
    * So release previous Attach Request's contexts
    */

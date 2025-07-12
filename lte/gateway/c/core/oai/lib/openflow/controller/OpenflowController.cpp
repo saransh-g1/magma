@@ -104,7 +104,7 @@ void OpenflowController::dispatch_event(const ControllerEvent& ev) {
   }
   std::vector<Application*> listeners = event_listeners[ev.get_type()];
   for (auto it = listeners.begin(); it != listeners.end(); it++) {
-    ((Application*)(*it))->event_callback(ev, *messenger_);
+    (reinterpret_cast<Application*>(*it))->event_callback(ev, *messenger_);
   }
 }
 

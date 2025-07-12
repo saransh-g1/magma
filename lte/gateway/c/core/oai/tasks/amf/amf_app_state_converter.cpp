@@ -577,14 +577,15 @@ void AmfNasStateConverter::s_nssai_to_proto(
     const s_nssai_t* state_s_nssai, magma::lte::oai::SNssai* snassi_proto) {
   OAILOG_FUNC_IN(LOG_AMF_APP);
   snassi_proto->set_sst(state_s_nssai->sst);
-  snassi_proto->set_sd((char*)state_s_nssai->sd, SD_LENGTH);
+  snassi_proto->set_sd(reinterpret_cast<char*>(state_s_nssai->sd, SD_LENGTH));
   OAILOG_FUNC_OUT(LOG_AMF_APP);
 }
 void AmfNasStateConverter::proto_to_s_nssai(
     const magma::lte::oai::SNssai& snassi_proto, s_nssai_t* state_s_nssai) {
   OAILOG_FUNC_IN(LOG_AMF_APP);
   state_s_nssai->sst = snassi_proto.sst();
-  memcpy((void*)state_s_nssai->sd, (void*)snassi_proto.sd().c_str(), SD_LENGTH);
+  memcpy(reinterpret_cast<void*>(state_s_nssai->sd),
+   reinterpret_cast<void*>(snassi_proto.sd().c_str()), SD_LENGTH);
   OAILOG_FUNC_OUT(LOG_AMF_APP);
 }
 
@@ -802,7 +803,7 @@ void AmfNasStateConverter::smf_context_to_proto(
   smf_context_proto->set_gnb_gtp_teid_ip_addr(gnb_gtp_teid_ip_addr_str);
 
   smf_context_proto->set_upf_gtp_teid(
-      (char*)state_smf_context->gtp_tunnel_id.upf_gtp_teid, 4);
+      reinterpret_cast<char*>(state_smf_context->gtp_tunnel_id.upf_gtp_teid, 4));
 
   char upf_gtp_teid_ip_addr_str[16] = {0};
   inet_ntop(AF_INET, state_smf_context->gtp_tunnel_id.upf_gtp_teid_ip_addr,
@@ -855,8 +856,8 @@ void AmfNasStateConverter::proto_to_smf_context(
   inet_pton(AF_INET, smf_context_proto.gnb_gtp_teid_ip_addr().c_str(),
             &(state_smf_context->gtp_tunnel_id.gnb_gtp_teid_ip_addr));
 
-  memcpy((void*)state_smf_context->gtp_tunnel_id.upf_gtp_teid,
-         (void*)smf_context_proto.upf_gtp_teid().c_str(), 4);
+  memcpy(reinterpret_cast<void*>(state_smf_context->gtp_tunnel_id.upf_gtp_teid),
+         reinterpret_cast<void*>(smf_context_proto.upf_gtp_teid().c_str()), 4);
 
   memset(&state_smf_context->gtp_tunnel_id.upf_gtp_teid_ip_addr, '\0',
          sizeof(state_smf_context->gtp_tunnel_id.upf_gtp_teid_ip_addr));

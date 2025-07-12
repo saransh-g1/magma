@@ -92,10 +92,10 @@ class StateConverter {
     for (int i = 0; i < ht_keys->num_keys; i++) {
       NodeType* node;
       ht_rc = hashtable_ts_get(state_ht, (hash_key_t)ht_keys->keys[i],
-                               (void**)&node);
+                               reinterpret_cast<void**>(&node));
       if (ht_rc == HASH_TABLE_OK) {
         ProtoMessage proto;
-        conversion_callable((NodeType*)node, &proto);
+        conversion_callable(reinterpret_cast<NodeType*>(node), &proto);
         (*proto_map)[ht_keys->keys[i]] = proto;
       } else {
         OAILOG_ERROR(log_task_level, "Key %lu not found on %s hashtable",
@@ -114,7 +114,7 @@ class StateConverter {
     for (const auto& entry : proto_map) {
       auto proto = entry.second;
       NodeType* node_type;
-      node_type = (NodeType*)calloc(1, sizeof(NodeType));
+      node_type = reinterpret_cast<NodeType*>(calloc(1, sizeof(NodeType)));
       conversion_callable(proto, node_type);
       auto ht_rc =
           hashtable_ts_insert(state_ht, (hash_key_t)entry.first, node_type);

@@ -57,7 +57,7 @@ gnb_description_t* ngap_state_get_gnb(ngap_state_t* state,
   OAILOG_FUNC_IN(LOG_NGAP);
   gnb_description_t* gnb = nullptr;
 
-  hashtable_ts_get(&state->gnbs, (const hash_key_t)assoc_id, (void**)&gnb);
+  hashtable_ts_get(&state->gnbs, (const hash_key_t)assoc_id, reinterpret_cast<void**>(&gnb));
   OAILOG_FUNC_RETURN(LOG_NGAP, gnb);
 }
 
@@ -68,7 +68,7 @@ m5g_ue_description_t* ngap_state_get_ue_gnbid(sctp_assoc_id_t sctp_assoc_id,
 
   hash_table_ts_t* state_ue_ht = get_ngap_ue_state();
   uint64_t comp_ngap_id = static_cast<uint64_t>(gnb_ue_ngap_id) << 32 | sctp_assoc_id;
-  hashtable_ts_get(state_ue_ht, (const hash_key_t)comp_ngap_id, (void**)&ue);
+  hashtable_ts_get(state_ue_ht, (const hash_key_t)comp_ngap_id, reinterpret_cast<void**>(&ue));
 
   OAILOG_FUNC_RETURN(LOG_NGAP, ue);
 }
@@ -80,7 +80,7 @@ m5g_ue_description_t* ngap_state_get_ue_amfid(amf_ue_ngap_id_t amf_ue_ngap_id) {
   hash_table_ts_t* state_ue_ht = get_ngap_ue_state();
   hashtable_ts_apply_callback_on_elements((hash_table_ts_t* const)state_ue_ht,
                                           ngap_ue_compare_by_amf_ue_id_cb,
-                                          &amf_ue_ngap_id, (void**)&ue);
+                                          &amf_ue_ngap_id, reinterpret_cast<void**>(&ue));
 
   OAILOG_FUNC_RETURN(LOG_NGAP, ue);
 }
@@ -92,7 +92,7 @@ m5g_ue_description_t* ngap_state_get_ue_imsi(imsi64_t imsi64) {
   hash_table_ts_t* state_ue_ht = get_ngap_ue_state();
   hashtable_ts_apply_callback_on_elements((hash_table_ts_t* const)state_ue_ht,
                                           ngap_ue_compare_by_imsi, &imsi64,
-                                          (void**)&ue);
+                                          reinterpret_cast<void**>(&ue));
 
   OAILOG_FUNC_RETURN(LOG_NGAP, ue);
 }

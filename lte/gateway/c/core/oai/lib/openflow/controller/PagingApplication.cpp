@@ -204,7 +204,7 @@ void PagingApplication::add_paging_flow_ipv6(
     static IPAddress mask("ffff:ffff:ffff:ffff::");
     // Match UE IP destination
     struct in6_addr ue_ip6_masked;
-    mask_ipv6_address((uint8_t*)&ue_ip6_masked, (const uint8_t*)&ue_ipv6,
+    mask_ipv6_address(reinterpret_cast<uint8_t*>(&ue_ip6_masked), (const uint8_t*)&ue_ipv6,
                       mask.getIPv6());
 
     of13::IPv6Dst ipv6_match(IPAddress(ue_ip6_masked), mask);
@@ -277,7 +277,7 @@ void PagingApplication::delete_paging_flow_ipv6(
     const struct in6_addr& ue_ipv6 = ev.get_ue_ipv6();
     static IPAddress mask("ffff:ffff:ffff:ffff::");
     struct in6_addr ue_ip6_masked;
-    mask_ipv6_address((uint8_t*)&ue_ip6_masked, (const uint8_t*)&ue_ipv6,
+    mask_ipv6_address(reinterpret_cast<uint8_t*>(&ue_ip6_masked), (const uint8_t*)&ue_ipv6,
                       mask.getIPv6());
 
     of13::IPv6Dst ipv6_match(IPAddress(ue_ip6_masked), mask);

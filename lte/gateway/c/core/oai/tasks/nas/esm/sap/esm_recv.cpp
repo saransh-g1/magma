@@ -713,7 +713,7 @@ status_code_e erab_setup_rsp_tmr_exp_handler(zloop_t* loop, int timer_id,
           bearer_context->esm_ebr_context.timer.id = NAS_TIMER_INACTIVE_ID;
         }
         if (esm_ebr_timer_data) {
-          free_wrapper((void**)&esm_ebr_timer_data);
+          free_wrapper(reinterpret_cast<void**>(&esm_ebr_timer_data));
         }
       }
     } else {
@@ -729,7 +729,7 @@ status_code_e erab_setup_rsp_tmr_exp_handler(zloop_t* loop, int timer_id,
         bearer_context->esm_ebr_context.timer.id = NAS_TIMER_INACTIVE_ID;
       }
       if (esm_ebr_timer_data) {
-        free_wrapper((void**)&esm_ebr_timer_data);
+        free_wrapper(reinterpret_cast<void**>(&esm_ebr_timer_data));
       }
     }
   }

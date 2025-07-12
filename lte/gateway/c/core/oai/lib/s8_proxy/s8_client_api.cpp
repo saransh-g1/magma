@@ -395,7 +395,7 @@ static void fill_s8_create_session_req(
   csr->Clear();
   char msisdn[MSISDN_LENGTH + 1];
   int msisdn_len = get_msisdn_from_session_req(msg, msisdn);
-  csr->set_imsi((char*)msg->imsi.digit, msg->imsi.length);
+  csr->set_imsi(reinterpret_cast<char*>(msg->imsi.digit, msg->imsi.length));
   csr->set_msisdn(reinterpret_cast<char*>(msisdn), msisdn_len);
   char imeisv[IMEISV_DIGITS_MAX + 1];
   get_imeisv_from_session_req(msg, imeisv);

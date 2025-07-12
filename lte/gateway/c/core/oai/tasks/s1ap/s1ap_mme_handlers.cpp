@@ -584,7 +584,7 @@ status_code_e s1ap_mme_handle_s1_setup_request(oai::S1apState* state,
     OAILOG_MESSAGE_ADD_SYNC(context, "%*s ",
                             (int)ie_enb_name->value.choice.ENBname.size,
                             ie_enb_name->value.choice.ENBname.buf);
-    enb_name = (char*)ie_enb_name->value.choice.ENBname.buf;
+    enb_name = reinterpret_cast<char*>(ie_enb_name->value.choice.ENBname.buf);
   }
 
   S1AP_FIND_PROTOCOLIE_BY_ID(S1ap_S1SetupRequestIEs_t, ie, container,
@@ -1053,8 +1053,8 @@ status_code_e s1ap_mme_handle_initial_context_setup_response(
         eRABSetupItemCtxtSURes_p->value.choice.E_RABSetupItemCtxtSURes.e_RAB_ID;
     MME_APP_INITIAL_CONTEXT_SETUP_RSP(message_p)
         .e_rab_setup_list.item[item]
-        .gtp_teid = htonl(*((uint32_t*)eRABSetupItemCtxtSURes_p->value.choice
-                                .E_RABSetupItemCtxtSURes.gTP_TEID.buf));
+        .gtp_teid = htonl(*(reinterpret_cast<uint32_t*>(eRABSetupItemCtxtSURes_p->value.choice
+                                .E_RABSetupItemCtxtSURes.gTP_TEID.buf)));
 
     // When Magma AGW runs in a cloud and RAN at the edge (hence eNB is
     // behind NAT), eNB signals its private IP address in ICS Response. By
@@ -1401,7 +1401,7 @@ status_code_e s1ap_mme_generate_ue_context_release_command(
       break;
     default:
       // Freeing ie and pdu data since it will not be encoded
-      free_wrapper((void**)&ie);
+      free_wrapper(reinterpret_cast<void**>(&ie));
       ASN_STRUCT_FREE_CONTENTS_ONLY(asn_DEF_S1ap_S1AP_PDU, &pdu);
       OAILOG_ERROR_UE(LOG_S1AP, imsi64, "Unknown cause for context release");
       OAILOG_FUNC_RETURN(LOG_S1AP, RETURNerror);
@@ -1511,7 +1511,7 @@ status_code_e s1ap_mme_generate_ue_context_modification(
                                    ue_context_mod_req_pP->lai.mncdigit2,
                                    ue_context_mod_req_pP->lai.mncdigit3);
     if (mnc_length != 2 && mnc_length != 3) {
-      free_wrapper((void**)&ie);
+      free_wrapper(reinterpret_cast<void**>(&ie));
       ASN_STRUCT_FREE_CONTENTS_ONLY(asn_DEF_S1ap_UEContextModificationRequest,
                                     container);
       OAILOG_FUNC_RETURN(LOG_S1AP, RETURNerror);
@@ -2147,7 +2147,7 @@ status_code_e s1ap_mme_handle_handover_request_ack(
           blk2bstr(erab_admitted_item_req->transportLayerAddress.buf,
                    erab_admitted_item_req->transportLayerAddress.size);
       e_rab_list.item[i].gtp_teid =
-          htonl(*((uint32_t*)erab_admitted_item_req->gTP_TEID.buf));
+          htonl(*(reinterpret_cast<uint32_t*>(erab_admitted_item_req->gTP_TEID.buf)));
       // TODO: Add support for indirect data forwarding. Note that the DL and UL
       // transport address and GTP-TEID are optional, and only used if data
       // forwarding will take place. Since we don't currently support data
@@ -2717,7 +2717,7 @@ status_code_e s1ap_mme_handle_handover_request(
   ie->value.present =
       S1ap_HandoverRequestIEs__value_PR_Source_ToTarget_TransparentContainer;
   OCTET_STRING_fromBuf(&ie->value.choice.Source_ToTarget_TransparentContainer,
-                       (char*)bdata(ho_request_p->src_tgt_container),
+                       reinterpret_cast<char*>(bdata(ho_request_p->src_tgt_container)),
                        blength(ho_request_p->src_tgt_container));
   ASN_SEQUENCE_ADD(&out->protocolIEs.list, ie);
 
@@ -3072,7 +3072,7 @@ status_code_e s1ap_mme_handle_handover_command(
   ie->value.present =
       S1ap_HandoverCommandIEs__value_PR_Target_ToSource_TransparentContainer;
   OCTET_STRING_fromBuf(&ie->value.choice.Target_ToSource_TransparentContainer,
-                       (char*)bdata(ho_command_p->tgt_src_container),
+                       reinterpret_cast<char*>(bdata(ho_command_p->tgt_src_container)),
                        blength(ho_command_p->tgt_src_container));
   ASN_SEQUENCE_ADD(&out->protocolIEs.list, ie);
 
@@ -4090,7 +4090,7 @@ status_code_e s1ap_mme_handle_erab_setup_response(
           blk2bstr(e_rab_setup_item_bearer_su_res->transportLayerAddress.buf,
                    e_rab_setup_item_bearer_su_res->transportLayerAddress.size);
       S1AP_E_RAB_SETUP_RSP(message_p).e_rab_setup_list.item[index].gtp_teid =
-          htonl(*((uint32_t*)e_rab_setup_item_bearer_su_res->gTP_TEID.buf));
+          htonl(*(reinterpret_cast<uint32_t*>(e_rab_setup_item_bearer_su_res->gTP_TEID.buf)));
       S1AP_E_RAB_SETUP_RSP(message_p).e_rab_setup_list.no_of_items += 1;
     }
   }
@@ -4352,9 +4352,9 @@ status_code_e s1ap_mme_handle_enb_reset(oai::S1apState* state,
                   INVALID_ENB_UE_S1AP_ID;
             }
           }
-          free_wrapper((void**)&s1_sig_conn_id_p->mME_UE_S1AP_ID);
+          free_wrapper(reinterpret_cast<void**>(&s1_sig_conn_id_p->mME_UE_S1AP_ID));
           if (s1_sig_conn_id_p->eNB_UE_S1AP_ID != NULL) {
-            free_wrapper((void**)&s1_sig_conn_id_p->eNB_UE_S1AP_ID);
+            free_wrapper(reinterpret_cast<void**>(&s1_sig_conn_id_p->eNB_UE_S1AP_ID));
           }
         } else {
           if (s1_sig_conn_id_p->eNB_UE_S1AP_ID != NULL) {
@@ -4376,7 +4376,7 @@ status_code_e s1ap_mme_handle_enb_reset(oai::S1apState* state,
             }
             reset_req->ue_to_reset_list[i].mme_ue_s1ap_id =
                 INVALID_MME_UE_S1AP_ID;
-            free_wrapper((void**)&s1_sig_conn_id_p->eNB_UE_S1AP_ID);
+            free_wrapper(reinterpret_cast<void**>(&s1_sig_conn_id_p->eNB_UE_S1AP_ID));
           } else {
             OAILOG_ERROR_UE(
                 LOG_S1AP, imsi64,
@@ -4476,7 +4476,7 @@ status_code_e s1ap_handle_enb_initiated_reset_ack(
   increment_counter("s1_reset_from_enb", 1, 1, "action", "reset_ack_sent");
   if (buffer) {
     bstring b = blk2bstr(buffer, length);
-    free_wrapper((void**)&buffer);
+    free_wrapper(reinterpret_cast<void**>(&buffer));
     rc = s1ap_mme_itti_send_sctp_request(&b, enb_reset_ack_p->sctp_assoc_id,
                                          enb_reset_ack_p->sctp_stream_id,
                                          INVALID_MME_UE_S1AP_ID);
@@ -4732,7 +4732,7 @@ status_code_e s1ap_mme_handle_erab_modification_indication(
 
     S1AP_E_RAB_MODIFICATION_IND(message_p)
         .e_rab_to_be_modified_list.item[index]
-        .s1_xNB_fteid.teid = htonl(*((uint32_t*)erab_item->dL_GTP_TEID.buf));
+        .s1_xNB_fteid.teid = htonl(*(reinterpret_cast<uint32_t*>(erab_item->dL_GTP_TEID.buf)));
 
     /** Set the IP address from the FTEID. */
     if (4 == blength(transport_layer_address)) {
@@ -4786,7 +4786,7 @@ status_code_e s1ap_mme_handle_erab_modification_indication(
 
       S1AP_E_RAB_MODIFICATION_IND(message_p)
           .e_rab_not_to_be_modified_list.item[index]
-          .s1_xNB_fteid.teid = htonl(*((uint32_t*)erab_item->dL_GTP_TEID.buf));
+          .s1_xNB_fteid.teid = htonl(*(reinterpret_cast<uint32_t*>(erab_item->dL_GTP_TEID.buf)));
 
       /** Set the IP address from the FTEID. */
       if (blength(transport_layer_address) == 4) {
@@ -5062,15 +5062,15 @@ bool is_all_erabId_same(S1ap_PathSwitchRequest_t* container) {
     OAILOG_FUNC_RETURN(LOG_S1AP, rc);
   }
 
-  eRABToBeSwitchedDlItemIEs_p = (S1ap_E_RABToBeSwitchedDLItemIEs_t*)
-                                    e_rab_to_be_switched_dl_list->list.array[0];
+  eRABToBeSwitchedDlItemIEs_p = reinterpret_cast<S1ap_E_RABToBeSwitchedDLItemIEs_t*>(
+                                    e_rab_to_be_switched_dl_list->list.array[0]);
   firstItem = eRABToBeSwitchedDlItemIEs_p->value.choice.E_RABToBeSwitchedDLItem
                   .e_RAB_ID;
 
   for (item = 1; item < e_rab_to_be_switched_dl_list->list.count; ++item) {
     eRABToBeSwitchedDlItemIEs_p =
-        (S1ap_E_RABToBeSwitchedDLItemIEs_t*)
-            e_rab_to_be_switched_dl_list->list.array[item];
+        reinterpret_cast<S1ap_E_RABToBeSwitchedDLItemIEs_t*>(
+            e_rab_to_be_switched_dl_list->list.array[item]);
     if (firstItem == eRABToBeSwitchedDlItemIEs_p->value.choice
                          .E_RABToBeSwitchedDLItem.e_RAB_ID) {
       continue;
@@ -5114,8 +5114,8 @@ status_code_e s1ap_handle_path_switch_req_ack(
       S1ap_SuccessfulOutcome__value_PR_PathSwitchRequestAcknowledge;
   out = &pdu.choice.successfulOutcome.value.choice.PathSwitchRequestAcknowledge;
 
-  ie = (S1ap_PathSwitchRequestAcknowledgeIEs_t*)calloc(
-      1, sizeof(S1ap_PathSwitchRequestAcknowledgeIEs_t));
+  ie = reinterpret_cast<S1ap_PathSwitchRequestAcknowledgeIEs_t*>(calloc(
+      1, sizeof(S1ap_PathSwitchRequestAcknowledgeIEs_t)));
   ie->id = S1ap_ProtocolIE_ID_id_MME_UE_S1AP_ID;
   ie->criticality = S1ap_Criticality_reject;
   ie->value.present =
@@ -5124,8 +5124,8 @@ status_code_e s1ap_handle_path_switch_req_ack(
   ASN_SEQUENCE_ADD(&out->protocolIEs.list, ie);
 
   /* mandatory */
-  ie = (S1ap_PathSwitchRequestAcknowledgeIEs_t*)calloc(
-      1, sizeof(S1ap_PathSwitchRequestAcknowledgeIEs_t));
+  ie = reinterpret_cast<S1ap_PathSwitchRequestAcknowledgeIEs_t*>(calloc(
+      1, sizeof(S1ap_PathSwitchRequestAcknowledgeIEs_t)));
   ie->id = S1ap_ProtocolIE_ID_id_eNB_UE_S1AP_ID;
   ie->criticality = S1ap_Criticality_reject;
   ie->value.present =
@@ -5134,8 +5134,8 @@ status_code_e s1ap_handle_path_switch_req_ack(
   ASN_SEQUENCE_ADD(&out->protocolIEs.list, ie);
 
   /** Add the security context. */
-  ie = (S1ap_PathSwitchRequestAcknowledgeIEs_t*)calloc(
-      1, sizeof(S1ap_PathSwitchRequestAcknowledgeIEs_t));
+  ie = reinterpret_cast<S1ap_PathSwitchRequestAcknowledgeIEs_t*>(calloc(
+      1, sizeof(S1ap_PathSwitchRequestAcknowledgeIEs_t)));
   ie->id = S1ap_ProtocolIE_ID_id_SecurityContext;
   ie->criticality = S1ap_Criticality_reject;
   ie->value.present =
@@ -5162,7 +5162,7 @@ status_code_e s1ap_handle_path_switch_req_ack(
     OAILOG_FUNC_RETURN(LOG_S1AP, RETURNerror);
   }
   bstring b = blk2bstr(buffer, length);
-  free_wrapper((void**)&buffer);
+  free_wrapper(reinterpret_cast<void**>(&buffer));
   OAILOG_DEBUG_UE(
       LOG_S1AP, imsi64,
       "Send PATH_SWITCH_REQUEST_ACK, mme_ue_s1ap_id " MME_UE_S1AP_ID_FMT "\n",
@@ -5235,7 +5235,7 @@ status_code_e s1ap_handle_path_switch_req_failure(
     OAILOG_FUNC_RETURN(LOG_S1AP, RETURNerror);
   }
   bstring b = blk2bstr(buffer, length);
-  free_wrapper((void**)&buffer);
+  free_wrapper(reinterpret_cast<void**>(&buffer));
   OAILOG_DEBUG_UE(
       LOG_S1AP, imsi64,
       "send PATH_SWITCH_REQUEST_Failure for mme_ue_s1ap_id " MME_UE_S1AP_ID_FMT

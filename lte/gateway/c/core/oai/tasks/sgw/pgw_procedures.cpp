@@ -97,8 +97,8 @@ void pgw_free_procedure_create_bearer(pgw_ni_cbr_proc_t** ni_cbr_proc) {
       if (eps_bearer_entry_wrapper) {
         LIST_REMOVE(eps_bearer_entry_wrapper, entries);
         if (eps_bearer_entry_wrapper->sgw_eps_bearer_entry->pgw_cp_ip_port) {
-          free_wrapper((void**)&eps_bearer_entry_wrapper->sgw_eps_bearer_entry
-                           ->pgw_cp_ip_port);
+          free_wrapper(reinterpret_cast<void**>(&eps_bearer_entry_wrapper->sgw_eps_bearer_entry
+                           ->pgw_cp_ip_port));
         }
         free_cpp_wrapper(reinterpret_cast<void**>(
             &eps_bearer_entry_wrapper->sgw_eps_bearer_entry));

@@ -910,9 +910,9 @@ void NasStateConverter::nas_emm_auth_proc_to_proto(
   auth_proc_proto->set_is_cause_is_attach(
       state_nas_emm_auth_proc->is_cause_is_attach);
   auth_proc_proto->set_ksi(state_nas_emm_auth_proc->ksi);
-  auth_proc_proto->set_rand((char*)state_nas_emm_auth_proc->rand,
+  auth_proc_proto->set_rand(reinterpret_cast<char*>(state_nas_emm_auth_proc->rand),
                             AUTH_RAND_SIZE);
-  auth_proc_proto->set_autn((char*)state_nas_emm_auth_proc->autn,
+  auth_proc_proto->set_autn(reinterpret_cast<char*>(state_nas_emm_auth_proc->autn),
                             AUTH_AUTN_SIZE);
   if (state_nas_emm_auth_proc->unchecked_imsi) {
     identity_tuple_to_proto<imsi_t>(state_nas_emm_auth_proc->unchecked_imsi,
@@ -1107,7 +1107,7 @@ void NasStateConverter::emm_specific_proc_to_proto(
   switch (state_emm_specific_proc->type) {
     case EMM_SPEC_PROC_TYPE_ATTACH: {
       OAILOG_DEBUG(LOG_MME_APP, "Writing attach proc to proto");
-      nas_attach_proc_to_proto((nas_emm_attach_proc_t*)state_emm_specific_proc,
+      nas_attach_proc_to_proto(reinterpret_cast<nas_emm_attach_proc_t*>(state_emm_specific_proc),
                                emm_proc_with_type->mutable_attach_proc());
       break;
     }
@@ -1137,7 +1137,7 @@ void NasStateConverter::proto_to_emm_specific_proc(
           sizeof(
               nas_emm_attach_proc_t));  // NOLINT(clang-analyzer-unix.MallocSizeof)
       nas_emm_attach_proc_t* attach_proc =
-          (nas_emm_attach_proc_t*)state_emm_procedures->emm_specific_proc;
+          reinterpret_cast<nas_emm_attach_proc_t*>(state_emm_procedures->emm_specific_proc);
 
       // read the emm proc content
       proto_to_nas_emm_proc(proto_emm_proc_with_type.emm_proc(),

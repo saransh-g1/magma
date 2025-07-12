@@ -56,7 +56,7 @@ void mme_app_free_pdn_context(pdn_context_t** const pdn_context,
   bdestroy_wrapper(&(*pdn_context)->apn_subscribed);
   bdestroy_wrapper(&(*pdn_context)->apn_oi_replacement);
   free_protocol_configuration_options(&(*pdn_context)->pco);
-  free_wrapper((void**)pdn_context);
+  free_wrapper(reinterpret_cast<void**>(pdn_context));
 }
 //------------------------------------------------------------------------------
 static void mme_app_pdn_context_init(ue_mm_context_t* const ue_context,
@@ -116,7 +116,7 @@ pdn_context_t* mme_app_create_pdn_context(
 
         OAILOG_FUNC_RETURN(LOG_MME_APP, pdn_context);
       } else {
-        free_wrapper((void**)&pdn_context);
+        free_wrapper(reinterpret_cast<void**>(&pdn_context));
       }
     }
   }

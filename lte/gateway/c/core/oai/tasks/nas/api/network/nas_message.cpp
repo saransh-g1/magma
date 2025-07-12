@@ -832,7 +832,7 @@ static int nas_message_protected_decode(
      * Decode the decrypted message as plain NAS message
      */
     bytes = nas_message_plain_decode(plain_msg, header, msg, length);
-    free_wrapper((void**)&plain_msg);
+    free_wrapper(reinterpret_cast<void**>(&plain_msg));
   }
 
   OAILOG_FUNC_RETURN(LOG_NAS, bytes);
@@ -1003,7 +1003,7 @@ static int nas_message_protected_encode(
       // seq ++;
     }
 
-    free_wrapper((void**)&plain_msg);
+    free_wrapper(reinterpret_cast<void**>(&plain_msg));
   }
 
   OAILOG_FUNC_RETURN(LOG_NAS, bytes);
@@ -1443,9 +1443,9 @@ static uint32_t nas_message_get_mac(
           "NAS_SECURITY_ALGORITHMS_EIA1 returned MAC %x.%x.%x.%x(%u) for "
           "length "
           "%lu direction %d, count %d\n",
-          mac[0], mac[1], mac[2], mac[3], *((uint32_t*)&mac), length, direction,
+          mac[0], mac[1], mac[2], mac[3], *(reinterpret_cast<uint32_t*>(&mac)), length, direction,
           count);
-      mac32 = (uint32_t*)&mac;
+      mac32 = reinterpret_cast<uint32_t*>(&mac);
       OAILOG_FUNC_RETURN(LOG_NAS, ntohl(*mac32));
     } break;
 
@@ -1489,9 +1489,9 @@ static uint32_t nas_message_get_mac(
           "NAS_SECURITY_ALGORITHMS_EIA2 returned MAC %x.%x.%x.%x(%u) for "
           "length "
           "%lu direction %d, count %d\n",
-          mac[0], mac[1], mac[2], mac[3], *((uint32_t*)&mac), length, direction,
+          mac[0], mac[1], mac[2], mac[3], *(reinterpret_cast<uint32_t*>(&mac)), length, direction,
           count);
-      mac32 = (uint32_t*)&mac;
+      mac32 = reinterpret_cast<uint32_t*>(&mac);
       OAILOG_FUNC_RETURN(LOG_NAS, ntohl(*mac32));
     } break;
 

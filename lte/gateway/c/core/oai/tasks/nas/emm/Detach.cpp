@@ -160,7 +160,7 @@ status_code_e mme_app_handle_detach_t3422_expiry(zloop_t* loop, int timer_id,
     }
     if (data) {
       // Free timer argument
-      free_wrapper((void**)&data);
+      free_wrapper(reinterpret_cast<void**>(&data));
       emm_ctx->t3422_arg = NULL;
     }
   }
@@ -566,15 +566,15 @@ status_code_e emm_proc_nw_initiated_detach_request(mme_ue_s1ap_id_t ue_id,
 //------------------------------------------------------------------------------
 void free_emm_detach_request_ies(emm_detach_request_ies_t** const ies) {
   if ((*ies)->guti) {
-    free_wrapper((void**)&(*ies)->guti);
+    free_wrapper(reinterpret_cast<void**>(&(*ies)->guti));
   }
   if ((*ies)->imsi) {
-    free_wrapper((void**)&(*ies)->imsi);
+    free_wrapper(reinterpret_cast<void**>(&(*ies)->imsi));
   }
   if ((*ies)->imei) {
-    free_wrapper((void**)&(*ies)->imei);
+    free_wrapper(reinterpret_cast<void**>(&(*ies)->imei));
   }
-  free_wrapper((void**)ies);
+  free_wrapper(reinterpret_cast<void**>(ies));
 }
 
 /****************************************************************************/

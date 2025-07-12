@@ -47,8 +47,8 @@ static int authenthication_t3560_handler(zloop_t* loop, int timer_id,
                                          void* arg);
 
 nas_amf_smc_proc_t* get_nas5g_common_procedure_smc(const amf_context_t* ctxt) {
-  return (nas_amf_smc_proc_t*)get_nas5g_common_procedure(ctxt,
-                                                         AMF_COMM_PROC_SMC);
+  return reinterpret_cast<nas_amf_smc_proc_t*>(get_nas5g_common_procedure(ctxt,
+                                                         AMF_COMM_PROC_SMC));
 }
 
 nas5g_cn_proc_t* get_nas5g_cn_procedure(const amf_context_t* ctxt,
@@ -83,8 +83,8 @@ static status_code_e calculate_amf_serving_network_name(amf_context_t* amf_ctx,
 ***************************************************************************/
 nas5g_auth_info_proc_t* get_nas5g_cn_procedure_auth_info(
     const amf_context_t* ctxt) {
-  return (nas5g_auth_info_proc_t*)get_nas5g_cn_procedure(ctxt,
-                                                         CN5G_PROC_AUTH_INFO);
+  return reinterpret_cast<nas5g_auth_info_proc_t*>(get_nas5g_cn_procedure(ctxt,
+                                                         CN5G_PROC_AUTH_INFO));
 }
 
 /***************************************************************************
@@ -249,8 +249,8 @@ nas_amf_common_proc_t* get_nas5g_common_procedure(
 ***************************************************************************/
 nas5g_amf_auth_proc_t* get_nas5g_common_procedure_authentication(
     const amf_context_t* const ctxt) {
-  return (nas5g_amf_auth_proc_t*)get_nas5g_common_procedure(ctxt,
-                                                            AMF_COMM_PROC_AUTH);
+  return reinterpret_cast<nas5g_amf_auth_proc_t*>(get_nas5g_common_procedure(ctxt,
+                                                            AMF_COMM_PROC_AUTH));
 }
 
 /****************************************************************************
@@ -313,7 +313,7 @@ nas5g_amf_auth_proc_t* nas5g_new_authentication_procedure(
     OAILOG_TRACE(LOG_NAS_AMF, "New AMF_COMM_PROC_AUTH\n");
     OAILOG_FUNC_RETURN(LOG_AMF_APP, auth_proc);
   } else {
-    free_wrapper((void**)&auth_proc);
+    free_wrapper(reinterpret_cast<void**>(&auth_proc));
   }
   OAILOG_FUNC_RETURN(LOG_AMF_APP, NULL);
 }
@@ -354,8 +354,8 @@ status_code_e amf_proc_authentication(
     auth_proc->amf_cause = AMF_CAUSE_SUCCESS;
     auth_proc->retransmission_count = 0;
     auth_proc->ue_id = ue_id;
-    ((nas5g_base_proc_t*)auth_proc)->parent =
-        (nas5g_base_proc_t*)amf_specific_proc;
+    (reinterpret_cast<nas5g_base_proc_t*>(auth_proc))->parent =
+        reinterpret_cast<nas5g_base_proc_t*>(amf_specific_proc);
     auth_proc->amf_com_proc.amf_proc.delivered = NULL;
     auth_proc->amf_com_proc.amf_proc.not_delivered = NULL;
     auth_proc->amf_com_proc.amf_proc.not_delivered_ho = NULL;
@@ -477,8 +477,8 @@ status_code_e amf_proc_authentication_ksi(
     auth_proc->amf_cause = AMF_CAUSE_SUCCESS;
     auth_proc->retransmission_count = 0;
     auth_proc->ue_id = ue_id;
-    ((nas5g_base_proc_t*)auth_proc)->parent =
-        (nas5g_base_proc_t*)amf_specific_proc;
+    (reinterpret_cast<nas5g_base_proc_t*>(auth_proc))->parent =
+        reinterpret_cast<nas5g_base_proc_t*>(amf_specific_proc);
     auth_proc->amf_com_proc.amf_proc.delivered = NULL;
     auth_proc->amf_com_proc.amf_proc.base_proc.success_notif = success;
     auth_proc->amf_com_proc.amf_proc.base_proc.failure_notif = failure;
@@ -620,20 +620,20 @@ status_code_e amf_proc_authentication_complete(amf_ue_ngap_id_t ue_id,
                      "Authentication failure due to RES,XRES mismatch \n");
       OAILOG_STREAM_HEX(
           OAILOG_LEVEL_INFO, LOG_NAS_AMF, "Stored RAND: ",
-          (char*)(amf_ctx->_vector[auth_proc->ksi % MAX_EPS_AUTH_VECTORS].rand),
+          reinterpret_cast<char*>((amf_ctx->_vector[auth_proc->ksi % MAX_EPS_AUTH_VECTORS].rand)),
           AUTH_RAND_SIZE);
       OAILOG_STREAM_HEX(
           OAILOG_LEVEL_INFO, LOG_NAS_AMF, "Stored AUTN: ",
-          (char*)(amf_ctx->_vector[auth_proc->ksi % MAX_EPS_AUTH_VECTORS].autn),
+          reinterpret_cast<char*>((amf_ctx->_vector[auth_proc->ksi % MAX_EPS_AUTH_VECTORS].autn)),
           AUTH_RAND_SIZE);
       OAILOG_STREAM_HEX(
           OAILOG_LEVEL_INFO, LOG_NAS_AMF, "Stored XRES*: ",
-          (char*)(amf_ctx->_vector[auth_proc->ksi % MAX_EPS_AUTH_VECTORS]
-                      .xres_star),
+          reinterpret_cast<char*>((amf_ctx->_vector[auth_proc->ksi % MAX_EPS_AUTH_VECTORS]
+                      .xres_star)),
           AUTH_RAND_SIZE);
       OAILOG_STREAM_HEX(
           OAILOG_LEVEL_INFO, LOG_NAS_AMF, "Received RES*in AUTH RSP:",
-          (char*)(msg->autn_response_parameter.response_parameter),
+          reinterpret_cast<char*>((msg->autn_response_parameter.response_parameter)),
           AUTH_RAND_SIZE);
       PLMN_T_TO_MCC_MNC(amf_ctx->originating_tai.plmn, mcc, mnc,
                         mnc_digit_length);
@@ -643,7 +643,8 @@ status_code_e amf_proc_authentication_complete(amf_ue_ngap_id_t ue_id,
       if (registration_proc &&
           (amf_ctx->reg_id_type == M5GSMobileIdentityMsg_GUTI)) {
         rc = amf_proc_identification(
-            amf_ctx, (nas_amf_proc_t*)registration_proc, IDENTITY_TYPE_2_IMSI,
+            amf_ctx, reinterpret_cast<nas_amf_proc_t*>(registration_proc),
+            IDENTITY_TYPE_2_IMSI,
             reinterpret_cast<int (*)(amf_context_t*)>(
                 amf_registration_success_identification_cb),
             reinterpret_cast<int (*)(amf_context_t*)>(
@@ -701,7 +702,7 @@ void amf_ctx_clear_auth_vectors(amf_context_t* const ctxt) {
   amf_ctx_clear_attribute_present(ctxt, AMF_CTXT_MEMBER_AUTH_VECTORS);
 
   for (int i = 0; i < MAX_EPS_AUTH_VECTORS; i++) {
-    memset((void*)&ctxt->_vector[i], 0, sizeof(ctxt->_vector[i]));
+    memset(reinterpret_cast<void*>(&ctxt->_vector[i]), 0, sizeof(ctxt->_vector[i]));
     amf_ctx_clear_attribute_present(ctxt, AMF_CTXT_MEMBER_AUTH_VECTOR0 + i);
   }
 
@@ -815,7 +816,8 @@ status_code_e amf_proc_authentication_failure(amf_ue_ngap_id_t ue_id,
       if (registration_proc &&
           (amf_ctx->reg_id_type == M5GSMobileIdentityMsg_GUTI)) {
         rc = amf_proc_identification(
-            amf_ctx, (nas_amf_proc_t*)registration_proc, IDENTITY_TYPE_2_IMSI,
+            amf_ctx, reinterpret_cast<nas_amf_proc_t*>(registration_proc),
+            IDENTITY_TYPE_2_IMSI,
             reinterpret_cast<int (*)(amf_context_t*)>(
                 amf_registration_success_identification_cb),
             reinterpret_cast<int (*)(amf_context_t*)>(

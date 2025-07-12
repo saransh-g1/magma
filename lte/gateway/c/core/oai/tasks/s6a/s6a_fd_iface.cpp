@@ -233,7 +233,7 @@ bool S6aFdIface::purge_ue(const char* imsi) {
 S6aFdIface::~S6aFdIface() {
   stop_timer(&s6a_task_zmq_ctx, timer_id);
   // Release all resources
-  free_wrapper((void**)&fd_g_config->cnf_diamid);
+  free_wrapper(reinterpret_cast<void**>(&fd_g_config->cnf_diamid));
   fd_g_config->cnf_diamid_len = 0;
   int rv = RETURNok;
   /* Initialize shutdown of the framework */

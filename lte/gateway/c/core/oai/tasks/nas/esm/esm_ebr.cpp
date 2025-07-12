@@ -209,7 +209,7 @@ status_code_e esm_ebr_release(emm_context_t* emm_context, ebi_t ebi) {
       if (esm_ebr_timer_data->msg) {
         bdestroy_wrapper(&esm_ebr_timer_data->msg);
       }
-      free_wrapper((void**)&esm_ebr_timer_data);
+      free_wrapper(reinterpret_cast<void**>(&esm_ebr_timer_data));
     }
     ebr_ctx->args = NULL;
   }
@@ -401,7 +401,7 @@ status_code_e esm_ebr_stop_timer(emm_context_t* emm_context, ebi_t ebi) {
       if (esm_ebr_timer_data->msg) {
         bdestroy_wrapper(&esm_ebr_timer_data->msg);
       }
-      free_wrapper((void**)&esm_ebr_timer_data);
+      free_wrapper(reinterpret_cast<void**>(&esm_ebr_timer_data));
     }
     ebr_ctx->args = NULL;
   }

@@ -148,8 +148,8 @@ status_code_e esm_proc_pdn_connectivity_request(
       (pdn_type == ESM_PDN_TYPE_IPV4)   ? "IPv4"
       : (pdn_type == ESM_PDN_TYPE_IPV6) ? "IPv6"
                                         : "IPv4v6",
-      (apn) ? (char*)bdata(apn) : "null",
-      (pdn_addr) ? (char*)bdata(pdn_addr) : "null", pdn_cid, ue_id);
+      (apn) ? reinterpret_cast<char*>(bdata(apn)) : "null",
+      (pdn_addr) ? reinterpret_cast<char*>(bdata(pdn_addr)) : "null", pdn_cid, ue_id);
 
   /*
    * Check network IP capabilities

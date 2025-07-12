@@ -82,8 +82,8 @@ static int handle_message(zloop_t* loop, zsock_t* reader, void* arg) {
 
     case S1AP_ENB_INITIATED_RESET_REQ: {
       mme_app_handler_->mme_app_handle_enb_reset_req();
-      free_wrapper((void**)&S1AP_ENB_INITIATED_RESET_REQ(received_message_p)
-                       .ue_to_reset_list);
+      free_wrapper(reinterpret_cast<void**>(&S1AP_ENB_INITIATED_RESET_REQ(received_message_p)
+                       .ue_to_reset_list));
     } break;
 
     case S11_PAGING_REQUEST: {

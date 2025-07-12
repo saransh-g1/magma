@@ -500,7 +500,7 @@ status_code_e spgw_send_nw_init_activate_bearer_rsp(
                  policy_rule_name);
   // Send Dedicated Bearer ID and Policy Rule ID binding to PCRF
   char imsi_str[IMSI_BCD_DIGITS_MAX + 1];
-  IMSI64_TO_STRING(imsi64, (char*)imsi_str, IMSI_BCD_DIGITS_MAX);
+  IMSI64_TO_STRING(imsi64, reinterpret_cast<char*>(imsi_str), IMSI_BCD_DIGITS_MAX);
   if (cause == REQUEST_ACCEPTED) {
     pcef_send_policy2bearer_binding(imsi_str, default_bearer_id,
                                     policy_rule_name, bearer_ctx->eps_bearer_id,

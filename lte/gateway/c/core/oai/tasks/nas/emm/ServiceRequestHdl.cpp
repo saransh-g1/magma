@@ -345,7 +345,7 @@ status_code_e emm_send_service_reject_in_dl_nas(const mme_ue_s1ap_id_t ue_id,
   }
   emm_ctx->emm_cause = emm_cause;
   emm_sap.primitive = EMMAS_DATA_REQ;
-  emm_sap.u.emm_as.u.data.emm_cause = (uint32_t*)&emm_ctx->emm_cause;
+  emm_sap.u.emm_as.u.data.emm_cause = reinterpret_cast<uint32_t*>(&emm_ctx->emm_cause);
   emm_sap.u.emm_as.u.data.ue_id = ue_id;
   emm_sap.u.emm_as.u.data.nas_info = EMM_AS_NAS_DATA_INFO_SR;
   emm_sap.u.emm_as.u.data.nas_msg = NULL;  // No ESM container

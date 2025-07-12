@@ -341,11 +341,11 @@ pdn_cid_t esm_proc_eps_bearer_context_deactivate_accept(
        */
       pdn_connectivity_delete(emm_context_p, pid);
       // Free PDN context
-      free_wrapper((void**)&ue_context_p->pdn_contexts[pid]);
+      free_wrapper(reinterpret_cast<void**>(&ue_context_p->pdn_contexts[pid]));
       // Free bearer context entry
       if (ue_context_p->bearer_contexts[bid]) {
         update_mme_app_stats_s1u_bearer_sub();
-        free_wrapper((void**)&ue_context_p->bearer_contexts[bid]);
+        free_wrapper(reinterpret_cast<void**>(&ue_context_p->bearer_contexts[bid]));
       }
     }
   } else {
@@ -355,7 +355,7 @@ pdn_cid_t esm_proc_eps_bearer_context_deactivate_accept(
                 ue_context_p->mme_ue_s1ap_id, ebi);
     // Remove dedicated bearer context
     update_mme_app_stats_s1u_bearer_sub();
-    free_wrapper((void**)&ue_context_p->bearer_contexts[bid]);
+    free_wrapper(reinterpret_cast<void**>(&ue_context_p->bearer_contexts[bid]));
   }
   /* In case of PDN disconnect, no need to inform MME/SPGW as the session would
    * have been already released

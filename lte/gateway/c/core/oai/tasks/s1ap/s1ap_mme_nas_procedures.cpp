@@ -612,7 +612,7 @@ status_code_e s1ap_generate_downlink_nas_transport(
     /*eNB
      * Fill in the NAS pdu
      */
-    OCTET_STRING_fromBuf(&ie->value.choice.NAS_PDU, (char*)bdata(*payload),
+    OCTET_STRING_fromBuf(&ie->value.choice.NAS_PDU, reinterpret_cast<char*>(bdata(*payload)),
                          blength(*payload));
     ASN_SEQUENCE_ADD(&out->protocolIEs.list, ie);
 
@@ -845,7 +845,7 @@ status_code_e s1ap_generate_s1ap_e_rab_setup_req(
 
       OCTET_STRING_fromBuf(
           &e_rab_to_be_set_up_item->nAS_PDU,
-          (char*)bdata(e_rab_setup_req->e_rab_to_be_setup_list.item[i].nas_pdu),
+          reinterpret_cast<char*>(bdata(e_rab_setup_req->e_rab_to_be_setup_list.item[i].nas_pdu)),
           blength(e_rab_setup_req->e_rab_to_be_setup_list.item[i].nas_pdu));
 
       ASN_SEQUENCE_ADD(&e_rabtobesetuplistbearersureq->list,
@@ -1390,7 +1390,7 @@ status_code_e s1ap_generate_s1ap_e_rab_rel_cmd(
       ie->value.present = S1ap_E_RABReleaseCommandIEs__value_PR_NAS_PDU;
 
       S1ap_NAS_PDU_t* nas_pdu = &ie->value.choice.NAS_PDU;
-      OCTET_STRING_fromBuf(nas_pdu, (char*)bdata(e_rab_rel_cmd->nas_pdu),
+      OCTET_STRING_fromBuf(nas_pdu, reinterpret_cast<char*>(bdata(e_rab_rel_cmd->nas_pdu)),
                            blength(e_rab_rel_cmd->nas_pdu));
       ASN_SEQUENCE_ADD(&out->protocolIEs.list, ie);
     } else {

@@ -73,7 +73,7 @@ status_code_e s11_mme_release_access_bearers_request(
   hashtable_rc_t hash_rc = hashtable_ts_get(
       s11_mme_teid_2_gtv2c_teid_handle,
       (hash_key_t)ulp_req.u_api_info.initialReqInfo.teidLocal,
-      (void**)(uintptr_t)&ulp_req.u_api_info.initialReqInfo.hTunnel);
+      reinterpret_cast<void**>((uintptr_t)&ulp_req.u_api_info.initialReqInfo.hTunnel));
 
   if (HASH_TABLE_OK != hash_rc) {
     OAILOG_WARNING(LOG_S11, "Could not get GTPv2-C hTunnel for local teid %X\n",
@@ -123,7 +123,7 @@ status_code_e s11_mme_downlink_data_notification_acknowledge(
 
   hashtable_rc_t hash_rc = hashtable_ts_get(
       s11_mme_teid_2_gtv2c_teid_handle, (hash_key_t)ack_p->local_teid,
-      (void**)(uintptr_t)&ulp_ack.u_api_info.triggeredRspInfo.hTunnel);
+      reinterpret_cast<void**>((uintptr_t)&ulp_ack.u_api_info.triggeredRspInfo.hTunnel));
 
   if (HASH_TABLE_OK != hash_rc) {
     OAILOG_WARNING(LOG_S11, "Could not get GTPv2-C hTunnel for local teid %X\n",
@@ -214,7 +214,7 @@ status_code_e s11_mme_modify_bearer_request(
   hashtable_rc_t hash_rc = hashtable_ts_get(
       s11_mme_teid_2_gtv2c_teid_handle,
       (hash_key_t)ulp_req.u_api_info.initialReqInfo.teidLocal,
-      (void**)(uintptr_t)&ulp_req.u_api_info.initialReqInfo.hTunnel);
+      reinterpret_cast<void**>((uintptr_t)&ulp_req.u_api_info.initialReqInfo.hTunnel));
 
   if (HASH_TABLE_OK != hash_rc) {
     OAILOG_WARNING(LOG_S11, "Could not get GTPv2-C hTunnel for local teid %X\n",
@@ -364,7 +364,7 @@ status_code_e s11_mme_delete_bearer_command(
   hashtable_rc_t hash_rc = hashtable_ts_get(
       s11_mme_teid_2_gtv2c_teid_handle,
       (hash_key_t)ulp_req.u_api_info.initialReqInfo.teidLocal,
-      (void**)(uintptr_t)&ulp_req.u_api_info.initialReqInfo.hTunnel);
+      reinterpret_cast<void**>((uintptr_t)&ulp_req.u_api_info.initialReqInfo.hTunnel));
 
   if (HASH_TABLE_OK != hash_rc) {
     OAILOG_WARNING(LOG_S11, "Could not get GTPv2-C hTunnel for local teid %X\n",
@@ -489,7 +489,7 @@ status_code_e s11_mme_create_bearer_response(
 
   hashtable_rc_t hash_rc = hashtable_ts_get(
       s11_mme_teid_2_gtv2c_teid_handle, (hash_key_t)response_p->local_teid,
-      (void**)(uintptr_t)&ulp_req.u_api_info.triggeredRspInfo.hTunnel);
+      reinterpret_cast<void**>((uintptr_t)&ulp_req.u_api_info.triggeredRspInfo.hTunnel));
 
   if (HASH_TABLE_OK != hash_rc) {
     OAILOG_WARNING(LOG_S11, "Could not get GTPv2-C hTunnel for local teid %X\n",

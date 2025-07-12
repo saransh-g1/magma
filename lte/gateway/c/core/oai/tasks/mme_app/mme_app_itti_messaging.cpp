@@ -255,7 +255,7 @@ status_code_e mme_app_send_s11_create_session_req(
    */
   session_request_p->teid = 0;
   IMSI64_TO_STRING(ue_mm_context->emm_context._imsi64,
-                   (char*)(&session_request_p->imsi.digit),
+                   reinterpret_cast<char*>((&session_request_p->imsi.digit)),
                    ue_mm_context->emm_context._imsi.length);
   session_request_p->imsi.length = ue_mm_context->emm_context._imsi.length;
 
@@ -434,7 +434,7 @@ status_code_e mme_app_send_s11_create_session_req(
 
   session_request_p->selection_mode = MS_O_N_P_APN_S_V;
   int mode =
-      match_fed_mode_map((char*)session_request_p->imsi.digit, LOG_MME_APP);
+      match_fed_mode_map(reinterpret_cast<char*>(session_request_p->imsi.digit), LOG_MME_APP);
   if (mode == S8_SUBSCRIBER) {
     OAILOG_INFO_UE(LOG_MME_APP, ue_mm_context->emm_context._imsi64,
                    "Sending s11 create session req message to SGW_s8 task for "

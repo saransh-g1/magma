@@ -435,7 +435,7 @@ ebi_t esm_ebr_context_release(emm_context_t* emm_context, ebi_t ebi,
           /*
            * Release dedicated EPS bearer data
            */
-          free_wrapper((void**)&ue_mm_context->bearer_contexts[idx]);
+          free_wrapper(reinterpret_cast<void**>(&ue_mm_context->bearer_contexts[idx]));
           /*
            * Decrement the number of EPS bearer context allocated
            * * * * to the PDN connection

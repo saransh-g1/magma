@@ -899,29 +899,29 @@ TEST(MMEConfigTest, TestCopyAmfConfigFromMMEConfig) {
   copy_amf_config_from_mme_config(&amf_config, &mme_config);
 
   if (mme_config.log_config.output)
-    EXPECT_EQ(0, strcmp((char*)mme_config.log_config.output->data,
-                        (char*)amf_config.log_config.output->data));
+    EXPECT_EQ(0, strcmp(reinterpret_cast<char*>(mme_config.log_config.output->data),
+                        reinterpret_cast<char*>(amf_config.log_config.output->data)));
   EXPECT_EQ(mme_config.log_config.is_output_thread_safe,
             amf_config.log_config.is_output_thread_safe);
   EXPECT_EQ(mme_config.log_config.mme_app_log_level,
             amf_config.log_config.amf_app_log_level);
 
   if (mme_config.realm)
-    EXPECT_EQ(0, strcmp((char*)mme_config.realm->data,
-                        (char*)amf_config.realm->data));
+    EXPECT_EQ(0, strcmp(reinterpret_cast<char*>(mme_config.realm->data),
+                        reinterpret_cast<char*>(amf_config.realm->data)));
 
   if (mme_config.full_network_name)
-    EXPECT_EQ(0, strcmp((char*)mme_config.full_network_name->data,
-                        (char*)amf_config.full_network_name->data));
+    EXPECT_EQ(0, strcmp(reinterpret_cast<char*>(mme_config.full_network_name->data),
+                        reinterpret_cast<char*>(amf_config.full_network_name->data)));
 
   if (mme_config.short_network_name)
-    EXPECT_EQ(0, strcmp((char*)mme_config.short_network_name->data,
-                        (char*)amf_config.short_network_name->data));
+    EXPECT_EQ(0, strcmp(reinterpret_cast<char*>(mme_config.short_network_name->data),
+                        reinterpret_cast<char*>(amf_config.short_network_name->data)));
 
   EXPECT_EQ(mme_config.daylight_saving_time, amf_config.daylight_saving_time);
   if (mme_config.pid_dir)
-    EXPECT_EQ(0, strcmp((char*)mme_config.pid_dir->data,
-                        (char*)amf_config.pid_dir->data));
+    EXPECT_EQ(0, strcmp(reinterpret_cast<char*>(mme_config.pid_dir->data),
+                        reinterpret_cast<char*>(amf_config.pid_dir->data)));
   EXPECT_EQ(mme_config.max_enbs, amf_config.max_gnbs);
   EXPECT_EQ(mme_config.relative_capacity, amf_config.relative_capacity);
 

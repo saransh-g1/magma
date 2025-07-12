@@ -123,7 +123,7 @@ status_code_e s6a_fd_new_peer(void) {
     sleep(timeout);
   }
   bdestroy(hss_name);
-  free_wrapper((void**)&fd_g_config->cnf_diamid);
+  free_wrapper(reinterpret_cast<void**>(&fd_g_config->cnf_diamid));
   fd_g_config->cnf_diamid_len = 0;
 #endif
   return RETURNerror;

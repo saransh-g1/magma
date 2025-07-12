@@ -77,7 +77,7 @@ static int report_event(const nlohmann::json& event_value,
 
 int attach_success_event(imsi64_t imsi64) {
   char imsi_str[IMSI_BCD_DIGITS_MAX + 1];
-  IMSI64_TO_STRING(imsi64, (char*)imsi_str, IMSI_BCD_DIGITS_MAX);
+  IMSI64_TO_STRING(imsi64, reinterpret_cast<char*>(imsi_str, IMSI_BCD_DIGITS_MAX));
 
   nlohmann::json event_value;
   event_value["imsi"] = imsi_str;
@@ -87,7 +87,7 @@ int attach_success_event(imsi64_t imsi64) {
 
 int detach_success_event(imsi64_t imsi64, const char* action) {
   char imsi_str[IMSI_BCD_DIGITS_MAX + 1];
-  IMSI64_TO_STRING(imsi64, (char*)imsi_str, IMSI_BCD_DIGITS_MAX);
+  IMSI64_TO_STRING(imsi64, reinterpret_cast<char*>(imsi_str, IMSI_BCD_DIGITS_MAX));
 
   nlohmann::json event_value;
   event_value["imsi"] = imsi_str;
@@ -113,7 +113,7 @@ int s1_setup_success_event(const char* enb_name, uint32_t enb_id) {
 
 int attach_reject_event(imsi64_t imsi64) {
   char imsi_str[IMSI_BCD_DIGITS_MAX + 1];
-  IMSI64_TO_STRING(imsi64, (char*)imsi_str, IMSI_BCD_DIGITS_MAX);
+  IMSI64_TO_STRING(imsi64, reinterpret_cast<char*>(imsi_str, IMSI_BCD_DIGITS_MAX));
 
   nlohmann::json event_value;
   event_value["imsi"] = imsi_str;

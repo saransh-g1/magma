@@ -204,7 +204,7 @@ status_code_e amf_smf_create_session_req(
       "Sending msg(grpc) to :[sessiond] for ue: [%s] pdu session: [%u]\n", imsi,
       pdu_session_id);
 
-  IMSI_STRING_TO_IMSI64((char*)imsi, &imsi64);
+  IMSI_STRING_TO_IMSI64(reinterpret_cast<char*>(imsi, &imsi64));
   ue_mm_context = lookup_ue_ctxt_by_imsi(imsi64);
 
   if (ue_mm_context) {
@@ -239,7 +239,7 @@ status_code_e amf_smf_initiate_pdu_session_creation(
   ue_m5gmm_context_s* ue_mm_context = NULL;
   std::shared_ptr<smf_context_t> smf_ctx;
 
-  IMSI_STRING_TO_IMSI64((char*)imsi, &imsi64);
+  IMSI_STRING_TO_IMSI64(reinterpret_cast<char*>(imsi, &imsi64));
   ue_mm_context = lookup_ue_ctxt_by_imsi(imsi64);
   smf_ctx = amf_get_smf_context_by_pdu_session_id(ue_mm_context,
                                                   message->pdu_session_id);
@@ -333,7 +333,7 @@ int amf_app_pdu_session_modification_complete(amf_smf_establish_t* message,
   std::shared_ptr<smf_context_t> smf_ctx;
   amf_smf_establish_t amf_smf_grpc_ies;
 
-  IMSI_STRING_TO_IMSI64((char*)imsi, &imsi64);
+  IMSI_STRING_TO_IMSI64(reinterpret_cast<char*>(imsi, &imsi64));
   ue_mm_context = lookup_ue_ctxt_by_imsi(imsi64);
   smf_ctx = amf_get_smf_context_by_pdu_session_id(ue_mm_context,
                                                   message->pdu_session_id);
@@ -397,7 +397,7 @@ int amf_app_pdu_session_modification_command_reject(
   std::shared_ptr<smf_context_t> smf_ctx;
   amf_smf_establish_t amf_smf_grpc_ies;
 
-  IMSI_STRING_TO_IMSI64((char*)imsi, &imsi64);
+  IMSI_STRING_TO_IMSI64(reinterpret_cast<char*>(imsi, &imsi64));
   ue_mm_context = lookup_ue_ctxt_by_imsi(imsi64);
   smf_ctx = amf_get_smf_context_by_pdu_session_id(ue_mm_context,
                                                   message->pdu_session_id);

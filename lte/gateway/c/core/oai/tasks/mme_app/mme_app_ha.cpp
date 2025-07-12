@@ -36,7 +36,7 @@ void mme_app_handle_ue_offload(ue_mm_context_t* ue_context_p) {
   AGW_OFFLOAD_REQ(message_p).imsi_length =
       ue_context_p->emm_context._imsi.length;
   IMSI64_TO_STRING(ue_context_p->emm_context._imsi64,
-                   (char*)AGW_OFFLOAD_REQ(message_p).imsi,
+                   reinterpret_cast<char*>(AGW_OFFLOAD_REQ(message_p).imsi),
                    ue_context_p->emm_context._imsi.length);
   AGW_OFFLOAD_REQ(message_p).enb_offload_type = ANY;
 

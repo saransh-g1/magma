@@ -686,7 +686,7 @@ status_code_e erab_setup_rsp_tmr_exp_ded_bearer_handler(zloop_t* loop,
           if (esm_ebr_timer_data->msg) {
             bdestroy_wrapper(&esm_ebr_timer_data->msg);
           }
-          free_wrapper((void**)&esm_ebr_timer_data);
+          free_wrapper(reinterpret_cast<void**>(&esm_ebr_timer_data));
         }
       }
     } else {
@@ -699,7 +699,7 @@ status_code_e erab_setup_rsp_tmr_exp_ded_bearer_handler(zloop_t* loop,
         if (esm_ebr_timer_data->msg) {
           bdestroy_wrapper(&esm_ebr_timer_data->msg);
         }
-        free_wrapper((void**)&esm_ebr_timer_data);
+        free_wrapper(reinterpret_cast<void**>(&esm_ebr_timer_data));
       }
     }
   }

@@ -61,7 +61,7 @@ void free_esm_bearer_context(esm_ebr_context_t* esm_ebr_context) {
         if (esm_ebr_timer_data->msg) {
           bdestroy_wrapper(&esm_ebr_timer_data->msg);
         }
-        free_wrapper((void**)&esm_ebr_timer_data);
+        free_wrapper(reinterpret_cast<void**>(&esm_ebr_timer_data));
       }
     }
   }
@@ -109,7 +109,7 @@ void nas_stop_T3489(esm_context_t* const esm_ctx) {
       esm_ebr_timer_data_t* data = (esm_ebr_timer_data_t*)esm_ctx->t3489_arg;
       data->ctx = NULL;
       bdestroy_wrapper(&data->msg);
-      free_wrapper((void**)&data);
+      free_wrapper(reinterpret_cast<void**>(&data));
     }
   }
 }
@@ -127,7 +127,7 @@ void free_esm_context_content(esm_context_t* esm_ctx) {
     if (esm_ctx->esm_proc_data->pco.num_protocol_or_container_id) {
       clear_protocol_configuration_options(&esm_ctx->esm_proc_data->pco);
     }
-    free_wrapper((void**)&esm_ctx->esm_proc_data);
+    free_wrapper(reinterpret_cast<void**>(&esm_ctx->esm_proc_data));
   }
 }
 

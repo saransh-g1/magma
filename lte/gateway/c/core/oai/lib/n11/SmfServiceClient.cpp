@@ -116,7 +116,7 @@ SetSMSessionContext create_sm_pdu_session(
       magma::lte::SubscriberID_IDType::SubscriberID_IDType_IMSI);
 
   // Encode APU, storing apn value
-  req_common->set_apn((char*)apn);
+  req_common->set_apn(reinterpret_cast<char*>(apn));
 
   // Encode RAT TYPE
   req_common->set_rat_type(magma::lte::RATType::TGPP_NR);

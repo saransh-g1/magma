@@ -92,7 +92,7 @@ void SpgwStateManager::free_state() {
     OAI_FPRINTF_ERR("An error occurred while destroying state_teid_map");
   }
 
-  free_wrapper((void**)&state_cache_p);
+  free_wrapper(reinterpret_cast<void**>(&state_cache_p));
 }
 
 status_code_e SpgwStateManager::read_ue_state_from_db() {

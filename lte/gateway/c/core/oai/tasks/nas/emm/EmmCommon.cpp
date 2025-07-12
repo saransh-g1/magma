@@ -462,7 +462,7 @@ void emm_common_cleanup(emm_common_data_t* emm_common_data_ctx) {
           (emm_common_data_map*)&emm_common_data_head.emm_common_data_root,
           emm_common_data_ctx);
       free_wrapper(&emm_common_data_ctx->args);
-      free_wrapper((void**)&emm_common_data_ctx);
+      free_wrapper(reinterpret_cast<void**>(&emm_common_data_ctx));
       pthread_mutex_unlock(&emm_common_data_head.mutex);
     }
   }
@@ -485,7 +485,7 @@ void emm_common_cleanup_by_ueid(mme_ue_s1ap_id_t ue_id) {
     if (emm_common_data_ctx->args) {
       free_wrapper(&emm_common_data_ctx->args);
     }
-    free_wrapper((void**)&emm_common_data_ctx);
+    free_wrapper(reinterpret_cast<void**>(&emm_common_data_ctx));
     pthread_mutex_unlock(&emm_common_data_head.mutex);
   }
   OAILOG_FUNC_OUT(LOG_NAS_EMM);

@@ -580,7 +580,7 @@ static void insert_sgw_cp_and_up_teid_to_directoryd(sgw_state_t* sgw_state,
   uint32_t teidlist[16] = {0};
   char imsi_str[IMSI_BCD_DIGITS_MAX + 1] = {0};
   uint8_t teid_list_idx = 0;
-  IMSI64_TO_STRING(imsi64, (char*)imsi_str, IMSI_BCD_DIGITS_MAX);
+  IMSI64_TO_STRING(imsi64, reinterpret_cast<char*>(imsi_str), IMSI_BCD_DIGITS_MAX);
   spgw_ue_context_t* ue_context_p = nullptr;
 
   if (!((teid_type == CP_TEID) || (teid_type == UP_TEID))) {
@@ -1390,7 +1390,7 @@ imsi64_t sgw_s8_handle_create_bearer_request(
   rc = update_pgw_info_to_temp_dedicated_bearer_context(
       sgw_context_p, s1_u_sgw_fteid, &bc_cbreq, sgw_state,
       cb_req->pgw_cp_address, cb_req->sgw_s8_up_teid);
-  free_wrapper((void**)&cb_req->pgw_cp_address);
+  free_wrapper(reinterpret_cast<void**>(&cb_req->pgw_cp_address));
   if (rc != RETURNok) {
     OAILOG_ERROR_UE(
         LOG_SGW_S8, sgw_context_p->imsi64,

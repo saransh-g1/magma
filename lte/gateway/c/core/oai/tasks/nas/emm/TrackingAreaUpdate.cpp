@@ -842,8 +842,8 @@ static status_code_e emm_tracking_area_update_accept(
       emm_sap.u.emm_as.u.establish.emergency_number_list = NULL;
 
       emm_sap.u.emm_as.u.establish.eps_network_feature_support =
-          (eps_network_feature_support_t*)&_emm_data.conf
-              .eps_network_feature_support;
+          reinterpret_cast<eps_network_feature_support_t*>(&_emm_data.conf
+              .eps_network_feature_support);
       emm_sap.u.emm_as.u.establish.additional_update_result = NULL;
       emm_sap.u.emm_as.u.establish.t3412_extended = NULL;
       emm_sap.u.emm_as.u.establish.nas_msg =
@@ -932,8 +932,8 @@ static status_code_e emm_tracking_area_update_accept(
       }
 
       emm_sap.u.emm_as.u.data.eps_network_feature_support =
-          (eps_network_feature_support_t*)&_emm_data.conf
-              .eps_network_feature_support;
+          reinterpret_cast<eps_network_feature_support_t*>(&_emm_data.conf
+              .eps_network_feature_support);
 
       /*If CSFB is enabled,store LAI,Mobile Identity and
        * Additional Update type to be sent in TAU accept to S1AP
@@ -954,7 +954,7 @@ static status_code_e emm_tracking_area_update_accept(
           emm_as->sgs_loc_updt_status = SUCCESS;
         } else if (emm_context->csfbparams.sgs_loc_updt_status == FAILURE) {
           emm_as->sgs_loc_updt_status = FAILURE;
-          emm_as->sgs_reject_cause = (uint32_t*)&emm_context->emm_cause;
+          emm_as->sgs_reject_cause = reinterpret_cast<uint32_t*>(&emm_context->emm_cause);
         }
       }
       /*
@@ -1041,45 +1041,45 @@ static int emm_tracking_area_update_abort(struct emm_context_s* emm_context,
 //------------------------------------------------------------------------------
 void free_emm_tau_request_ies(emm_tau_request_ies_t** const ies) {
   if ((*ies)->additional_guti) {
-    free_wrapper((void**)&((*ies)->additional_guti));
+    free_wrapper(reinterpret_cast<void**>(&((*ies)->additional_guti)));
   }
   if ((*ies)->ue_network_capability) {
-    free_wrapper((void**)&((*ies)->ue_network_capability));
+    free_wrapper(reinterpret_cast<void**>(&((*ies)->ue_network_capability)));
   }
   if ((*ies)->last_visited_registered_tai) {
-    free_wrapper((void**)&((*ies)->last_visited_registered_tai));
+    free_wrapper(reinterpret_cast<void**>(&((*ies)->last_visited_registered_tai)));
   }
   if ((*ies)->last_visited_registered_tai) {
-    free_wrapper((void**)&((*ies)->last_visited_registered_tai));
+    free_wrapper(reinterpret_cast<void**>(&((*ies)->last_visited_registered_tai)));
   }
   if ((*ies)->drx_parameter) {
-    free_wrapper((void**)&((*ies)->drx_parameter));
+    free_wrapper(reinterpret_cast<void**>(&((*ies)->drx_parameter)));
   }
   if ((*ies)->eps_bearer_context_status) {
-    free_wrapper((void**)&((*ies)->eps_bearer_context_status));
+    free_wrapper(reinterpret_cast<void**>(&((*ies)->eps_bearer_context_status)));
   }
   if ((*ies)->ms_network_capability) {
-    free_wrapper((void**)&((*ies)->ms_network_capability));
+    free_wrapper(reinterpret_cast<void**>(&((*ies)->ms_network_capability)));
   }
   if ((*ies)->tmsi_status) {
-    free_wrapper((void**)&((*ies)->tmsi_status));
+    free_wrapper(reinterpret_cast<void**>(&((*ies)->tmsi_status)));
   }
   if ((*ies)->mobile_station_classmark2) {
-    free_wrapper((void**)&((*ies)->mobile_station_classmark2));
+    free_wrapper(reinterpret_cast<void**>(&((*ies)->mobile_station_classmark2)));
   }
   if ((*ies)->mobile_station_classmark3) {
-    free_wrapper((void**)&((*ies)->mobile_station_classmark3));
+    free_wrapper(reinterpret_cast<void**>(&((*ies)->mobile_station_classmark3)));
   }
   if ((*ies)->supported_codecs) {
-    free_wrapper((void**)&((*ies)->supported_codecs));
+    free_wrapper(reinterpret_cast<void**>(&((*ies)->supported_codecs)));
   }
   if ((*ies)->additional_updatetype) {
-    free_wrapper((void**)&((*ies)->additional_updatetype));
+    free_wrapper(reinterpret_cast<void**>(&((*ies)->additional_updatetype)));
   }
   if ((*ies)->old_guti_type) {
-    free_wrapper((void**)&((*ies)->old_guti_type));
+    free_wrapper(reinterpret_cast<void**>(&((*ies)->old_guti_type)));
   }
-  free_wrapper((void**)ies);
+  free_wrapper(reinterpret_cast<void**>(ies));
 }
 
 /****************************************************************************

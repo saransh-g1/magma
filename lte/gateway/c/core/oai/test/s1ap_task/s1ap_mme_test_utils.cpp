@@ -216,7 +216,7 @@ status_code_e send_s1ap_erab_reset_req(sctp_assoc_id_t assoc_id,
       &msg->ittiMsg.s1ap_enb_initiated_reset_ack;
 
   s1_sig_conn_id_t* list =
-      (s1_sig_conn_id_t*)(calloc(1, sizeof(s1_sig_conn_id_t)));
+      reinterpret_cast<s1_sig_conn_id_t*>(calloc(1, sizeof(s1_sig_conn_id_t)));
   list->enb_ue_s1ap_id = enb_ue_id;
   list->mme_ue_s1ap_id = ue_id;
   // ue_to_reset_list needs to be freed by S1AP module
@@ -234,7 +234,7 @@ status_code_e send_s1ap_ue_ctxt_mod(enb_ue_s1ap_id_t enb_ue_id,
                                     mme_ue_s1ap_id_t ue_id) {
   MessageDef* message_p = itti_alloc_new_message(
       TASK_MME_APP, S1AP_UE_CONTEXT_MODIFICATION_REQUEST);
-  memset((void*)&message_p->ittiMsg.s1ap_ue_context_mod_request, 0,
+  memset(reinterpret_cast<void*>(&message_p->ittiMsg.s1ap_ue_context_mod_request), 0,
          sizeof(itti_s1ap_ue_context_mod_req_t));
   S1AP_UE_CONTEXT_MODIFICATION_REQUEST(message_p).mme_ue_s1ap_id = ue_id;
   S1AP_UE_CONTEXT_MODIFICATION_REQUEST(message_p).enb_ue_s1ap_id = enb_ue_id;

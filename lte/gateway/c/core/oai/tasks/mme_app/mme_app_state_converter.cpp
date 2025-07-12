@@ -57,7 +57,7 @@ void MmeNasStateConverter::hashtable_ts_to_proto(
     oai::UeContext ue_ctxt_proto;
     ue_mm_context_t* ue_context_p = NULL;
     hashtable_rc_t ht_rc =
-        hashtable_ts_get(htbl, keys->keys[i], (void**)&ue_context_p);
+        hashtable_ts_get(htbl, keys->keys[i], reinterpret_cast<void**>(&ue_context_p));
     if (ht_rc == HASH_TABLE_OK) {
       ue_context_to_proto(ue_context_p, &ue_ctxt_proto);
       (*proto_map)[(uint32_t)keys->keys[i]] = ue_ctxt_proto;
@@ -114,7 +114,7 @@ void MmeNasStateConverter::guti_table_to_proto(
   for (unsigned int i = 0; i < size; i++) {
     uint64_t mme_ue_id;
 
-    std::string guti_str((char*)(*key_array_p)[i], (GUTI_STRING_LEN - 1));
+    std::string guti_str(reinterpret_cast<char*>((*key_array_p)[i]), (GUTI_STRING_LEN - 1));
     OAILOG_DEBUG(LOG_MME_APP, "Looking for key %p with value %s strlen:%ld\n",
                  (*key_array_p)[i], guti_str.c_str(), strlen(guti_str.c_str()));
     hashtable_rc_t ht_rc =

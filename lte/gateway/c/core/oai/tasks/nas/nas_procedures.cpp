@@ -211,7 +211,7 @@ nas_emm_attach_proc_t* get_nas_specific_procedure_attach(
       (ctxt->emm_procedures->emm_specific_proc) &&
       ((EMM_SPEC_PROC_TYPE_ATTACH ==
         ctxt->emm_procedures->emm_specific_proc->type)))
-    return (nas_emm_attach_proc_t*)ctxt->emm_procedures->emm_specific_proc;
+    return reinterpret_cast<nas_emm_attach_proc_t*>(ctxt->emm_procedures->emm_specific_proc);
   return NULL;
 }
 
@@ -286,7 +286,7 @@ static void nas_emm_procedure_gc(struct emm_context_s* const emm_context) {
       LIST_EMPTY(&emm_context->emm_procedures->cn_procs) &&
       (!emm_context->emm_procedures->emm_con_mngt_proc) &&
       (!emm_context->emm_procedures->emm_specific_proc)) {
-    free_wrapper((void**)&emm_context->emm_procedures);
+    free_wrapper(reinterpret_cast<void**>(&emm_context->emm_procedures));
   }
 }
 //-----------------------------------------------------------------------------
@@ -302,7 +302,7 @@ static void nas_delete_child_procedures(struct emm_context_s* const emm_context,
       if (((nas_base_proc_t*)p1->proc)->parent == parent_proc) {
         nas_delete_common_procedure(emm_context, &p1->proc);
         // Done by nas_delete_common_procedure: LIST_REMOVE(p1, entries);
-        // Done by nas_delete_common_procedure: free_wrapper((void**)&p1);
+        // Done by nas_delete_common_procedure: free_wrapper(reinterpret_cast<void**>(&p1);
       }
       p1 = p2;
     }
@@ -320,7 +320,7 @@ static void nas_delete_child_procedures(struct emm_context_s* const emm_context,
 //-----------------------------------------------------------------------------
 static void nas_delete_con_mngt_procedure(nas_emm_con_mngt_proc_t** proc) {
   if (proc) {
-    free_wrapper((void**)proc);
+    free_wrapper(reinterpret_cast<void**>(proc));
   }
 }
 //-----------------------------------------------------------------------------
@@ -334,7 +334,7 @@ void nas_delete_common_procedure(struct emm_context_s* emm_context,
       case EMM_COMM_PROC_AUTH: {
         nas_emm_auth_proc_t* auth_info_proc = (nas_emm_auth_proc_t*)(*proc);
         if (auth_info_proc->unchecked_imsi) {
-          free_wrapper((void**)&auth_info_proc->unchecked_imsi);
+          free_wrapper(reinterpret_cast<void**>(&auth_info_proc->unchecked_imsi));
         }
       } break;
       case EMM_COMM_PROC_SMC: {
@@ -359,8 +359,8 @@ void nas_delete_common_procedure(struct emm_context_s* emm_context,
         p2 = LIST_NEXT(p1, entries);
         if (p1->proc == (nas_emm_common_proc_t*)(*proc)) {
           LIST_REMOVE(p1, entries);
-          free_wrapper((void**)&p1->proc);
-          free_wrapper((void**)&p1);
+          free_wrapper(reinterpret_cast<void**>(&p1->proc));
+          free_wrapper(reinterpret_cast<void**>(&p1));
           return;
         }
         p1 = p2;
@@ -369,7 +369,7 @@ void nas_delete_common_procedure(struct emm_context_s* emm_context,
     }
     // if not found in list, free it anyway
     if (*proc) {
-      free_wrapper((void**)proc);
+      free_wrapper(reinterpret_cast<void**>(proc));
     }
   }
 }
@@ -393,7 +393,7 @@ static void nas_delete_common_procedures(struct emm_context_s* emm_context) {
           nas_emm_auth_proc_t* auth_info_proc = (nas_emm_auth_proc_t*)p1->proc;
           nas_stop_T3460(auth_info_proc->ue_id, &auth_info_proc->T3460);
           if (auth_info_proc->unchecked_imsi) {
-            free_wrapper((void**)&auth_info_proc->unchecked_imsi);
+            free_wrapper(reinterpret_cast<void**>(&auth_info_proc->unchecked_imsi));
           }
         } break;
         case EMM_COMM_PROC_SMC: {
@@ -409,8 +409,8 @@ static void nas_delete_common_procedures(struct emm_context_s* emm_context) {
         default:;
       }
 
-      free_wrapper((void**)&p1->proc);
-      free_wrapper((void**)&p1);
+      free_wrapper(reinterpret_cast<void**>(&p1->proc));
+      free_wrapper(reinterpret_cast<void**>(&p1));
 
       p1 = p2;
     }
@@ -437,7 +437,7 @@ void nas_delete_attach_procedure(struct emm_context_s* emm_context) {
 
     nas_delete_child_procedures(emm_context, (nas_base_proc_t*)proc);
 
-    free_wrapper((void**)&emm_context->emm_procedures->emm_specific_proc);
+    free_wrapper(reinterpret_cast<void**>(&emm_context->emm_procedures->emm_specific_proc));
     nas_emm_procedure_gc(emm_context);
   }
 }
@@ -459,7 +459,7 @@ void nas_delete_tau_procedure(struct emm_context_s* emm_context) {
 
     nas_delete_child_procedures(emm_context, (nas_base_proc_t*)proc);
 
-    free_wrapper((void**)&emm_context->emm_procedures->emm_specific_proc);
+    free_wrapper(reinterpret_cast<void**>(&emm_context->emm_procedures->emm_specific_proc));
     nas_emm_procedure_gc(emm_context);
     // Reset tau_accept_eps_ber_cntx_status stored in ue_context
     ue_mm_context->tau_accept_eps_ber_cntx_status = 0;
@@ -485,7 +485,7 @@ void nas_delete_detach_procedure(struct emm_context_s* emm_context) {
 
     nas_delete_child_procedures(emm_context, (nas_base_proc_t*)proc);
 
-    free_wrapper((void**)&emm_context->emm_procedures->emm_specific_proc);
+    free_wrapper(reinterpret_cast<void**>(&emm_context->emm_procedures->emm_specific_proc));
     nas_emm_procedure_gc(emm_context);
   }
 }
@@ -502,7 +502,7 @@ static void nas_delete_auth_info_procedure(
     if ((*auth_info_proc)->cn_proc.base_proc.parent) {
       (*auth_info_proc)->cn_proc.base_proc.parent->child = NULL;
     }
-    free_wrapper((void**)auth_info_proc);
+    free_wrapper(reinterpret_cast<void**>(auth_info_proc));
   }
 }
 
@@ -523,12 +523,12 @@ void nas_delete_cn_procedure(struct emm_context_s* emm_context,
                                            (nas_auth_info_proc_t**)&cn_proc);
             break;
           case CN_PROC_NONE:
-            free_wrapper((void**)&cn_proc);
+            free_wrapper(reinterpret_cast<void**>(&cn_proc));
             break;
           default:;
         }
         LIST_REMOVE(p1, entries);
-        free_wrapper((void**)&p1);
+        free_wrapper(reinterpret_cast<void**>(&p1));
         return;
       }
       p1 = p2;
@@ -551,10 +551,10 @@ static void nas_delete_cn_procedures(struct emm_context_s* emm_context) {
           break;
 
         default:
-          free_wrapper((void**)&p1->proc);
+          free_wrapper(reinterpret_cast<void**>(&p1->proc));
       }
       LIST_REMOVE(p1, entries);
-      free_wrapper((void**)&p1);
+      free_wrapper(reinterpret_cast<void**>(&p1));
       p1 = p2;
     }
     nas_emm_procedure_gc(emm_context);
@@ -578,7 +578,7 @@ void nas_delete_all_emm_procedures(struct emm_context_s* const emm_context) {
     nas_delete_tau_procedure(emm_context);
     // gc
     if (emm_context->emm_procedures) {
-      free_wrapper((void**)&emm_context->emm_procedures);
+      free_wrapper(reinterpret_cast<void**>(&emm_context->emm_procedures));
     }
   }
   OAILOG_FUNC_OUT(LOG_NAS_EMM);
@@ -623,7 +623,7 @@ nas_emm_attach_proc_t* nas_new_attach_procedure(
       EMM_SPEC_PROC_TYPE_ATTACH;
 
   nas_emm_attach_proc_t* proc =
-      (nas_emm_attach_proc_t*)emm_context->emm_procedures->emm_specific_proc;
+      reinterpret_cast<nas_emm_attach_proc_t*>(emm_context->emm_procedures->emm_specific_proc);
 
   proc->T3450.msec = mme_config.nas_config.t3450_msec;
   proc->T3450.id = NAS_TIMER_INACTIVE_ID;
@@ -731,7 +731,7 @@ nas_emm_ident_proc_t* nas_new_identification_procedure(
     OAILOG_TRACE(LOG_NAS_EMM, "New EMM_COMM_PROC_IDENT\n");
     return ident_proc;
   } else {
-    free_wrapper((void**)&ident_proc);
+    free_wrapper(reinterpret_cast<void**>(&ident_proc));
   }
   return ident_proc;
 }
@@ -765,7 +765,7 @@ nas_emm_auth_proc_t* nas_new_authentication_procedure(
     OAILOG_TRACE(LOG_NAS_EMM, "New EMM_COMM_PROC_AUTH\n");
     return auth_proc;
   } else {
-    free_wrapper((void**)&auth_proc);
+    free_wrapper(reinterpret_cast<void**>(&auth_proc));
   }
   return NULL;
 }
@@ -799,7 +799,7 @@ nas_emm_smc_proc_t* nas_new_smc_procedure(
     OAILOG_TRACE(LOG_NAS_EMM, "New EMM_COMM_PROC_SMC\n");
     return smc_proc;
   } else {
-    free_wrapper((void**)&smc_proc);
+    free_wrapper(reinterpret_cast<void**>(&smc_proc));
   }
   return NULL;
 }
@@ -829,7 +829,7 @@ nas_auth_info_proc_t* nas_new_cn_auth_info_procedure(
     OAILOG_TRACE(LOG_NAS_EMM, "New CN_PROC_AUTH_INFO\n");
     return auth_info_proc;
   } else {
-    free_wrapper((void**)&auth_info_proc);
+    free_wrapper(reinterpret_cast<void**>(&auth_info_proc));
   }
   return NULL;
 }

@@ -99,7 +99,7 @@ void fill_create_session_request(
     const std::string& imsi_str, teid_t mme_s11_teid, int bearer_id,
     bearer_context_to_be_created_t sample_bearer_context, plmn_t sample_plmn) {
   session_request_p->teid = 0;
-  strncpy((char*)session_request_p->imsi.digit, imsi_str.c_str(),
+  strncpy(reinterpret_cast<char*>(session_request_p->imsi.digit), imsi_str.c_str(),
           imsi_str.size());
   session_request_p->imsi.length = imsi_str.size();
   session_request_p->sender_fteid_for_cp.teid = mme_s11_teid;
@@ -382,7 +382,7 @@ void fill_s11_suspend_notification(
   suspend_notif->teid = sgw_s11_context_teid;
   suspend_notif->lbi = link_bearer_id;
   suspend_notif->imsi.length = imsi_str.size();
-  strncpy((char*)suspend_notif->imsi.digit, imsi_str.c_str(),
+  strncpy(reinterpret_cast<char*>(suspend_notif->imsi.digit), imsi_str.c_str(),
           suspend_notif->imsi.length);
 }
 

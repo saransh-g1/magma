@@ -2091,8 +2091,8 @@ void handle_failed_s8_create_bearer_response(
           // Remove the temporary spgw entry
           LIST_REMOVE(sgw_eps_bearer_entry_p, entries);
           if (sgw_eps_bearer_entry_p->sgw_eps_bearer_entry) {
-            free_wrapper((void**)&sgw_eps_bearer_entry_p->sgw_eps_bearer_entry
-                             ->pgw_cp_ip_port);
+            free_wrapper(reinterpret_cast<void**>(&sgw_eps_bearer_entry_p->sgw_eps_bearer_entry
+                             ->pgw_cp_ip_port));
             free_cpp_wrapper(reinterpret_cast<void**>(
                 &sgw_eps_bearer_entry_p->sgw_eps_bearer_entry));
           }

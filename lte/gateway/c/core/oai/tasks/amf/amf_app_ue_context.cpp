@@ -310,7 +310,7 @@ ue_m5gmm_context_s* amf_get_ue_context_from_imsi(char* imsi) {
   OAILOG_FUNC_IN(LOG_AMF_APP);
   imsi64_t imsi64 = INVALID_IMSI64;
 
-  IMSI_STRING_TO_IMSI64((char*)imsi, &imsi64);
+  IMSI_STRING_TO_IMSI64(reinterpret_cast<char*>(imsi, &imsi64));
 
   amf_app_desc_t* amf_app_desc_p = get_amf_nas_state(false);
 

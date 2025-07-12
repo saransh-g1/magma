@@ -31,8 +31,8 @@ extern "C" {
 
 #define BUFFER_TO_static_cast<uint32_t>(buf, x)                                   \
   do {                                                               \
-    x = ((uint32_t)((buf)[0])) | ((uint32_t)((buf)[1]) << 8) |       \
-        ((uint32_t)((buf)[2]) << 16) | ((uint32_t)((buf)[3]) << 24); \
+    x = (static_cast<uint32_t>((buf)[0])) | (static_cast<uint32_t>((buf)[1]) << 8) |       \
+        (static_cast<uint32_t>((buf)[2]) << 16) | (static_cast<uint32_t>((buf)[3]) << 24); \
   } while (0)
 
 typedef enum {

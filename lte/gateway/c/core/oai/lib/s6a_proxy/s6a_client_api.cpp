@@ -101,7 +101,7 @@ static void s6a_handle_authentication_info_ans(
     itti_msg->result.choice.base = DIAMETER_UNABLE_TO_COMPLY;
   }
 
-  IMSI_STRING_TO_IMSI64((char*)imsi.c_str(), &message_p->ittiMsgHeader.imsi);
+  IMSI_STRING_TO_IMSI64(reinterpret_cast<char*>(imsi.c_str()), &message_p->ittiMsgHeader.imsi);
 
   send_msg_to_task(&s6a_task_zmq_ctx, TASK_MME_APP, message_p);
   return;
@@ -176,7 +176,7 @@ static void s6a_handle_update_location_ans(const std::string& imsi,
   }
   std::cout << "[INFO] sent itti S6A-LOCATION-UPDATE_ANSWER for IMSI: " << imsi
             << std::endl;
-  IMSI_STRING_TO_IMSI64((char*)imsi.c_str(), &message_p->ittiMsgHeader.imsi);
+  IMSI_STRING_TO_IMSI64(reinterpret_cast<char*>(imsi.c_str()), &message_p->ittiMsgHeader.imsi);
 
   if (rat_type == RAT_NG_RAN) {
     send_msg_to_task(&s6a_task_zmq_ctx, TASK_AMF_APP, message_p);

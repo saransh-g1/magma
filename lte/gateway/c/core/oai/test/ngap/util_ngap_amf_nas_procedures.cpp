@@ -36,8 +36,8 @@ bool generator_ngap_pdusession_resource_setup_req(bstring& stream) {
   /*
    * Setting UE information with the ones found in ue_ref
    */
-  ie = (Ngap_PDUSessionResourceSetupRequestIEs_t*)calloc(
-      1, sizeof(Ngap_PDUSessionResourceSetupRequestIEs_t));
+  ie = reinterpret_cast<Ngap_PDUSessionResourceSetupRequestIEs_t*>(calloc(
+      1, sizeof(Ngap_PDUSessionResourceSetupRequestIEs_t)));
   ie->id = Ngap_ProtocolIE_ID_id_AMF_UE_NGAP_ID;
   ie->criticality = Ngap_Criticality_reject;
   ie->value.present =
@@ -46,8 +46,8 @@ bool generator_ngap_pdusession_resource_setup_req(bstring& stream) {
   ASN_SEQUENCE_ADD(&out->protocolIEs.list, ie);
 
   /* mandatory */
-  ie = (Ngap_PDUSessionResourceSetupRequestIEs_t*)calloc(
-      1, sizeof(Ngap_PDUSessionResourceSetupRequestIEs_t));
+  ie = reinterpret_cast<Ngap_PDUSessionResourceSetupRequestIEs_t*>(calloc(
+      1, sizeof(Ngap_PDUSessionResourceSetupRequestIEs_t)));
   ie->id = Ngap_ProtocolIE_ID_id_RAN_UE_NGAP_ID;
   ie->criticality = Ngap_Criticality_reject;
   ie->value.present =
@@ -56,8 +56,8 @@ bool generator_ngap_pdusession_resource_setup_req(bstring& stream) {
   ASN_SEQUENCE_ADD(&out->protocolIEs.list, ie);
 
   /* mandatory */
-  ie = (Ngap_PDUSessionResourceSetupRequestIEs_t*)calloc(
-      1, sizeof(Ngap_PDUSessionResourceSetupRequestIEs_t));
+  ie = reinterpret_cast<Ngap_PDUSessionResourceSetupRequestIEs_t*>(calloc(
+      1, sizeof(Ngap_PDUSessionResourceSetupRequestIEs_t)));
   ie->id = Ngap_ProtocolIE_ID_id_PDUSessionResourceSetupListSUReq;
   ie->criticality = Ngap_Criticality_reject;
   ie->value.present =
@@ -362,7 +362,7 @@ bool generator_ngap_pdusession_resource_rel_cmd_stream(bstring& stream) {
 
   ssize_t encoded_size = aper_encode_to_new_buffer(
       &asn_DEF_Ngap_PDUSessionResourceReleaseCommandTransfer, NULL,
-      PDUSessionResourceReleaseCommandTransferIEs, (void**)&buffer);
+      PDUSessionResourceReleaseCommandTransferIEs, reinterpret_cast<void**>(&buffer));
 
   RelItem->pDUSessionResourceReleaseCommandTransfer.size = encoded_size;
   RelItem->pDUSessionResourceReleaseCommandTransfer.buf = (uint8_t*)calloc(

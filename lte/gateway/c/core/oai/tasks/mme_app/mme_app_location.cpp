@@ -212,7 +212,7 @@ status_code_e mme_app_handle_s6a_update_location_ans(
     OAILOG_FUNC_RETURN(LOG_MME_APP, RETURNerror);
   }
 
-  IMSI_STRING_TO_IMSI64((char*)ula_pP->imsi, &imsi64);
+  IMSI_STRING_TO_IMSI64(reinterpret_cast<char*>(ula_pP->imsi), &imsi64);
   OAILOG_DEBUG(LOG_MME_APP, "Handling imsi " IMSI_64_FMT "\n", imsi64);
 
   if ((ue_mm_context = mme_ue_context_exists_imsi(
@@ -409,7 +409,7 @@ status_code_e mme_app_handle_s6a_cancel_location_req(
     OAILOG_FUNC_RETURN(LOG_MME_APP, RETURNerror);
   }
 
-  IMSI_STRING_TO_IMSI64((char*)clr_pP->imsi, &imsi);
+  IMSI_STRING_TO_IMSI64(reinterpret_cast<char*>(clr_pP->imsi), &imsi);
   OAILOG_DEBUG(LOG_MME_APP,
                "S6a Cancel Location Request for imsi " IMSI_64_FMT "\n", imsi);
 

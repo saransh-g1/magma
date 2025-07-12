@@ -665,7 +665,7 @@ status_code_e emm_proc_authentication_failure(mme_ue_s1ap_id_t ue_id,
           // sent.
           start_authentication_information_procedure_synch(emm_ctx, auth_proc,
                                                            &resync_param);
-          free_wrapper((void**)&resync_param.data);
+          free_wrapper(reinterpret_cast<void**>(&resync_param.data));
           emm_ctx_clear_auth_vectors(emm_ctx);
           rc = RETURNok;
           OAILOG_FUNC_RETURN(LOG_NAS_EMM, rc);
@@ -785,7 +785,7 @@ status_code_e emm_proc_authentication_failure(mme_ue_s1ap_id_t ue_id,
             rc = emm_sap_send(&emm_sap);
           }
           if (auth_proc->unchecked_imsi) {
-            free_wrapper((void**)&auth_proc->unchecked_imsi);
+            free_wrapper(reinterpret_cast<void**>(&auth_proc->unchecked_imsi));
           }
           auth_proc->unchecked_imsi = reinterpret_cast<imsi_s*>(
               calloc(1, sizeof(*auth_proc->unchecked_imsi)));

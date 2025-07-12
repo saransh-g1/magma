@@ -117,7 +117,7 @@ bool ng_setup_failure_decode(const_bstring const raw, Ngap_NGAP_PDU_t* pdu) {
 
   memset(pdu, 0, sizeof(Ngap_NGAP_PDU_t));
 
-  dec_ret = aper_decode(NULL, &asn_DEF_Ngap_NGAP_PDU, (void**)&pdu, bdata(raw),
+  dec_ret = aper_decode(NULL, &asn_DEF_Ngap_NGAP_PDU, reinterpret_cast<void**>(&pdu), bdata(raw),
                         blength(raw), 0, 0);
   if (dec_ret.code != RC_OK) {
     return false;

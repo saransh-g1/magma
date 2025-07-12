@@ -108,7 +108,7 @@ bool ng_setup_initiate_ue_message_decode(const_bstring const raw,
                                          Ngap_NGAP_PDU_t* pdu) {
   asn_dec_rval_t dec_ret;
 
-  dec_ret = aper_decode(NULL, &asn_DEF_Ngap_NGAP_PDU, (void**)&pdu, bdata(raw),
+  dec_ret = aper_decode(NULL, &asn_DEF_Ngap_NGAP_PDU, reinterpret_cast<void**>(&pdu), bdata(raw),
                         blength(raw), 0, 0);
 
   if (dec_ret.code != RC_OK) {
@@ -233,7 +233,7 @@ bool generate_guti_ngap_pdu(Ngap_NGAP_PDU_t* pdu) {
   asn_dec_rval_t dec_ret;
   uint32_t guti_len = 157;
 
-  dec_ret = aper_decode(NULL, &asn_DEF_Ngap_NGAP_PDU, (void**)&pdu,
+  dec_ret = aper_decode(NULL, &asn_DEF_Ngap_NGAP_PDU, reinterpret_cast<void**>(&pdu),
                         intialUeGuti, guti_len, 0, 0);
 
   if (dec_ret.code != RC_OK) {
@@ -351,7 +351,7 @@ bool generate_ngap_request_msg(Ngap_NGAP_PDU_t* pdu) {
   asn_dec_rval_t dec_ret;
   uint32_t pkt_len = sizeof(ngapSetupRequestWithSD) / sizeof(uint8_t);
 
-  dec_ret = aper_decode(NULL, &asn_DEF_Ngap_NGAP_PDU, (void**)&pdu,
+  dec_ret = aper_decode(NULL, &asn_DEF_Ngap_NGAP_PDU, reinterpret_cast<void**>(&pdu),
                         ngapSetupRequestWithSD, pkt_len, 0, 0);
 
   if (dec_ret.code != RC_OK) {
@@ -379,7 +379,7 @@ bool validate_ngap_setup_request(Ngap_NGAP_PDU_t* pdu) {
   NGAP_FIND_PROTOCOLIE_BY_ID(Ngap_NGSetupRequestIEs_t, ie_gnb_name, container,
                              Ngap_ProtocolIE_ID_id_RANNodeName, false);
   if (ie_gnb_name) {
-    gnb_name = (char*)ie_gnb_name->value.choice.RANNodeName.buf;
+    gnb_name = reinterpret_cast<char*>(ie_gnb_name->value.choice.RANNodeName.buf);
   }
 
   NGAP_FIND_PROTOCOLIE_BY_ID(Ngap_NGSetupRequestIEs_t, ie, container,

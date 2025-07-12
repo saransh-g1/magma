@@ -239,7 +239,7 @@ status_code_e mme_app_handle_esm_information_t3489_expiry(zloop_t* loop,
        */
       emm_context->esm_ctx.T3489.id = NAS_TIMER_INACTIVE_ID;
       bdestroy_wrapper(&esm_ebr_timer_data->msg);
-      free_wrapper((void**)&esm_ebr_timer_data);
+      free_wrapper(reinterpret_cast<void**>(&esm_ebr_timer_data));
     }
   }
 
@@ -311,7 +311,7 @@ static status_code_e esm_information(emm_context_t* emm_context_p, ebi_t ebi,
                    emm_context_p->esm_ctx.T3489.msec);
   } else {
     bdestroy_wrapper(&data->msg);
-    free_wrapper((void**)&data);
+    free_wrapper(reinterpret_cast<void**>(&data));
     rc = RETURNerror;
   }
   bdestroy_wrapper(&emm_esm->msg);

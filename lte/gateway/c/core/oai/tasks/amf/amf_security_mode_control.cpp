@@ -110,7 +110,7 @@ nas_amf_smc_proc_t* nas5g_new_smc_procedure(amf_context_t* const amf_context) {
     OAILOG_TRACE(LOG_NAS_EMM, "New EMM_COMM_PROC_AUTH\n");
     OAILOG_FUNC_RETURN(LOG_AMF_APP, smc_proc);
   } else {
-    free_wrapper((void**)&smc_proc);
+    free_wrapper(reinterpret_cast<void**>(&smc_proc));
   }
   OAILOG_FUNC_RETURN(LOG_AMF_APP, NULL);
 }

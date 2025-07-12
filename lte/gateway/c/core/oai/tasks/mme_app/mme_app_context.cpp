@@ -245,7 +245,7 @@ void mme_app_ue_context_free_content(ue_mm_context_t* const ue_context_p) {
     // free the sgs context
     mme_app_ue_sgs_context_free_content(ue_context_p->sgs_context,
                                         ue_context_p->emm_context._imsi64);
-    free_wrapper((void**)&(ue_context_p->sgs_context));
+    free_wrapper(reinterpret_cast<void**>(&(ue_context_p->sgs_context)));
   }
   ue_context_p->ue_context_rel_cause = S1AP_INVALID_CAUSE;
 
@@ -260,7 +260,7 @@ void mme_app_ue_context_free_content(ue_mm_context_t* const ue_context_p) {
         free_protocol_configuration_options(
             &ue_context_p->pending_ded_ber_req[idx]->pco);
       }
-      free_wrapper((void**)&ue_context_p->pending_ded_ber_req[idx]);
+      free_wrapper(reinterpret_cast<void**>(&ue_context_p->pending_ded_ber_req[idx]));
     }
   }
   ue_context_p->send_ue_purge_request = false;
@@ -285,7 +285,7 @@ void mme_app_ue_context_free_content(ue_mm_context_t* const ue_context_p) {
     bdestroy_wrapper(
         &ue_context_p->initial_ue_message_for_invalid_enb_s1ap_id->nas);
     free_wrapper(
-        (void**)&ue_context_p->initial_ue_message_for_invalid_enb_s1ap_id);
+        reinterpret_cast<void**>(&ue_context_p->initial_ue_message_for_invalid_enb_s1ap_id));
   }
 }
 
@@ -296,7 +296,7 @@ void mme_app_state_free_ue_context(void** ue_context_node) {
   emm_context_t* emm_ctx = &ue_context_p->emm_context;
   free_emm_ctx_memory(emm_ctx, ue_context_p->mme_ue_s1ap_id);
   mme_app_ue_context_free_content(ue_context_p);
-  free_wrapper((void**)&ue_context_p);
+  free_wrapper(reinterpret_cast<void**>(&ue_context_p));
   OAILOG_FUNC_OUT(LOG_MME_APP);
 }
 
@@ -866,7 +866,7 @@ void mme_remove_ue_context(mme_ue_context_t* const mme_ue_context_p,
     }
   }
 
-  free_wrapper((void**)&ue_context_p);
+  free_wrapper(reinterpret_cast<void**>(&ue_context_p));
   OAILOG_FUNC_OUT(LOG_MME_APP);
 }
 
@@ -1582,7 +1582,7 @@ static bool mme_app_recover_timers_for_ue(
     const uint32_t keyP, struct ue_mm_context_s* const ue_context_pP,
     void* param_pP, void** result_pP) {
   OAILOG_FUNC_IN(LOG_MME_APP);
-  uint32_t* num_unreg_ues = (uint32_t*)param_pP;
+  uint32_t* num_unreg_ues = reinterpret_cast<uint32_t*>(param_pP);
   uint64_t** mme_id_list = reinterpret_cast<uint64_t**>(result_pP);
   struct ue_mm_context_s* const ue_mm_context_pP =
       (struct ue_mm_context_s*)ue_context_pP;

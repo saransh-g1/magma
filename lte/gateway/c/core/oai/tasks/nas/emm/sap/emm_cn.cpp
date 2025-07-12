@@ -1005,7 +1005,7 @@ static status_code_e emm_cn_cs_domain_mm_information_req(
     OAILOG_WARNING(LOG_NAS_EMM, "Received mm_information_req_pP is NULL \n");
     OAILOG_FUNC_RETURN(LOG_NAS_EMM, rc);
   }
-  IMSI_STRING_TO_IMSI64((char*)mm_information_req_pP->imsi, &imsi64);
+  IMSI_STRING_TO_IMSI64(reinterpret_cast<char*>(mm_information_req_pP->imsi), &imsi64);
   OAILOG_DEBUG(LOG_NAS_EMM,
                "Received MM Information Request for IMSI " IMSI_64_FMT "\n",
                imsi64);

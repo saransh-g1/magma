@@ -73,7 +73,7 @@ TEST_F(ControllerTest, TestRegistration) {
   MockApplication app;
   EXPECT_CALL(app, event_callback(_, _)).Times(1);
 
-  controller->register_for_event((Application*)&app, EVENT_PACKET_IN);
+  controller->register_for_event(reinterpret_cast<Application*>(&app), EVENT_PACKET_IN);
   default_message_callback(OFPT_PACKET_IN_TYPE);
 }
 

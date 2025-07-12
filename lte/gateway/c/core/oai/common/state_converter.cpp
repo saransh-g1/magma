@@ -85,7 +85,7 @@ void StateConverter::ecgi_to_proto(const ecgi_t& state_ecgi,
 void StateConverter::proto_to_ecgi(const oai::Ecgi& ecgi_proto,
                                    ecgi_t* state_ecgi) {
   chars_to_plmn(ecgi_proto.plmn().c_str(), &state_ecgi->plmn);
-  strncpy((char*)&state_ecgi->plmn, ecgi_proto.plmn().c_str(), PLMN_BYTES);
+  strncpy(reinterpret_cast<char*>(&state_ecgi->plmn), ecgi_proto.plmn().c_str(), PLMN_BYTES);
 
   state_ecgi->cell_identity.enb_id = ecgi_proto.enb_id();
   state_ecgi->cell_identity.cell_id = ecgi_proto.cell_id();

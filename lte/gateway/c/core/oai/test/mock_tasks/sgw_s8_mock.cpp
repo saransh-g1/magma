@@ -30,8 +30,8 @@ static int handle_message(zloop_t* loop, zsock_t* reader, void* arg) {
     case S8_CREATE_BEARER_REQ: {
       sgw_s8_handler_->sgw_s8_handle_create_bearer_request(
           received_message_p->ittiMsg.s8_create_bearer_req);
-      free_wrapper((void**)&received_message_p->ittiMsg.s8_create_bearer_req
-                       .pgw_cp_address);
+      free_wrapper(reinterpret_cast<void**>(&received_message_p->ittiMsg.s8_create_bearer_req
+                       .pgw_cp_address));
     } break;
     case S8_DELETE_BEARER_REQ: {
       sgw_s8_handler_->sgw_s8_handle_delete_bearer_request(

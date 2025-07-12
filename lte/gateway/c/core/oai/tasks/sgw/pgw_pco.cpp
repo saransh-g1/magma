@@ -335,7 +335,7 @@ status_code_e pgw_process_pco_pcscf_ipv4_address_req(
 //------------------------------------------------------------------------------
 status_code_e pgw_process_pco_pcscf_ipv6_address_req(
     protocol_configuration_options_t* const pco_resp) {
-  if (!strlen((char*)spgw_config.pgw_config.pcscf.ipv6_addr.s6_addr)) {
+  if (!strlen(reinterpret_cast<char*>(spgw_config.pgw_config.pcscf.ipv6_addr.s6_addr))) {
     OAILOG_ERROR(
         LOG_SPGW_APP,
         "PCO_CI_P_CSCF_IPV6_ADDRESS not configured. Ignoring the containerID "

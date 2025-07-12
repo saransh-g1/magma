@@ -66,7 +66,7 @@ extern "C" {
 
 //------------------------------------------------------------------------------
 void pgw_config_init(pgw_config_t* config_pP) {
-  memset((char*)config_pP, 0, sizeof(*config_pP));
+  memset(reinterpret_cast<char*>(config_pP), 0, sizeof(*config_pP));
   pthread_rwlock_init(&config_pP->rw_lock, NULL);
 }
 

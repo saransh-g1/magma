@@ -416,7 +416,7 @@ int mme_app_handle_sgs_imsi_detach_timer_expiry(zloop_t* loop, int timer_id,
     // Free the UE SGS context
     mme_app_ue_sgs_context_free_content(ue_context_p->sgs_context,
                                         ue_context_p->emm_context._imsi64);
-    free_wrapper((void**)&(ue_context_p->sgs_context));
+    free_wrapper(reinterpret_cast<void**>(&(ue_context_p->sgs_context)));
     increment_counter("sgs_imsi_detach_timer_expired", 1, 1, "cause",
                       "Ts9 timer expired after max retransmission");
   }
@@ -602,7 +602,7 @@ status_code_e mme_app_handle_sgs_eps_detach_ack(
     if (ue_context_p->sgs_context != NULL) {
       // free the sgs context
       mme_app_ue_sgs_context_free_content(ue_context_p->sgs_context, imsi64);
-      free_wrapper((void**)&(ue_context_p->sgs_context));
+      free_wrapper(reinterpret_cast<void**>(&(ue_context_p->sgs_context)));
     }
   } else {
     OAILOG_ERROR(
@@ -687,7 +687,7 @@ status_code_e mme_app_handle_sgs_imsi_detach_ack(
     // Free the UE SGS context
     mme_app_ue_sgs_context_free_content(ue_context_p->sgs_context,
                                         ue_context_p->emm_context._imsi64);
-    free_wrapper((void**)&(ue_context_p->sgs_context));
+    free_wrapper(reinterpret_cast<void**>(&(ue_context_p->sgs_context)));
   } else {
     OAILOG_ERROR(
         LOG_MME_APP,

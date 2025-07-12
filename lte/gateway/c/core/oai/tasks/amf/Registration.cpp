@@ -130,8 +130,8 @@ nas_amf_registration_proc_t* nas_new_registration_procedure(
       AMF_SPEC_PROC_TYPE_REGISTRATION;
 
   nas_amf_registration_proc_t* proc =
-      (nas_amf_registration_proc_t*)
-          amf_context->amf_procedures->amf_specific_proc;
+      reinterpret_cast<nas_amf_registration_proc_t*>(
+          amf_context->amf_procedures->amf_specific_proc);
   proc->registration_accept_sent = 0;
 
   /* TIMERS_PLACE_HOLDER */
@@ -334,7 +334,7 @@ static status_code_e amf_registration_reject(
   status_code_e rc = RETURNerror;
   amf_sap_t amf_sap = {};
   nas_amf_registration_proc_t* registration_proc =
-      (nas_amf_registration_proc_t*)nas_base_proc;
+      reinterpret_cast<nas_amf_registration_proc_t*>(nas_base_proc);
   OAILOG_WARNING(LOG_NAS_AMF,
                  "AMF-PROC  - AMF Registration procedure not accepted ");
   /*
@@ -756,8 +756,8 @@ static int registration_accept_t3550_handler(zloop_t* loop, int timer_id,
   amf_ctx = &ue_amf_context->amf_context;
 
   registration_proc =
-      (nas_amf_registration_proc_t*)
-          ue_amf_context->amf_context.amf_procedures->amf_specific_proc;
+      reinterpret_cast<nas_amf_registration_proc_t*>(
+          ue_amf_context->amf_context.amf_procedures->amf_specific_proc);
 
   if (registration_proc) {
     OAILOG_WARNING(LOG_AMF_APP,
@@ -810,8 +810,8 @@ status_code_e amf_proc_registration_complete(amf_context_t* amf_ctx) {
 
   if (amf_ctx) {
     if (is_nas_specific_procedure_registration_running(amf_ctx)) {
-      registration_proc = (nas_amf_registration_proc_t*)
-                              amf_ctx->amf_procedures->amf_specific_proc;
+      registration_proc = reinterpret_cast<nas_amf_registration_proc_t*>(
+                              amf_ctx->amf_procedures->amf_specific_proc);
 
       amf_app_stop_timer(registration_proc->T3550.id);
       OAILOG_DEBUG(LOG_NAS_AMF,
@@ -1020,7 +1020,7 @@ void amf_delete_registration_proc(amf_context_t* amf_ctx) {
       amf_delete_registration_ies(&proc->ies);
     }
 
-    amf_delete_child_procedures(amf_ctx, (nas5g_base_proc_t*)proc);
+    amf_delete_child_procedures(amf_ctx, reinterpret_cast<nas5g_base_proc_t*>(proc));
     delete_wrapper(&proc);
 
     amf_ctx->amf_procedures->amf_specific_proc = nullptr;

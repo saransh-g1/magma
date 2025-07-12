@@ -1007,9 +1007,9 @@ static uint32_t _nas5g_message_get_mac(
           "M5G_NAS_SECURITY_ALGORITHMS_5G_IA2 returned MAC %x.%x.%x.%x(%u) for "
           "length "
           "%" PRIu32 "direction %d, count %d\n",
-          mac[0], mac[1], mac[2], mac[3], *((uint32_t*)&mac), length, direction,
+          mac[0], mac[1], mac[2], mac[3], *(reinterpret_cast<uint32_t*>(&mac)), length, direction,
           count);
-      mac32 = (uint32_t*)&mac;
+      mac32 = reinterpret_cast<uint32_t*>(&mac);
       OAILOG_FUNC_RETURN(LOG_AMF_APP, ntohl(*mac32));
     } break;
     case M5G_NAS_SECURITY_ALGORITHMS_5G_IA0:

@@ -259,10 +259,10 @@ void free_partial_lists(partial_list_t* partial_list, uint8_t num_par_lists) {
   if ((!partial_list) || (!num_par_lists)) return;
 
   for (uint8_t itr = 0; itr < num_par_lists; itr++) {
-    free_wrapper((void**)&(partial_list[itr].plmn));
-    free_wrapper((void**)&(partial_list[itr].tac));
+    free_wrapper(reinterpret_cast<void**>(&(partial_list[itr].plmn)));
+    free_wrapper(reinterpret_cast<void**>(&(partial_list[itr].tac)));
   }
-  free_wrapper((void**)&partial_list);
+  free_wrapper(reinterpret_cast<void**>(&partial_list));
 }
 
 void free_mme_config(mme_config_t* mme_config) {
@@ -283,10 +283,10 @@ void free_mme_config(mme_config_t* mme_config) {
   bdestroy_wrapper(&mme_config->s6a_config.conf_file);
   bdestroy_wrapper(&mme_config->itti_config.log_file);
 
-  free_wrapper((void**)&mme_config->served_tai.plmn_mcc);
-  free_wrapper((void**)&mme_config->served_tai.plmn_mnc);
-  free_wrapper((void**)&mme_config->served_tai.plmn_mnc_len);
-  free_wrapper((void**)&mme_config->served_tai.tac);
+  free_wrapper(reinterpret_cast<void**>(&mme_config->served_tai.plmn_mcc));
+  free_wrapper(reinterpret_cast<void**>(&mme_config->served_tai.plmn_mnc));
+  free_wrapper(reinterpret_cast<void**>(&mme_config->served_tai.plmn_mnc_len));
+  free_wrapper(reinterpret_cast<void**>(&mme_config->served_tai.tac));
 
   clear_served_tai_config(&mme_config->served_tai);
   free_partial_lists(mme_config->partial_list, mme_config->num_par_lists);
@@ -886,16 +886,16 @@ int mme_config_parse_string(const char* config_string,
 
       if (config_pP->served_tai.nb_tai != num) {
         if (config_pP->served_tai.plmn_mcc != NULL)
-          free_wrapper((void**)&config_pP->served_tai.plmn_mcc);
+          free_wrapper(reinterpret_cast<void**>(&config_pP->served_tai.plmn_mcc));
 
         if (config_pP->served_tai.plmn_mnc != NULL)
-          free_wrapper((void**)&config_pP->served_tai.plmn_mnc);
+          free_wrapper(reinterpret_cast<void**>(&config_pP->served_tai.plmn_mnc));
 
         if (config_pP->served_tai.plmn_mnc_len != NULL)
-          free_wrapper((void**)&config_pP->served_tai.plmn_mnc_len);
+          free_wrapper(reinterpret_cast<void**>(&config_pP->served_tai.plmn_mnc_len));
 
         if (config_pP->served_tai.tac != NULL)
-          free_wrapper((void**)&config_pP->served_tai.tac);
+          free_wrapper(reinterpret_cast<void**>(&config_pP->served_tai.tac));
 
         config_pP->served_tai.plmn_mcc = reinterpret_cast<uint16_t*>(
             calloc(num, sizeof(*config_pP->served_tai.plmn_mcc)));
@@ -1210,17 +1210,17 @@ int mme_config_parse_string(const char* config_string,
             if (strlen(astring)) {
               imsi_high_tmp = strdup(astring);
               imsi_low_tmp = strsep(&imsi_high_tmp, ":");
-              memcpy((char*)config_pP->mode_map_config.mode_map[i].imsi_low,
+              memcpy(reinterpret_cast<char*>(config_pP->mode_map_config.mode_map[i].imsi_low),
                      imsi_low_tmp, strlen(imsi_low_tmp));
               AssertFatal(
                   strlen(
-                      (char*)config_pP->mode_map_config.mode_map[i].imsi_low) <=
+                      reinterpret_cast<char*>(config_pP->mode_map_config.mode_map[i].imsi_low)) <=
                       MAX_IMSI_LENGTH,
                   "Invalid imsi_low length\n");
-              memcpy((char*)config_pP->mode_map_config.mode_map[i].imsi_high,
+              memcpy(reinterpret_cast<char*>(config_pP->mode_map_config.mode_map[i].imsi_high),
                      imsi_high_tmp, strlen(imsi_high_tmp));
-              AssertFatal(strlen((char*)config_pP->mode_map_config.mode_map[i]
-                                     .imsi_high) <= MAX_IMSI_LENGTH,
+              AssertFatal(strlen(reinterpret_cast<char*>(config_pP->mode_map_config.mode_map[i]
+                                     .imsi_high)) <= MAX_IMSI_LENGTH,
                           "Invalid imsi_high length\n");
             }
           }
