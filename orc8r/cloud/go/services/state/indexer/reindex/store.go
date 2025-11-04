@@ -19,8 +19,8 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
-	// "magma/orc8r/cloud/go/JsonStore"
-	"magma/orc8r/cloud/go/blobstore"
+	"magma/orc8r/cloud/go/JsonStore"
+	// "magma/orc8r/cloud/go/blobstore"
 	state_types "magma/orc8r/cloud/go/services/state/types"
 )
 
@@ -31,10 +31,10 @@ type Store interface {
 }
 
 type store struct {
-	factory blobstore.StoreFactory
+	factory JsonStore.StoreFactory
 }
 
-func NewStore(factory blobstore.StoreFactory) Store {
+func NewStore(factory JsonStore.StoreFactory) Store {
 	return &store{factory: factory}
 }
 
@@ -45,8 +45,8 @@ func (s *store) GetAllIDs() (state_types.IDsByNetwork, error) {
 	}
 
 	JsonsByNetwork, err := store.Search(
-		blobstore.CreateSearchFilter(nil, nil, nil, nil),
-		blobstore.LoadCriteria{LoadValue: false},
+		JsonStore.CreateSearchFilter(nil, nil, nil, nil),
+		JsonStore.LoadCriteria{LoadValue: false},
 	)
 	if err != nil {
 		_ = store.Rollback()
@@ -61,7 +61,7 @@ func (s *store) GetAllIDs() (state_types.IDsByNetwork, error) {
 	return ids, nil
 }
 
-func blobsToIDs(byNetwork map[string]blobstore.Blobs) state_types.IDsByNetwork {
+func blobsToIDs(byNetwork map[string]JsonStore.Jsons) state_types.IDsByNetwork {
 	ids := state_types.IDsByNetwork{}
 	for network, Jsons := range byNetwork {
 		for _, b := range Jsons {
