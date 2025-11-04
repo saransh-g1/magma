@@ -10,17 +10,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- 
- package JsonStore
 
- import (
+package JsonStore
+
+import (
 	"magma/orc8r/cloud/go/storage"
- )
+	"sort"
+	"strings"
+
+	"github.com/thoas/go-funk"
+)
+
 //Json will carry a string for Storage.
 type Json struct {
 	Type  string 
 	Key   string 
-	Value []string
+	Value string
 	Version uint64
 }
 
@@ -40,7 +45,7 @@ func (js Jsons) ByTK() map[storage.TK]Json {
 	return ret
 }
 
-func (js Jsons) keys() []sting {
+func (js Jsons) keys() []string {
 	var keys []string
 	for _, b := range js {
 		keys = append(keys, b.Key)
@@ -49,3 +54,73 @@ func (js Jsons) keys() []sting {
 	return keys
 }
 
+func CreateSearchFilter(networkID *string, types []string, keys []string, keyPrefix *string) SearchFilter {
+	return SearchFilter{
+		NetworkID: networkID,
+		Types:     toMap(types),
+		Keys:      toMap(keys),
+		keyPrefix: keyPrefix,
+	}
+}
+
+type SearchFilter struct {
+	NetworkID *string
+	
+	Types map[string]bool
+
+	Keys map[string]bool
+
+	keyPrefix *string
+}
+
+func (sf SearchFilter) DoesTKMatch(tk storage.TK) bool {
+	isTypesEmpty, isKeysEmpty, isPrefixEmpty := funk.IsEmpty(sf.Types), funk.IsEmpty(sf.Keys), funk.IsEmpty(sf.keyPrefix)
+
+	// Empty search filter matches everything
+	if isTypesEmpty && isKeysEmpty && isPrefixEmpty {
+		return true
+	}
+
+	if typeMatch := sf.Types[tk.Type]; !isTypesEmpty && !typeMatch {
+		return false
+	}
+
+	// Key match: short-circuit if prefix is specified
+	if !isPrefixEmpty {
+		return strings.HasPrefix(tk.Key, *sf.keyPrefix)
+	}
+	if keyMatch := sf.Keys[tk.Key]; !isKeysEmpty && !keyMatch {
+		return false
+	}
+	return true
+}
+
+func (sf SearchFilter) GetTypes() []string {
+	ret := funk.Keys(sf.Types).([]string)
+	sort.Strings(ret)
+	return ret
+}
+
+func (sf SearchFilter) GetKeys() []string {
+	ret := funk.Keys(sf.Keys).([]string)
+	sort.Strings(ret)
+	return ret
+}
+
+func GetDefaultLoadCriteria() LoadCriteria {
+	return LoadCriteria{LoadValue: true}
+}
+
+type LoadCriteria struct {
+	// LoadValue specifies whether to load the value of a blob.
+	// Set to false to only load blob metadata.
+	LoadValue bool
+}
+
+func toMap(v []string) map[string]bool {
+	present := map[string]bool{}
+	for _, s := range v {
+		present[s] = true
+	}
+	return present
+}

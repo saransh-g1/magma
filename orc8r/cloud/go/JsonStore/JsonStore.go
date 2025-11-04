@@ -20,7 +20,7 @@ import (
 type StoreFactory interface {
 	InitializeFactory() error
 
-	StoreTransaction(opts *storage.TxOptions) (Store, error)
+	StartTransaction(opts *storage.TxOptions) (Store, error)
 }
 
 type Store interface {
@@ -33,7 +33,7 @@ type Store interface {
 
 	Write(networkId string, json Jsons) error
 
-	IncrementVersion(networkID string, id storage.TKs) error
+	IncrementVersion(networkID string, id storage.TK) error
 
 	Delete(networkID string, ids storage.TKs) error
 
@@ -65,7 +65,7 @@ func ListKeys(store Store, networkID string, typ string) ([]string, error) {
 	if err != nil {
 		return nil, err
 	}
-	return networkJsons[networkID].Keys(), nil
+	return networkJsons[networkID].keys(), nil
 }
 
 func ListKeysByNetwork(store Store) (map[string]storage.TKs, error) {
@@ -77,7 +77,7 @@ func ListKeysByNetwork(store Store) (map[string]storage.TKs, error) {
 		return nil, err
 	}
 
-	tks := map[string]storage.Tks{}
+	tks := map[string]storage.TKs{}
 	for network, Jsons := range JsonsByNetwork {
 		tks[network] = Jsons.TKs()
 	}

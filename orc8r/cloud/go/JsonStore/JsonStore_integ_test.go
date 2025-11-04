@@ -1,1 +1,1 @@
-package Jsonstore
+package JsonStore
