@@ -19,6 +19,7 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
+	// "magma/orc8r/cloud/go/JsonStore"
 	"magma/orc8r/cloud/go/blobstore"
 	state_types "magma/orc8r/cloud/go/services/state/types"
 )
@@ -40,30 +41,30 @@ func NewStore(factory blobstore.StoreFactory) Store {
 func (s *store) GetAllIDs() (state_types.IDsByNetwork, error) {
 	store, err := s.factory.StartTransaction(nil)
 	if err != nil {
-		return nil, internalErr(err, "GetAllIDs blobstore start transaction")
+		return nil, internalErr(err, "GetAllIDs Jsonstore start transaction")
 	}
 
-	blobsByNetwork, err := store.Search(
+	JsonsByNetwork, err := store.Search(
 		blobstore.CreateSearchFilter(nil, nil, nil, nil),
 		blobstore.LoadCriteria{LoadValue: false},
 	)
 	if err != nil {
 		_ = store.Rollback()
-		return nil, internalErr(err, "GetAllIDs blobstore search")
+		return nil, internalErr(err, "GetAllIDs Jsonstore search")
 	}
 	err = store.Commit()
 	if err != nil {
-		return nil, internalErr(err, "GetAllIDs blobstore commit transaction")
+		return nil, internalErr(err, "GetAllIDs Jsonstore commit transaction")
 	}
 
-	ids := blobsToIDs(blobsByNetwork)
+	ids := blobsToIDs(JsonsByNetwork)
 	return ids, nil
 }
 
 func blobsToIDs(byNetwork map[string]blobstore.Blobs) state_types.IDsByNetwork {
 	ids := state_types.IDsByNetwork{}
-	for network, blobs := range byNetwork {
-		for _, b := range blobs {
+	for network, Jsons := range byNetwork {
+		for _, b := range Jsons {
 			ids[network] = append(ids[network], state_types.ID{Type: b.Type, DeviceID: b.Key})
 		}
 	}
