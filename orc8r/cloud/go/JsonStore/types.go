@@ -35,6 +35,13 @@ func (j Json) TK() storage.TK {
 
 type Jsons []Json
 
+func (js Jsons) TKs() storage.TKs {
+	tks := make(storage.TKs, 0, len(js))
+	for _, json := range js {
+		tks = append(tks, storage.TK{Type: json.Type, Key: json.Key})
+	}
+	return tks
+}
 // ByTK returns a computed view of a list of blobs as a map of
 // blobs keyed by blob TK.
 func (js Jsons) ByTK() map[storage.TK]Json {
