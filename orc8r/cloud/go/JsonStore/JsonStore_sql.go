@@ -31,7 +31,7 @@ import (
 const (
 	nidCol = "netword_id"
 	typeCol= "type"
-	keyCol = "\"Key\""
+	keyCol = "\"key\""
 	valCol = "value"
 	verCol = "version"
 )
