@@ -29,7 +29,7 @@ import (
 )
 
 const (
-	nidCol = "netword_id"
+	nidCol = "network_id"
 	typeCol= "type"
 	keyCol = "\"key\""
 	valCol = "value"
