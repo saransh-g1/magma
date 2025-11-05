@@ -188,7 +188,7 @@ func (store *sqlStore) Search(filter SearchFilter, criteria LoadCriteria) (map[s
 	}
 
 	if !funk.IsEmpty(filter.Types) {
-		whereCondition = append(whereCondition, sq.Eq{typeCol: filter.Types})
+		whereCondition = append(whereCondition, sq.Eq{typeCol: filter.GetKeys()})
 	}
 	// Apply only one of prefix or match predicates; prefix takes precedence
 	if !funk.IsEmpty(filter.keyPrefix) {
@@ -222,7 +222,7 @@ func (store *sqlStore) Search(filter SearchFilter, criteria LoadCriteria) (map[s
 			return ret, fmt.Errorf("failed to scan blob row: %w", err)
 		}
 
-			nidCol := ret[nid]
+		nidCol := ret[nid]
 		nidCol = append(nidCol, Json{Type: t, Key: k, Value: val, Version: version})
 		ret[nid] = nidCol
 	}
