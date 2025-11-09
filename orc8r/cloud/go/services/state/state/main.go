@@ -57,6 +57,11 @@ provide directions in the upgrade notes.
 
 func main() {
 	srv, err := service.NewOrchestratorService(orc8r.ModuleName, state.ServiceName)
+
+	glog.Infof("Starting Orchestrator State Service initialization...")
+
+	glog.Infof("[STEP 1] Creating orchestrator service for module: %s, service: %s", orc8r.ModuleName, state.ServiceName)
+
 	if err != nil {
 		glog.Fatalf("Error creating state service %v", err)
 	}
@@ -65,17 +70,24 @@ func main() {
 	if err != nil {
 		glog.Fatalf("Error connecting to database: %v", err)
 	}
+
+	glog.Infof("[STEP 2] Connecting to database using driver")
+
 	store := JsonStore.NewSQLStoreFactory(state.DBTableName, db, sqorc.GetSqlBuilder())
 	err = store.InitializeFactory()
 	if err != nil {
 		glog.Fatalf("Error initializing state database: %v", err)
 	}
 
+	glog.Infof("[STEP 2] Connecting to database using driver")
+
 	stateServicer := newStateServicer(store)
 	protos.RegisterStateServiceServer(srv.GrpcServer, stateServicer)
 
 	cloudStateServicer := newCloudStateServicer(store)
 	protos.RegisterCloudStateServiceServer(srv.ProtectedGrpcServer, cloudStateServicer)
+
+	glog.Infof("[STEP 3] Initializing SQL Store Factory for table=%s", state.DBTableName)
 
 	singletonReindex := srv.Config.MustGetBool(state_config.EnableSingletonReindex)
 	if !singletonReindex {
