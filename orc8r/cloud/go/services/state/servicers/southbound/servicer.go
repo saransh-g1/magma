@@ -229,7 +229,7 @@ func wrapStateWithAdditionalInfo(st *protos.State, hwID string, time uint64, cer
 	wrap := state_types.SerializedState{
 		ReporterID:              hwID,
 		TimeMs:                  time,
-		SerializedReportedState: st.Value,
+		SerializedReportedState: string(st.Value),
 	}
 	glog.Info("this is the main string %s", string(st.GetValue()))
 	ret, err := json.Marshal(wrap)
