@@ -231,6 +231,7 @@ func wrapStateWithAdditionalInfo(st *protos.State, hwID string, time uint64, cer
 		TimeMs:                  time,
 		SerializedReportedState: st.Value,
 	}
+	glog.Info("this is the main string %s", string(st.GetValue()))
 	ret, err := json.Marshal(wrap)
 	if err != nil {
 		return nil, fmt.Errorf("json marshal state with meta: %w", err)
